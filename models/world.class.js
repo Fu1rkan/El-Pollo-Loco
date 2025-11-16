@@ -1,19 +1,18 @@
 class World {
-    character = new Character();
+    character = new Character(25, 225, 100, 200);
     enemies = [
-        new Chicken(),
-        new Chicken(),
-        new Chicken()
+        new Chicken(80, 80),
+        new Chicken(80, 80),
+        new Chicken(80, 80)
     ];
     clouds = [
-        new Clouds(),
-        new Clouds(),
+        new Clouds('img/5_background/layers/4_clouds/1.png', 720, 480, 0, 0)
     ];
     background = [
-        new Background('img/5_background/layers/air.png', 720, 480),
-        new Background('img/5_background/layers/3_third_layer/1.png', 720, 480),
-        new Background('img/5_background/layers/2_second_layer/1.png', 720, 480),
-        new Background('img/5_background/layers/1_first_layer/1.png', 720, 480)
+        new Background('img/5_background/layers/air.png', 720, 480, 0, 0),
+        new Background('img/5_background/layers/3_third_layer/1.png', 720, 480, 0, 0),
+        new Background('img/5_background/layers/2_second_layer/1.png', 720, 480, 0, 0),
+        new Background('img/5_background/layers/1_first_layer/1.png', 720, 480, 0, 0)
     ]
     canvas;
     ctx;
