@@ -8,6 +8,7 @@ class Mountains extends MovableObject {
 }
 
 class MountainsSecondLayer extends MovableObject {
+
     width = 720;
     height = 480;
     constructor() {
@@ -16,6 +17,7 @@ class MountainsSecondLayer extends MovableObject {
 }
 
 class MountainsThirdLayer extends MovableObject {
+
     width = 720;
     height = 480;
     constructor() {

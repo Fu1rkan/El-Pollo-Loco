@@ -9,6 +9,7 @@ class World {
         new Clouds(),
         new Clouds(),
     ];
+    background = new Background();
     mountain = new Mountains();
     mountainSecondLayer = new MountainsSecondLayer();
     mountainThirdLayer = new MountainsThirdLayer();
@@ -24,6 +25,8 @@ class World {
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        this.ctx.drawImage(this.background.img, this.background.x, this.background.y, this.background.width, this.background.height);
 
         this.ctx.drawImage(this.mountainThirdLayer.img, this.mountainThirdLayer.x, this.mountainThirdLayer.y, this.mountainThirdLayer.width, this.mountainThirdLayer.height);
 
