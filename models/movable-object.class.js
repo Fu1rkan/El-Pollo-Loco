@@ -5,16 +5,23 @@ class MovableObject {
     height;
     width;
 
-    loadImg(path){
+    loadImg(path) {
         this.img = new Image();
         this.img.src = path;
     }
 
-    moveRight(){
+    moveRight() {
         console.log('Moving right');
     }
 
-    moveLeft(){
+    moveLeft() {
 
+    }
+
+    move() {
+        x -= 1;
+        console.log(x);
+
+        requestAnimationFrame(this.move)
     }
 }
