@@ -4,10 +4,19 @@ class MovableObject {
     img;
     height;
     width;
+    imageCache = {};
 
     loadImg(path) {
         this.img = new Image();
         this.img.src = path;
+    }
+
+    loadImages(arr){
+        arr.forEach((path) => {
+            let img = new Image();
+            img.src = path;
+            this.imageCache[path] = img;
+        });
     }
 
     moveRight() {
@@ -16,12 +25,5 @@ class MovableObject {
 
     moveLeft() {
 
-    }
-
-    move() {
-        x -= 1;
-        console.log(x);
-
-        requestAnimationFrame(this.move)
     }
 }
