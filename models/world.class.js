@@ -9,10 +9,12 @@ class World {
         new Clouds(),
         new Clouds(),
     ];
-    background = new Background();
-    mountain = new Mountains();
-    mountainSecondLayer = new MountainsSecondLayer();
-    mountainThirdLayer = new MountainsThirdLayer();
+    background = [
+        new Background('img/5_background/layers/air.png', 720, 480),
+        new Background('img/5_background/layers/3_third_layer/1.png', 720, 480),
+        new Background('img/5_background/layers/2_second_layer/1.png', 720, 480),
+        new Background('img/5_background/layers/1_first_layer/1.png', 720, 480)
+    ]
     canvas;
     ctx;
 
@@ -20,33 +22,32 @@ class World {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.draw();
-    }
+    };
 
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        this.ctx.drawImage(this.background.img, this.background.x, this.background.y, this.background.width, this.background.height);
-
-        this.ctx.drawImage(this.mountainThirdLayer.img, this.mountainThirdLayer.x, this.mountainThirdLayer.y, this.mountainThirdLayer.width, this.mountainThirdLayer.height);
-
-        this.ctx.drawImage(this.mountainSecondLayer.img, this.mountainSecondLayer.x, this.mountainSecondLayer.y, this.mountainSecondLayer.width, this.mountainSecondLayer.height);
         
-        this.ctx.drawImage(this.mountain.img, this.mountain.x, this.mountain.y, this.mountain.width, this.mountain.height);
+        this.addObjectsToMap(this.background);
+        this.addObjectsToMap(this.clouds);
 
-        this.ctx.drawImage(this.character.img, this.character.x, this.character.y, this.character.width, this.character.height);
-
-        this.enemies.forEach(enemy => {
-            this.ctx.drawImage(enemy.img, enemy.x, enemy.y, enemy.width, enemy.height);
-        });
-
-        this.clouds.forEach(cloud => {
-            this.ctx.drawImage(cloud.img, cloud.x, cloud.y, cloud.width, cloud.height)
-        })
+        
+        this.addToMap(this.character);
+        this.addObjectsToMap(this.enemies);
 
         let self = this;
         requestAnimationFrame(function (){
             self.draw();
         });
     }
+
+    addObjectsToMap(object){
+        object.forEach(o => {
+            this.ctx.drawImage(o.img, o.x, o.y, o.width, o.height);
+        });
+    }
+
+    addToMap(object){
+        this.ctx.drawImage(object.img, object.x, object.y, object.width, object.height);
+    };
 }

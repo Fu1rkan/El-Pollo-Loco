@@ -1,9 +1,8 @@
-class Background extends MovableObject{
+class Background extends MovableObject {
 
-    width = 720;
-    height = 480;
-
-    constructor(){
-        super().loadImg('img/5_background/layers/air.png');
+    constructor(url, w, h) {
+        super().loadImg(url);
+        this.width = w;
+        this.height = h;
     }
 }
