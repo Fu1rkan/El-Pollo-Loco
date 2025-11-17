@@ -1,9 +1,42 @@
+*{
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    scroll-behavior: smooth;
+    box-sizing: content-box;
+}
+
 body{
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    background-image: url(./img/background_img/ae340114-20e9-43bd-a475-ba69ac53c61c.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    font-family: 'Bungee Spice', sans-serif;
+}
+
+h1{
+    font-size: 80px;
+    margin-bottom: 24px;
+    border-radius: 16px;
+    padding: 0 16px;
+    text-shadow: 6px 6px 8px black;
 }
 
 canvas{
     background-color: black;
+    border: 4px solid black;
+    border-radius: 16px;
+    cursor: pointer;
+    margin-bottom: 8%;
+    box-shadow: 0 0 8px black;
+}
+
+@font-face {
+    font-family: 'Bungee Spice';
+    src: url(./fonts/Bungee_Spice/BungeeSpice-Regular.ttf);
 }
