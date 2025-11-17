@@ -1,5 +1,7 @@
 class Character extends MovableObject {
 
+    world;
+
     IMAGES_WALKING = [
         'img/2_character_pepe/2_walk/W-21.png',
         'img/2_character_pepe/2_walk/W-22.png',
@@ -25,12 +27,37 @@ class Character extends MovableObject {
     }
 
     animate() {
-
         setInterval(() =>{
-            let i = this.currentImage % this.IMAGES_WALKING.length;
-            let path = this.IMAGES_WALKING[i];
-            this.img = this.imageCache[path];
-            this.currentImage++;
+            if(this.world.keyboard.RIGHT == true){
+                let i = this.currentImage % this.IMAGES_WALKING.length;
+                let path = this.IMAGES_WALKING[i];
+                this.img = this.imageCache[path];
+                this.currentImage++;
+                this.x += 5;
+            };
+            if(this.world.keyboard.LEFT == true){
+                let i = this.currentImage % this.IMAGES_WALKING.length;
+                let path = this.IMAGES_WALKING[i];
+                this.img = this.imageCache[path];
+                this.currentImage++;
+                this.x -= 5;
+            };
+            if(this.world.keyboard.UP == true){
+                let i = this.currentImage % this.IMAGES_WALKING.length;
+                let path = this.IMAGES_WALKING[i];
+                this.img = this.imageCache[path];
+                this.currentImage++;
+                this.y -= 5;
+            };
+            if(this.world.keyboard.DOWN == true){
+                let i = this.currentImage % this.IMAGES_WALKING.length;
+                let path = this.IMAGES_WALKING[i];
+                this.img = this.imageCache[path];
+                this.currentImage++;
+                if (this.y < 225) {
+                    this.y += 5;
+                }
+            };
         }, 100)
     }
 

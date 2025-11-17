@@ -1,12 +1,11 @@
-class Keyboard extends Character {
-    left = false;
-    right = false;
-    up = false;
+class Keyboard {
+    LEFT = false;
+    RIGHT = false;
+    UP = false;
+    DOWN = false;
+    SPACE = false;
 
     constructor() {
-        super();
-        console.log(this.x);
-        
         
     }
 }
