@@ -14,7 +14,7 @@ class Clouds extends MovableObject {
 
 
     animate() {
-        this.moveLeft(0.1)
+        this.moveLeft(0.05)
         // requestAnimationFrame(() => this.animate());
     }
 }
