@@ -29,6 +29,8 @@ class World {
         new Background('img/5_background/layers/1_first_layer/2.png', 720, 480, 720, 0)
     ];
 
+    keyboard = new Keyboard();
+
     canvas;
     ctx;
 
