@@ -45,7 +45,7 @@ class Character extends MovableObject {
                 this.x -= this.speed;
                 this.otherDirection = true;
             };
-            if (this.world.keyboard.UP == true) {
+            if (this.world.keyboard.UP == true || this.world.keyboard.SPACE == true) {
                 this.y -= this.speed;
             };
             if (this.world.keyboard.DOWN == true) {
@@ -53,6 +53,7 @@ class Character extends MovableObject {
                     this.y += this.speed;
                 }
             };
+            this.world.cameraX = -this.x;
         }, 1000 / 60);
 
         setInterval(() => {
@@ -62,19 +63,7 @@ class Character extends MovableObject {
                 this.img = this.imageCache[path];
                 this.currentImage++;
             };
-            if (this.world.keyboard.UP == true) {
-                let i = this.currentImage % this.IMAGES_JUMPING.length;
-                let path = this.IMAGES_JUMPING[i];
-                this.img = this.imageCache[path];
-                if (this.currentImage < this.IMAGES_JUMPING.length - 1) {
-                    this.currentImage++;
-                }
-            };
             if (this.world.keyboard.DOWN == true) {
-                let i = this.currentImage % this.IMAGES_WALKING.length;
-                let path = this.IMAGES_WALKING[i];
-                this.img = this.imageCache[path];
-                this.currentImage++;
                 if (this.y < 225) {
                     this.y += this.speed;
                 }
