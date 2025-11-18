@@ -1,3 +1,0 @@
-class StatusbarBottle extends MovableObject {
-    
-}

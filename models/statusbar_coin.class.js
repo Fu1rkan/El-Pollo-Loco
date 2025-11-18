@@ -1,3 +1,0 @@
-class StatusbarCoin extends MovableObject {
-    
-}
