@@ -24,8 +24,6 @@ class World {
             this.level.enemies.forEach((enemy) => {
                 if (this.character.isColliding(enemy)) {
                     this.character.hit();
-                    console.log(this.character.energy);
-                    
                 } 
             })
         }, 1000);
@@ -39,6 +37,7 @@ class World {
         this.addObjectsToMap(this.level.background);
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.enemies);
+        // this.addObjectsToMap(this.level.statusbar);
         this.addToMap(this.character);
 
         this.ctx.translate(-this.cameraX, 0);

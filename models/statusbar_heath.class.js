@@ -1,0 +1,3 @@
+class StatusbarHealth extends MovableObject {
+    
+}
