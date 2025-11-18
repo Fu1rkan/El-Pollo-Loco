@@ -49,20 +49,24 @@ class World {
 
     addToMap(object) {
         if (object.otherDirection) {
-            this.ctx.save();
-            this.ctx.translate(object.width, 0);
-            this.ctx.scale(-1, 1);
-            object.x = object.x * -1
+            this.flipImage(object);
         }
-        this.ctx.drawImage(object.img, object.x, object.y, object.width, object.height);
-        this.ctx.beginPath();
-        this.ctx.lineWidth = '5';
-        this.ctx.strokeStyle = 'blue';
-        this.ctx.rect(object.x, object.y, object.width, object.height);
-        this.ctx.stroke();
+        object.draw(this.ctx);
+        object.drawFrame(this.ctx);
         if (object.otherDirection) {
-            object.x = object.x * -1
-            this.ctx.restore();
+            this.flipImageBack(object);
         }
     };
+
+    flipImage(object) {
+        this.ctx.save();
+        this.ctx.translate(object.width, 0);
+        this.ctx.scale(-1, 1);
+        object.x = object.x * -1
+    }
+
+    flipImageBack(object) {
+        object.x = object.x * -1
+        this.ctx.restore();
+    }
 }
