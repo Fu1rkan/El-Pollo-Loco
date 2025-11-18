@@ -3,7 +3,7 @@ class Character extends MovableObject {
     world;
     speed = 5;
     x = 25;
-    y = 225 - 160;
+    y = 225;
     width = 100;
     height = 200;
 
@@ -43,27 +43,29 @@ class Character extends MovableObject {
 
         setInterval(() => {
             if (this.world.keyboard.RIGHT == true && this.x < this.world.level.levelEndX) {
-                this.x += this.speed;
                 this.otherDirection = false;
+                this.moveRight();
             };
+
             if (this.world.keyboard.LEFT == true && this.x > 0) {
-                this.x -= this.speed;
                 this.otherDirection = true;
+                this.moveLeft();
             };
+
+            if (this.world.keyboard.UP == true && this.isOnGround() || this.world.keyboard.SPACE == true && this.isOnGround()) {
+                this.jump();
+            }
+
             this.world.cameraX = -this.x + 100;
         }, 1000 / 60);
 
         setInterval(() => {
             if (this.isAboutGround()) {
                 this.playAnimation(this.IMAGES_JUMPING);
-            }else if (this.world.keyboard.RIGHT == true || this.world.keyboard.LEFT == true) {
+            } else if (this.world.keyboard.RIGHT == true || this.world.keyboard.LEFT == true) {
                 this.playAnimation(this.IMAGES_WALKING);
             }
-            
-        }, 75)
-    }
 
-    jump() {
-
+        }, 150)
     }
 }
