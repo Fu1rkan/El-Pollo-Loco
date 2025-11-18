@@ -12,10 +12,21 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
+        this.checkCollisions();
     };
 
     setWorld() {
         this.character.world = this;
+    }
+
+    checkCollisions(){
+        setInterval(() => {
+            this.level.enemies.forEach((enemy) => {
+                if (this.character.isColliding(enemy)) {
+                    console.log('collision', enemy);
+                } 
+            })
+        }, 100);
     }
 
     draw() {
@@ -39,11 +50,7 @@ class World {
     addObjectsToMap(object) {
         object.forEach(o => {
             this.ctx.drawImage(o.img, o.x, o.y, o.width, o.height);
-            this.ctx.beginPath();
-            this.ctx.lineWidth = '5';
-            this.ctx.strokeStyle = 'blue';
-            this.ctx.rect(o.x, o.y, o.width, o.height);
-            this.ctx.stroke();
+            o.drawFrame(this.ctx);
         });
     }
 
