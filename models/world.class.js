@@ -1,9 +1,6 @@
 class World {
     character = new Character();
     level = level1;
-    enemies = level1.enemies;
-    clouds = level1.clouds;
-    background = level1.background;
     canvas;
     ctx;
     keyboard;
@@ -25,7 +22,7 @@ class World {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.ctx.translate(this.cameraX, 0);
-        
+
         this.addObjectsToMap(this.level.background);
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.enemies);
@@ -42,6 +39,11 @@ class World {
     addObjectsToMap(object) {
         object.forEach(o => {
             this.ctx.drawImage(o.img, o.x, o.y, o.width, o.height);
+            this.ctx.beginPath();
+            this.ctx.lineWidth = '5';
+            this.ctx.strokeStyle = 'blue';
+            this.ctx.rect(o.x, o.y, o.width, o.height);
+            this.ctx.stroke();
         });
     }
 
@@ -53,9 +55,14 @@ class World {
             object.x = object.x * -1
         }
         this.ctx.drawImage(object.img, object.x, object.y, object.width, object.height);
+        this.ctx.beginPath();
+        this.ctx.lineWidth = '5';
+        this.ctx.strokeStyle = 'blue';
+        this.ctx.rect(object.x, object.y, object.width, object.height);
+        this.ctx.stroke();
         if (object.otherDirection) {
             object.x = object.x * -1
             this.ctx.restore();
         }
-        };
-    }
+    };
+}
