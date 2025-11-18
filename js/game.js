@@ -28,6 +28,8 @@ document.addEventListener('keydown', (event) => {
         keyboard.RIGHT = true;
     } else if (event.key === 'ArrowUp') {
         keyboard.UP = true;
+    } else if (event.key === 'e') {
+        keyboard.E = true;
     }
 });
 
@@ -50,6 +52,7 @@ document.addEventListener('keyup', (event) => {
         keyboard.RIGHT = false;
     } else if (event.key === 'ArrowUp') {
         keyboard.UP = false;
+    } else if (event.key === 'e') {
+        keyboard.E = false;
     }
-    
 });
