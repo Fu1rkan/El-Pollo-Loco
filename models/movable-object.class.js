@@ -1,4 +1,4 @@
-class MovableObject extends DrawableObject{
+class MovableObject extends DrawableObject {
     speed;
     otherDirection = false;
     speedY = 0;
@@ -16,7 +16,11 @@ class MovableObject extends DrawableObject{
     }
 
     isAboutGround() {
-        return this.y <= 225;
+        if (this instanceof ThrowableObject) {
+            return true;
+        } else {
+            return this.y <= 225;
+        }
     }
 
     isOnGround() {
@@ -58,14 +62,14 @@ class MovableObject extends DrawableObject{
         }
     }
 
-    isHurt(){
+    isHurt() {
         let timepassed = new Date().getTime() - this.lastHit;
         timepassed = timepassed / 1000;
         return timepassed < 1.5;
 
     }
 
-    isDead(){
+    isDead() {
         return this.energy == 0;
     }
 }
