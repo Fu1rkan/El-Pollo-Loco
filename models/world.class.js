@@ -10,13 +10,36 @@ class World {
 
 
     constructor(canvas, keyboard) {
+        //speichert 2d Context Objekte in einer Klasse ab 
         this.ctx = canvas.getContext('2d');
+
+
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
         this.run();
     };
+
+    draw() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        this.ctx.translate(this.cameraX, 0);
+
+        this.addObjectsToMap(this.level.background);
+        this.addObjectsToMap(this.level.clouds);
+        this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.throwableObject);
+        this.addToMap(this.character);
+
+        this.ctx.translate(-this.cameraX, 0);
+        this.addToMap(this.statusBar)
+
+        let self = this;
+        requestAnimationFrame(function () {
+            self.draw();
+        });
+    }
 
     setWorld() {
         this.character.world = this;
@@ -44,26 +67,6 @@ class World {
             };
         });
     };
-
-    draw() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        this.ctx.translate(this.cameraX, 0);
-
-        this.addObjectsToMap(this.level.background);
-        this.addObjectsToMap(this.level.clouds);
-        this.addObjectsToMap(this.level.enemies);
-        this.addObjectsToMap(this.throwableObject);
-        this.addToMap(this.character);
-
-        this.ctx.translate(-this.cameraX, 0);
-        this.addToMap(this.statusBar)
-
-        let self = this;
-        requestAnimationFrame(function () {
-            self.draw();
-        });
-    }
 
     addObjectsToMap(object) {
         object.forEach(o => {
