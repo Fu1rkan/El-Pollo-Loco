@@ -125,7 +125,9 @@ class Character extends MovableObject {
 
     spleepingMode() {
         setTimeout(() => {
-            keyboard.KEY = false
+            if (this.world.keyboard.FIRST_KEY_PRESS == false) {
+                keyboard.KEY = false
+            }
         }, 15000);
     }
 }

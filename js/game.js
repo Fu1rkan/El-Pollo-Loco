@@ -12,34 +12,29 @@ function init() {
 document.addEventListener('keydown', (event) => {
     if (event.key === 'w') {
         keyboard.UP = true;
-        keyboard.KEY = true;
     } else if (event.key === 'a') {
         keyboard.LEFT = true;
-        keyboard.KEY = true;
     } else if (event.key === 's') {
         keyboard.DOWN = true;
-        keyboard.KEY = true;
     } else if (event.key === 'd') {
         keyboard.RIGHT = true;
-        keyboard.KEY = true;
     } else if (event.key === ' ') {
         keyboard.SPACE = true;
-        keyboard.KEY = true;
     } else if (event.key === 'ArrowLeft') {
         keyboard.LEFT = true;
-        keyboard.KEY = true;
     } else if (event.key === 'ArrowDown') {
         keyboard.DOWN = true;
-        keyboard.KEY = true;
     } else if (event.key === 'ArrowRight') {
         keyboard.RIGHT = true;
-        keyboard.KEY = true;
     } else if (event.key === 'ArrowUp') {
         keyboard.UP = true;
-        keyboard.KEY = true;
     } else if (event.key === 'e') {
         keyboard.E = true;
+    }
+
+    if (checkKeyPressed() == true) {
         keyboard.KEY = true;
+        keyboard.FIRST_KEY_PRESS = true;
     }
 });
 
@@ -69,3 +64,7 @@ document.addEventListener('keyup', (event) => {
         keyboard.KEY = false
     }, 15000)
 });
+
+function checkKeyPressed() {
+    return keyboard.UP || keyboard.RIGHT || keyboard.LEFT || keyboard.SPACE || keyboard.E;
+}
