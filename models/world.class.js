@@ -5,7 +5,9 @@ class World {
     ctx;
     keyboard;
     cameraX = 0;
-    statusBar = new Statusbar();
+    statusbarHealth = new StatusbarHealth();
+    statusbarCoin = new StatusBarCoin();
+    statusbarBottle = new StatusBarBottle();
     throwableObject = [];
 
 
@@ -33,7 +35,10 @@ class World {
         this.addToMap(this.character);
 
         this.ctx.translate(-this.cameraX, 0);
-        this.addToMap(this.statusBar)
+        this.addToMap(this.statusbarHealth);
+        this.addToMap(this.statusbarCoin);
+        this.addToMap(this.statusbarBottle);
+        
 
         let self = this;
         requestAnimationFrame(function () {
@@ -63,7 +68,7 @@ class World {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy)) {
                 this.character.hit();
-                this.statusBar.setPercentage(this.character.energy);
+                this.statusbarHealth.setPercentage(this.character.energy, this.statusbarHealth.STATUS_HEALTH_IMAGES);
             };
         });
     };
