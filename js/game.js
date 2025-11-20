@@ -1,6 +1,11 @@
 let canvas;
-let world;
 let keyboard = new Keyboard();
+let world;
+
+timer = setTimeout(() => {
+    keyboard.KEY = false
+}, 15000)
+
 
 function init() {
     canvas = document.getElementById('canvas');
@@ -33,8 +38,11 @@ document.addEventListener('keydown', (event) => {
     }
 
     if (checkKeyPressed() == true) {
+        clearTimeout(timer);
         keyboard.KEY = true;
-        keyboard.FIRST_KEY_PRESS = true;
+        timer = setTimeout(() => {
+            keyboard.KEY = false
+        }, 15000)
     }
 });
 
@@ -60,9 +68,6 @@ document.addEventListener('keyup', (event) => {
     } else if (event.key === 'e') {
         keyboard.E = false;
     }
-    setTimeout(() => {
-        keyboard.KEY = false
-    }, 15000)
 });
 
 function checkKeyPressed() {

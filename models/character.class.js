@@ -83,7 +83,7 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_SLEEPING);
         this.applyGravity();
         this.animate();
-        this.spleepingMode();
+        this.timer;
     }
 
     animate() {
@@ -121,13 +121,5 @@ class Character extends MovableObject {
                 this.playAnimation(this.IMAGES_STANDING);
             }
         }, 150)
-    }
-
-    spleepingMode() {
-        setTimeout(() => {
-            if (this.world.keyboard.FIRST_KEY_PRESS == false) {
-                keyboard.KEY = false
-            }
-        }, 15000);
     }
 }
