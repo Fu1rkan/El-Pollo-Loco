@@ -1,6 +1,5 @@
 class Clouds extends MovableObject {
 
-
     constructor(url, w, h, x, y) {
         super();
         this.loadImg(url);

@@ -106,9 +106,13 @@ class Character extends MovableObject {
             this.world.cameraX = -this.x + 100;
         }, 1000 / 60);
 
-        setInterval(() => {
+        let characterAnimation = setInterval(() => {
             if (this.isDead()) {
-                this.playAnimation(this.IMAGES_DEAD);
+                let characterAnimationDead = setInterval(() => {
+                    this.playLimitedAnimation(this.IMAGES_DEAD, characterAnimationDead);
+                }, 250);
+
+                clearInterval(characterAnimation);
             } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
             } else if (this.isAboutGround()) {
@@ -120,6 +124,6 @@ class Character extends MovableObject {
             } else {
                 this.playAnimation(this.IMAGES_STANDING);
             }
-        }, 150)
+        }, 25)
     }
 }
