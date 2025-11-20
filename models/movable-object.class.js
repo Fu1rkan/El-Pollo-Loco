@@ -16,8 +16,10 @@ class MovableObject extends DrawableObject {
     }
 
     isAboutGround() {
+        // checkt ob das von throwable object kommt
         if (this instanceof ThrowableObject) {
-            return true;
+            return this.y <= 340;
+            //kommt vom character
         } else {
             return this.y <= 225;
         }
