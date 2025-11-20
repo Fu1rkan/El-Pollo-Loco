@@ -32,22 +32,32 @@ class ThrowableObject extends MovableObject {
         this.speedY = 30;
         this.applyGravity();
         this.animate();
-        let throwing = setInterval(() => {
+        this.animateThrowingBottle();
+    }
+
+    animateThrowingBottle() {
+        let throwBottleInterval = setInterval(() => {
             if (this.y < 340) {
                 this.x += 10
             } else {
-                this.playAnimation(this.IMAGES_BOTTLE_SPLASH);
+                clearInterval(throwBottleInterval);
             }
         }, 25)
     }
 
+    animateSplashedBottle() {
+        this.currentImage = 0;
+        let splashedBottleId = setInterval(() =>{
+            this.playLimitedAnimation(this.IMAGES_BOTTLE_SPLASH, splashedBottleId);
+        }, 25)
+    }
+
     animate() {
-        let hihihi = setInterval(() => {
+        let throwedBottle = setInterval(() => {
             this.playAnimation(this.IMAGES_THROW_BOTTLE);
             if (this.y >= 340) {
-                console.log(hihihi);
-                
-                clearInterval(hihihi);
+                clearInterval(throwedBottle);
+                this.animateSplashedBottle();
             }
         }, 75);
     }

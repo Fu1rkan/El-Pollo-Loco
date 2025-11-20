@@ -5,6 +5,7 @@ class MovableObject extends DrawableObject {
     acceleration = 2.5;
     energy = 100;
     lastHit = 0;
+    intervalIds = [];
 
     applyGravity() {
         setInterval(() => {
@@ -29,11 +30,24 @@ class MovableObject extends DrawableObject {
         return this.y >= 225;
     }
 
-    playAnimation(images) {
+    playAnimation(images) {        
         let i = this.currentImage % images.length;
         let path = images[i];
         this.img = this.imageCache[path];
         this.currentImage++;
+    }
+
+    playLimitedAnimation(images, intervalId) {        
+        let i = this.currentImage % images.length;
+        let path = images[i];
+        this.img = this.imageCache[path];
+        
+        // Da currentImage nicht gleichgroß sein kann wie die image.length, wird eine 1 dazuaddiert
+        if (i + 1 === images.length) {
+            clearInterval(intervalId);
+        }else{            
+            this.currentImage++;
+        }
     }
 
     moveRight() {
@@ -73,5 +87,12 @@ class MovableObject extends DrawableObject {
 
     isDead() {
         return this.energy == 0;
+    }
+
+
+    // Ist noch nicht in Betrieb. Zum pushen von Intervalen in einen Array
+    setStoppableInterval(fn, time) {      
+        const id = setInterval(fn, time);
+        this.intervalIds.push(id);        
     }
 }
