@@ -30,22 +30,20 @@ class MovableObject extends DrawableObject {
         return this.y >= 225;
     }
 
-    playAnimation(images) {        
+    playAnimation(images) {
         let i = this.currentImage % images.length;
         let path = images[i];
         this.img = this.imageCache[path];
         this.currentImage++;
     }
 
-    playLimitedAnimation(images, intervalId) {        
+    playLimitedAnimation(images) {
         let i = this.currentImage % images.length;
         let path = images[i];
         this.img = this.imageCache[path];
-        
+
         // Da currentImage nicht gleichgroß sein kann wie die image.length, wird eine 1 dazuaddiert
-        if (i + 1 === images.length) {
-            clearInterval(intervalId);
-        }else{            
+        if (i + 1 !== images.length) {
             this.currentImage++;
         }
     }
@@ -66,6 +64,13 @@ class MovableObject extends DrawableObject {
         return this.x + this.width > object.x &&
             this.x < object.x + object.width &&
             this.y + this.height > object.y &&
+            this.y < object.y + object.height;
+    }
+
+
+    //Muss überarbeitet werden
+    isCollidingByJump() {
+        return this.y + this.height > object.y &&
             this.y < object.y + object.height;
     }
 
@@ -91,8 +96,14 @@ class MovableObject extends DrawableObject {
 
 
     // Ist noch nicht in Betrieb. Zum pushen von Intervalen in einen Array
-    setStoppableInterval(fn, time) {      
+    setStoppableInterval(fn, time) {
         const id = setInterval(fn, time);
-        this.intervalIds.push(id);        
+        this.intervalIds.push(id);
+    }
+
+    stopInterval(){
+        this.intervalIds.forEach(i => {
+            clearInterval(i);
+        })
     }
 }

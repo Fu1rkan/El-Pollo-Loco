@@ -82,11 +82,30 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_STANDING);
         this.loadImages(this.IMAGES_SLEEPING);
         this.applyGravity();
+        this.moveCamera();
         this.animate();
-        this.timer;
     }
 
     animate() {
+
+        setInterval(() => {
+            if (this.isDead()) {
+                this.playLimitedAnimation(this.IMAGES_DEAD);
+            } else if (this.isHurt()) {
+                this.playLimitedAnimation(this.IMAGES_HURT);
+            } else if (this.isAboutGround()) {
+                this.playAnimation(this.IMAGES_JUMPING);
+            } else if (this.world.keyboard.RIGHT == true || this.world.keyboard.LEFT == true) {
+                this.playAnimation(this.IMAGES_WALKING);
+            } else if (this.world.keyboard.KEY == false) {
+                this.playAnimation(this.IMAGES_SLEEPING);
+            } else {
+                this.playAnimation(this.IMAGES_STANDING);
+            }
+        }, 100)
+    }
+
+    moveCamera() {
 
         setInterval(() => {
             if (this.world.keyboard.RIGHT == true && this.x < this.world.level.levelEndX) {
@@ -105,25 +124,5 @@ class Character extends MovableObject {
 
             this.world.cameraX = -this.x + 100;
         }, 1000 / 60);
-
-        let characterAnimation = setInterval(() => {
-            if (this.isDead()) {
-                let characterAnimationDead = setInterval(() => {
-                    this.playLimitedAnimation(this.IMAGES_DEAD, characterAnimationDead);
-                }, 250);
-
-                clearInterval(characterAnimation);
-            } else if (this.isHurt()) {
-                this.playAnimation(this.IMAGES_HURT);
-            } else if (this.isAboutGround()) {
-                this.playAnimation(this.IMAGES_JUMPING);
-            } else if (this.world.keyboard.RIGHT == true || this.world.keyboard.LEFT == true) {
-                this.playAnimation(this.IMAGES_WALKING);
-            } else if (this.world.keyboard.KEY == false) {
-                this.playAnimation(this.IMAGES_SLEEPING);
-            } else {
-                this.playAnimation(this.IMAGES_STANDING);
-            }
-        }, 25)
     }
 }
