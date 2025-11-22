@@ -6,6 +6,7 @@ class MovableObject extends DrawableObject {
     energy = 100;
     lastHit = 0;
     intervalIds = [];
+    canTakeDamage = true;
 
     applyGravity() {
         setInterval(() => {
@@ -84,7 +85,7 @@ class MovableObject extends DrawableObject {
         }
         if (this.energy < 0) {
             this.energy = 0
-        } else {
+        } else if(this.canTakeDamage){
             this.lastHit = new Date().getTime();
         }
     }
@@ -95,8 +96,12 @@ class MovableObject extends DrawableObject {
         // zählt ab jetzt von 0 wieder auf
         timepassed = timepassed / 1000;
         //rechnet es in Sekunden um
-
-        return timepassed < 1.5
+        if (timepassed < 1.5) {
+            this.canTakeDamage = false;
+        }else{
+            this.canTakeDamage = true;
+        }
+        return timepassed < 1.5;
 
     }
 
