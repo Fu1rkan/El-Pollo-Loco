@@ -50,6 +50,8 @@ class World {
         this.character.world = this;
     }
 
+
+    //Wird in constructor ausgeführt
     run() {
         setInterval(() => {
             this.checkCollisions();
@@ -64,6 +66,8 @@ class World {
         }
     }
 
+
+    //Wird von run() ausgeführt, läuft permanent
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy)) {

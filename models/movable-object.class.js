@@ -60,6 +60,7 @@ class MovableObject extends DrawableObject {
         this.speedY = 30;
     }
 
+    //Wird von checkCollisions() ausgeführt
     isColliding(object) {
         return this.x + this.width > object.x &&
             this.x < object.x + object.width &&
@@ -74,8 +75,13 @@ class MovableObject extends DrawableObject {
             this.y < object.y + object.height;
     }
 
+
+    // Spieler Schaden wird hier hinzugefügt 
+    //Wird von checkCollisions() ausgeführt
     hit() {
-        this.energy -= 10;
+        if (!this.isHurt()) {
+            this.energy -= 20;
+        }
         if (this.energy < 0) {
             this.energy = 0
         } else {
@@ -84,9 +90,13 @@ class MovableObject extends DrawableObject {
     }
 
     isHurt() {
+
         let timepassed = new Date().getTime() - this.lastHit;
+        // zählt ab jetzt von 0 wieder auf
         timepassed = timepassed / 1000;
-        return timepassed < 1.5;
+        //rechnet es in Sekunden um
+
+        return timepassed < 1.5
 
     }
 
@@ -101,7 +111,7 @@ class MovableObject extends DrawableObject {
         this.intervalIds.push(id);
     }
 
-    stopInterval(){
+    stopInterval() {
         this.intervalIds.forEach(i => {
             clearInterval(i);
         })
