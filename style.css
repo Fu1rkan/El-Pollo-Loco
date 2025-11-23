@@ -50,6 +50,16 @@ button{
     outline: none;
     cursor: pointer;
     border-radius: 24px;
+    transition: 250ms;
+    font-weight: 700;
+}
+
+button:hover{
+    transform: scale(1.05);
+}
+
+button:active{
+    transform: scale(1);
 }
 
 @font-face {
