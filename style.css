@@ -24,6 +24,7 @@ h1{
     border-radius: 16px;
     padding: 0 16px;
     text-shadow: 6px 6px 8px black;
+    text-align: center;
 }
 
 canvas{
@@ -52,6 +53,7 @@ button{
     border-radius: 24px;
     transition: 250ms;
     font-weight: 700;
+    width: 50px;
 }
 
 button:hover{
@@ -65,4 +67,14 @@ button:active{
 @font-face {
     font-family: 'Bungee Spice';
     src: url(./fonts/Bungee_Spice/BungeeSpice-Regular.ttf);
+}
+
+@media (max-width: 728px){
+    canvas{
+        width: 100%;
+    }
+
+    h1{
+        font-size: 64px;
+    }
 }
