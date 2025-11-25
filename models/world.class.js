@@ -44,11 +44,11 @@ class World {
         requestAnimationFrame(function () {
             self.draw();
         });
-    }
+    };
 
     setWorld() {
         this.character.world = this;
-    }
+    };
 
 
     //Wird in constructor ausgeführt
@@ -57,14 +57,14 @@ class World {
             this.checkCollisions();
             this.checkThrowObjects();
         }, 200);
-    }
+    };
 
     checkThrowObjects() {
         if (this.keyboard.E) {
             let bottle = new ThrowableObject(this.character.x, this.character.y)
             this.throwableObject.push(bottle);
-        }
-    }
+        };
+    };
 
 
     //Wird von run() ausgeführt, läuft permanent
@@ -82,17 +82,17 @@ class World {
             this.ctx.drawImage(o.img, o.x, o.y, o.width, o.height);
             o.drawFrame(this.ctx);
         });
-    }
+    };
 
     addToMap(object) {
         if (object.otherDirection) {
             this.flipImage(object);
-        }
+        };
         object.draw(this.ctx);
         object.drawFrame(this.ctx);
         if (object.otherDirection) {
             this.flipImageBack(object);
-        }
+        };
     };
 
     flipImage(object) {
@@ -100,10 +100,10 @@ class World {
         this.ctx.translate(object.width, 0);
         this.ctx.scale(-1, 1);
         object.x = object.x * -1
-    }
+    };
 
     flipImageBack(object) {
         object.x = object.x * -1
         this.ctx.restore();
-    }
-}
+    };
+};

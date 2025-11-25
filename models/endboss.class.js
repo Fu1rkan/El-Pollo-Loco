@@ -20,11 +20,11 @@ class Endboss extends MovableObject{
         this.width = w;
         this.height = h;
         this.animate();
-    }
+    };
 
     animate(){
         setInterval(() => {
             this.playAnimation(this.IMAGES_STANDING);
         }, 500);
-    }
-}
+    };
+};

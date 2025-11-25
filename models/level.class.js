@@ -8,5 +8,5 @@ class Level {
         this.enemies = enemies;
         this.clouds = clouds;
         this.background = background;
-    }
-}
+    };
+};

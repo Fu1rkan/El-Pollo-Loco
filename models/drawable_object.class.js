@@ -14,7 +14,7 @@ class DrawableObject {
 
     draw(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-    }
+    };
 
     loadImages(arr) {
         arr.forEach((path) => {
@@ -31,15 +31,15 @@ class DrawableObject {
             ctx.strokeStyle = 'blue';
             ctx.rect(this.x, this.y, this.width, this.height);
             ctx.stroke();
-        }
-    }
+        };
+    };
 
     //übernimmt die Prozente vom Status
     setPercentage(percentage, statusItem) {
         this.percentage = percentage;
         let path = statusItem[this.resolveImageIndex()]
         this.img = this.imageCache[path];
-    }
+    };
 
     //checkt die Prozente vom Status
     resolveImageIndex() {
@@ -55,7 +55,7 @@ class DrawableObject {
             return 1;
         } else {
             return 0;
-        }
+        };
     };
 
-}
+};

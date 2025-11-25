@@ -36,26 +36,26 @@ class Statusbar extends DrawableObject {
         this.loadImages(status);
         this.setPercentage(100, status);
         this.y = y;
-    }
-}
+    };
+};
 
 class StatusbarHealth extends Statusbar {
     constructor() {
         super();
         this.loadStatusBar(this.STATUS_HEALTH_IMAGES, 5);
-    }
-}
+    };
+};
 
 class StatusBarBottle extends Statusbar {
     constructor() {
         super();
         this.loadStatusBar(this.STATUSBAR_BOTTLE_IMAGES, 35);
-    }
-}
+    };
+};
 
 class StatusBarCoin extends Statusbar {
     constructor() {
         super();
         this.loadStatusBar(this.STATUSBAR_COIN_IMAGES, 65);
-    }
-}
+    };
+};

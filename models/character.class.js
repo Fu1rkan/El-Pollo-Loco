@@ -84,7 +84,7 @@ class Character extends MovableObject {
         this.applyGravity();
         this.moveCamera();
         this.animate();
-    }
+    };
 
     animate() {
 
@@ -103,7 +103,7 @@ class Character extends MovableObject {
                 this.playAnimation(this.IMAGES_STANDING);
             }
         }, 100)
-    }
+    };
 
     moveCamera() {
 
@@ -124,5 +124,5 @@ class Character extends MovableObject {
 
             this.world.cameraX = -this.x + 100;
         }, 1000 / 60);
-    }
-}
+    };
+};

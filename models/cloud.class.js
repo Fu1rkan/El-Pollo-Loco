@@ -9,7 +9,7 @@ class Clouds extends MovableObject {
         this.y = y;
         this.animate();
         this.speed = 0.1;
-    }
+    };
 
 
     animate() {
@@ -17,5 +17,5 @@ class Clouds extends MovableObject {
             this.moveLeft();
         }, 1000 / 60);
         // requestAnimationFrame(() => this.animate());
-    }
-}
+    };
+};

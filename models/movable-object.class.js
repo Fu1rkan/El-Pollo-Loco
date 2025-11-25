@@ -13,9 +13,9 @@ class MovableObject extends DrawableObject {
             if (this.isAboutGround() || this.speedY > 0) {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
-            }
+            };
         }, 1000 / 25);
-    }
+    };
 
     isAboutGround() {
         // checkt ob das von throwable object kommt
@@ -24,19 +24,19 @@ class MovableObject extends DrawableObject {
             //kommt vom character
         } else {
             return this.y <= 225;
-        }
-    }
+        };
+    };
 
     isOnGround() {
         return this.y >= 225;
-    }
+    };
 
     playAnimation(images) {
         let i = this.currentImage % images.length;
         let path = images[i];
         this.img = this.imageCache[path];
         this.currentImage++;
-    }
+    };
 
     playLimitedAnimation(images) {
         let i = this.currentImage % images.length;
@@ -46,8 +46,8 @@ class MovableObject extends DrawableObject {
         // Da currentImage nicht gleichgroß sein kann wie die image.length, wird eine 1 dazuaddiert
         if (i + 1 !== images.length) {
             this.currentImage++;
-        }
-    }
+        };
+    };
 
     moveRight() {
         this.x += this.speed;
@@ -59,7 +59,7 @@ class MovableObject extends DrawableObject {
 
     jump() {
         this.speedY = 30;
-    }
+    };
 
     //Wird von checkCollisions() ausgeführt
     isColliding(object) {
@@ -67,14 +67,14 @@ class MovableObject extends DrawableObject {
             this.x < object.x + object.width &&
             this.y + this.height > object.y &&
             this.y < object.y + object.height;
-    }
+    };
 
 
     //Muss überarbeitet werden
     isCollidingByJump() {
         return this.y + this.height > object.y &&
             this.y < object.y + object.height;
-    }
+    };
 
 
     // Spieler Schaden wird hier hinzugefügt 
@@ -82,13 +82,13 @@ class MovableObject extends DrawableObject {
     hit() {
         if (!this.isHurt()) {
             this.energy -= 20;
-        }
+        };
         if (this.energy < 0) {
             this.energy = 0
         } else if(this.canTakeDamage){
             this.lastHit = new Date().getTime();
-        }
-    }
+        };
+    };
 
     isHurt() {
 
@@ -100,14 +100,14 @@ class MovableObject extends DrawableObject {
             this.canTakeDamage = false;
         }else{
             this.canTakeDamage = true;
-        }
+        };
         return timepassed < 1.5;
 
-    }
+    };
 
     isDead() {
         return this.energy == 0;
-    }
+    };
 
 
     // Ist noch nicht in Betrieb. Zum pushen von Intervalen in einen Array
@@ -119,6 +119,6 @@ class MovableObject extends DrawableObject {
     stopInterval() {
         this.intervalIds.forEach(i => {
             clearInterval(i);
-        })
-    }
-}
+        });
+    };
+};
