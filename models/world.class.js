@@ -10,7 +10,6 @@ class World {
     statusbarBottle = new StatusBarBottle();
     throwableObject = [];
 
-
     constructor(canvas, keyboard) {
         //speichert 2d Context Objekte in einer Klasse ab 
         this.ctx = canvas.getContext('2d');
@@ -50,7 +49,6 @@ class World {
         this.character.world = this;
     };
 
-
     //Wird in constructor ausgeführt
     run() {
         setInterval(() => {
@@ -65,7 +63,6 @@ class World {
             this.throwableObject.push(bottle);
         };
     };
-
 
     //Wird von run() ausgeführt, läuft permanent
     checkCollisions() {
