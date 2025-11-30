@@ -73,3 +73,7 @@ document.addEventListener('keyup', (event) => {
 function checkKeyPressed() {
     return keyboard.UP || keyboard.RIGHT || keyboard.LEFT || keyboard.SPACE || keyboard.E;
 }
+
+function restartGame(){
+    init();
+}
