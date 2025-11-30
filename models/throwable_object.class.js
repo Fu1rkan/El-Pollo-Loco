@@ -38,18 +38,17 @@ class ThrowableObject extends MovableObject {
     animateThrowingBottle() {
         let intervalId = setInterval(() => {
             if (this.y < 340) {
-                this.x += 10
+                this.x += 10;
             } else {
-                clearInterval(throwBottleInterval);
+                clearInterval(intervalId);
             };
         }, 25);
-        DrawableObject.intervalArr.push(intervalId);
     };
 
     animateSplashedBottle() {
         this.currentImage = 0;
         let intervalId = setInterval(() => {
-            this.playLimitedAnimation(this.IMAGES_BOTTLE_SPLASH, splashedBottleId);
+            this.playLimitedAnimation(this.IMAGES_BOTTLE_SPLASH, intervalId);
         }, 25)
         DrawableObject.intervalArr.push(intervalId);
     };
@@ -58,7 +57,7 @@ class ThrowableObject extends MovableObject {
         let intervalId = setInterval(() => {
             this.playAnimation(this.IMAGES_THROW_BOTTLE);
             if (this.y >= 340) {
-                clearInterval(throwedBottle);
+                clearInterval(intervalId);
                 this.animateSplashedBottle();
             }
         }, 75);
