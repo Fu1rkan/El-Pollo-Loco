@@ -88,12 +88,12 @@ class Character extends MovableObject {
 
     animate() {
 
-        setInterval(() => {
+        let intervalId = setInterval(() => {
             if (this.isDead()) {
-                this.playLimitedAnimation(this.IMAGES_DEAD);
+                this.playLastAnimation(this.IMAGES_DEAD);
                 DrawableObject.intervalArr.forEach(i => {
                     clearInterval(i);
-                })
+                });
             } else if (this.isHurt()) {
                 this.playLimitedAnimation(this.IMAGES_HURT);
             } else if (this.isAboutGround()) {
@@ -106,6 +106,7 @@ class Character extends MovableObject {
                 this.playAnimation(this.IMAGES_STANDING);
             }
         }, 100)
+        DrawableObject.intervalArr.push(intervalId);
     };
 
     moveCamera() {

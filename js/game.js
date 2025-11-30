@@ -4,8 +4,7 @@ let world;
 
 timer = setTimeout(() => {
     keyboard.KEY = false
-}, 15000)
-
+}, 15000);
 
 function init() {
     canvas = document.getElementById('canvas');
@@ -42,7 +41,7 @@ document.addEventListener('keydown', (event) => {
         keyboard.KEY = true;
         timer = setTimeout(() => {
             keyboard.KEY = false
-        }, 15000)
+        }, 15000);
     }
 });
 
@@ -74,6 +73,13 @@ function checkKeyPressed() {
     return keyboard.UP || keyboard.RIGHT || keyboard.LEFT || keyboard.SPACE || keyboard.E;
 }
 
-function restartGame(){
+function restartGame() {
+    DrawableObject.intervalArr.forEach(i => {
+        clearInterval(i);
+    });
+    level1.enemies = [];
+    level1.clouds = [];
+    level1.backgroundObjects = [];
+
     init();
 }

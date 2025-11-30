@@ -6,7 +6,8 @@ class MovableObject extends DrawableObject {
     energy = 100;
     lastHit = 0;
     canTakeDamage = true;
-
+    
+    
     constructor(){
         super();
     }
@@ -51,6 +52,19 @@ class MovableObject extends DrawableObject {
         if (i + 1 !== images.length) {
             this.currentImage++;
         };
+    };
+
+    playLastAnimation(images) {
+        let intervalId = setInterval(() => {
+            let i = this.currentImage % images.length;
+            let path = images[i];
+            this.img = this.imageCache[path];
+            if (i + 1 !== images.length) {
+                this.currentImage++;
+            }else{
+                clearInterval(intervalId);
+            };
+        }, 100);
     };
 
     moveRight() {
@@ -122,14 +136,14 @@ class MovableObject extends DrawableObject {
 
     // Ist noch nicht in Betrieb. Zum pushen von Intervalen in einen Array
     // vll beim clean coden. Alles in einem Intzervall muss in eine Funktion umgelaggert werden
-    setStoppableInterval(fn, time) {
-        const id = setInterval(fn, time);
-        this.intervalIds.push(id);
-    }
+    // setStoppableInterval(fn, time) {
+    //     const id = setInterval(fn, time);
+    //     this.intervalIds.push(id);
+    // }
 
-    stopInterval() {
-        this.intervalIds.forEach(i => {
-            clearInterval(i);
-        });
-    };
+    // stopInterval() {
+    //     this.intervalIds.forEach(i => {
+    //         clearInterval(i);
+    //     });
+    // };
 };

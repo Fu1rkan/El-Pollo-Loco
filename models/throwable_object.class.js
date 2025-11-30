@@ -36,29 +36,32 @@ class ThrowableObject extends MovableObject {
     };
 
     animateThrowingBottle() {
-        let throwBottleInterval = setInterval(() => {
+        let intervalId = setInterval(() => {
             if (this.y < 340) {
                 this.x += 10
             } else {
                 clearInterval(throwBottleInterval);
             };
         }, 25);
+        DrawableObject.intervalArr.push(intervalId);
     };
 
     animateSplashedBottle() {
         this.currentImage = 0;
-        let splashedBottleId = setInterval(() =>{
+        let intervalId = setInterval(() => {
             this.playLimitedAnimation(this.IMAGES_BOTTLE_SPLASH, splashedBottleId);
         }, 25)
+        DrawableObject.intervalArr.push(intervalId);
     };
 
     animate() {
-        let throwedBottle = setInterval(() => {
+        let intervalId = setInterval(() => {
             this.playAnimation(this.IMAGES_THROW_BOTTLE);
             if (this.y >= 340) {
                 clearInterval(throwedBottle);
                 this.animateSplashedBottle();
             }
         }, 75);
+        DrawableObject.intervalArr.push(intervalId);
     };
 };

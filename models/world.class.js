@@ -1,6 +1,5 @@
 class World {
     character = new Character();
-    level = level1;
     canvas;
     ctx;
     keyboard;
@@ -9,12 +8,12 @@ class World {
     statusbarCoin = new StatusBarCoin();
     statusbarBottle = new StatusBarBottle();
     throwableObject = [];
-
+    
     constructor(canvas, keyboard) {
         //speichert 2d Context Objekte in einer Klasse ab 
         this.ctx = canvas.getContext('2d');
-
-
+        startLevel();
+        this.level = level1;
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.draw();
@@ -51,10 +50,11 @@ class World {
 
     //Wird in constructor ausgeführt
     run() {
-        setInterval(() => {
+        let intervalId = setInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
         }, 200);
+        DrawableObject.intervalArr.push(intervalId);
     };
 
     checkThrowObjects() {
