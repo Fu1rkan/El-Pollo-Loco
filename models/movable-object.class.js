@@ -5,18 +5,20 @@ class MovableObject extends DrawableObject {
     acceleration = 2.5;
     energy = 100;
     lastHit = 0;
-    intervalIds = [];
     canTakeDamage = true;
-    intervalArr = [];
+
+    constructor(){
+        super();
+    }
 
     applyGravity() {
-        let interval = setInterval(() => {
+        let intervalId = setInterval(() => {
             if (this.isAboutGround() || this.speedY > 0) {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
             };
         }, 1000 / 25);
-        this.intervalArr.push(interval);
+        DrawableObject.intervalArr.push(intervalId);
     };
 
     isAboutGround() {

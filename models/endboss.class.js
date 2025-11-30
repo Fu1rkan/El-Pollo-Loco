@@ -23,8 +23,9 @@ class Endboss extends MovableObject{
     };
 
     animate(){
-        setInterval(() => {
+        let intervalId = setInterval(() => {
             this.playAnimation(this.IMAGES_STANDING);
         }, 500);
+        DrawableObject.intervalArr.push(intervalId);
     };
 };

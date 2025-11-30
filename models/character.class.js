@@ -91,7 +91,7 @@ class Character extends MovableObject {
         setInterval(() => {
             if (this.isDead()) {
                 this.playLimitedAnimation(this.IMAGES_DEAD);
-                this.intervalArr.forEach(i => {
+                DrawableObject.intervalArr.forEach(i => {
                     clearInterval(i);
                 })
             } else if (this.isHurt()) {
@@ -126,6 +126,6 @@ class Character extends MovableObject {
 
             this.world.cameraX = -this.x + 100;
         }, 1000 / 60);
-        this.intervalArr.push(camera);
+        DrawableObject.intervalArr.push(camera);
     };
 };

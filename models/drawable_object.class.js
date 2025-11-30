@@ -6,6 +6,7 @@ class DrawableObject {
     y;
     height;
     width;
+    static intervalArr = [];
 
     loadImg(path) {
         this.img = new Image();
