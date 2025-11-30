@@ -91,6 +91,9 @@ class Character extends MovableObject {
         setInterval(() => {
             if (this.isDead()) {
                 this.playLimitedAnimation(this.IMAGES_DEAD);
+                this.intervalArr.forEach(i => {
+                    clearInterval(i);
+                })
             } else if (this.isHurt()) {
                 this.playLimitedAnimation(this.IMAGES_HURT);
             } else if (this.isAboutGround()) {
@@ -106,8 +109,7 @@ class Character extends MovableObject {
     };
 
     moveCamera() {
-
-        setInterval(() => {
+        let camera = setInterval(() => {
             if (this.world.keyboard.RIGHT == true && this.x < this.world.level.levelEndX) {
                 this.otherDirection = false;
                 this.moveRight();
@@ -124,5 +126,6 @@ class Character extends MovableObject {
 
             this.world.cameraX = -this.x + 100;
         }, 1000 / 60);
+        this.intervalArr.push(camera);
     };
 };

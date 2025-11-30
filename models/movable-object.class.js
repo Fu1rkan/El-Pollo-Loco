@@ -7,14 +7,16 @@ class MovableObject extends DrawableObject {
     lastHit = 0;
     intervalIds = [];
     canTakeDamage = true;
+    intervalArr = [];
 
     applyGravity() {
-        setInterval(() => {
+        let interval = setInterval(() => {
             if (this.isAboutGround() || this.speedY > 0) {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
             };
         }, 1000 / 25);
+        this.intervalArr.push(interval);
     };
 
     isAboutGround() {
@@ -96,12 +98,18 @@ class MovableObject extends DrawableObject {
         // zählt ab jetzt von 0 wieder auf
         timepassed = timepassed / 1000;
         //rechnet es in Sekunden um
-        if (timepassed < 1.5) {
+
+        //länge einmal hier ändern und unten
+        //               |
+        if (timepassed < 0.5) {
             this.canTakeDamage = false;
         }else{
             this.canTakeDamage = true;
         };
-        return timepassed < 1.5;
+
+        //hier die andere Länge
+        //                   |
+        return timepassed < 0.5;
 
     };
 
@@ -111,6 +119,7 @@ class MovableObject extends DrawableObject {
 
 
     // Ist noch nicht in Betrieb. Zum pushen von Intervalen in einen Array
+    // vll beim clean coden. Alles in einem Intzervall muss in eine Funktion umgelaggert werden
     setStoppableInterval(fn, time) {
         const id = setInterval(fn, time);
         this.intervalIds.push(id);
