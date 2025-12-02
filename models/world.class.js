@@ -8,7 +8,7 @@ class World {
     statusbarCoin = new StatusBarCoin();
     statusbarBottle = new StatusBarBottle();
     throwableObject = [];
-    
+
     constructor(canvas, keyboard) {
         //speichert 2d Context Objekte in einer Klasse ab 
         this.ctx = canvas.getContext('2d');
@@ -36,7 +36,7 @@ class World {
         this.addToMap(this.statusbarHealth);
         this.addToMap(this.statusbarCoin);
         this.addToMap(this.statusbarBottle);
-        
+
 
         let self = this;
         requestAnimationFrame(function () {
@@ -53,7 +53,7 @@ class World {
         let intervalId = setInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
-        }, 200);
+        }, 0);
         DrawableObject.intervalArr.push(intervalId);
     };
 
@@ -68,11 +68,25 @@ class World {
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy)) {
-                this.character.hit();
-                this.statusbarHealth.setPercentage(this.character.energy, this.statusbarHealth.STATUS_HEALTH_IMAGES);
-            };
+                if (this.characterIsJumpingOn(enemy)) {
+                    this.character.jump();
+                }else{   
+                    this.character.hit();
+                    this.statusbarHealth.setPercentage(
+                        this.character.energy,
+                        this.statusbarHealth.STATUS_HEALTH_IMAGES
+                    );
+                }
+            }
         });
-    };
+    }
+
+    characterIsJumpingOn(object) {
+        return this.character.x + this.character.width > object.x &&
+            this.character.x < object.x + object.width &&
+            this.character.y + this.character.height - 5> object.y &&
+            this.character.y + this.character.height < object.y + object.height
+    }
 
     addObjectsToMap(object) {
         object.forEach(o => {

@@ -117,7 +117,7 @@ class MovableObject extends DrawableObject {
 
         //länge einmal hier ändern und unten
         //               |
-        if (timepassed < 0.5) {
+        if (timepassed < 1.5) {
             this.canTakeDamage = false;
         }else{
             this.canTakeDamage = true;
@@ -125,7 +125,7 @@ class MovableObject extends DrawableObject {
 
         //hier die andere Länge
         //                   |
-        return timepassed < 0.5;
+        return timepassed < 1.5;
 
     };
 
