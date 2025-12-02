@@ -1,15 +1,12 @@
 let canvas;
 let keyboard = new Keyboard();
 let world;
-
-timer = setTimeout(() => {
-    keyboard.KEY = false
-}, 15000);
+let timer;
 
 function init() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
-
+    startTimer();
     console.log('My Character is', world.character);
 }
 
@@ -69,17 +66,29 @@ document.addEventListener('keyup', (event) => {
     }
 });
 
+function startTimer() {
+    timer = setTimeout(() => {
+        keyboard.KEY = false
+    }, 15000);
+}
+
 function checkKeyPressed() {
     return keyboard.UP || keyboard.RIGHT || keyboard.LEFT || keyboard.SPACE || keyboard.E;
+}
+
+function startGame(){    
+    init();
 }
 
 function restartGame() {
     DrawableObject.intervalArr.forEach(i => {
         clearInterval(i);
     });
+    DrawableObject.intervalArr = [];
+    clearTimeout(timer);
     level1.enemies = [];
     level1.clouds = [];
     level1.backgroundObjects = [];
-
+    keyboard.KEY = true;
     init();
 }

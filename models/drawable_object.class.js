@@ -7,6 +7,7 @@ class DrawableObject {
     height;
     width;
     static intervalArr = [];
+    static timeoutArr = [];
 
     loadImg(path) {
         this.img = new Image();
