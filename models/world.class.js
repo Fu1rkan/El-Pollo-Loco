@@ -70,6 +70,7 @@ class World {
             if (this.character.isColliding(enemy)) {
                 if (this.characterIsJumpingOn(enemy)) {
                     this.character.jump();
+                    enemy.energy = 0;
                 }else{   
                     this.character.hit();
                     this.statusbarHealth.setPercentage(
