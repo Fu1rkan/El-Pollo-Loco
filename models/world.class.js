@@ -68,16 +68,18 @@ class World {
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy)) {
-                if (this.characterIsJumpingOn(enemy)) {
-                    this.character.jump();
-                    enemy.energy = 0;
-                }else{   
-                    this.character.hit();
-                    this.statusbarHealth.setPercentage(
-                        this.character.energy,
-                        this.statusbarHealth.STATUS_HEALTH_IMAGES
-                    );
-                }
+                if (enemy.energy > 0) {
+                    if (this.characterIsJumpingOn(enemy)) {
+                        this.character.jump();
+                        enemy.energy = 0;
+                    } else {
+                        this.character.hit();
+                        this.statusbarHealth.setPercentage(
+                            this.character.energy,
+                            this.statusbarHealth.STATUS_HEALTH_IMAGES
+                        );
+                    }
+                } 
             }
         });
     }
@@ -85,7 +87,7 @@ class World {
     characterIsJumpingOn(object) {
         return this.character.x + this.character.width > object.x &&
             this.character.x < object.x + object.width &&
-            this.character.y + this.character.height - 5> object.y &&
+            this.character.y + this.character.height - 5 > object.y &&
             this.character.y + this.character.height < object.y + object.height
     }
 
