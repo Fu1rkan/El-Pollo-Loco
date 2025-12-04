@@ -6,6 +6,7 @@ class MovableObject extends DrawableObject {
     energy = 100;
     lastHit = 0;
     canTakeDamage = true;
+    canHitEnemys = true;
     
     
     constructor(){
@@ -77,6 +78,15 @@ class MovableObject extends DrawableObject {
 
     jump() {
         this.speedY = 30;
+        let enemy = this.world.level.enemies;
+        enemy.forEach(e => {            
+            if (this.isColliding(e)) {                
+                this.canHitEnemys = false;
+                setTimeout(() => {
+                    this.canHitEnemys = true;
+                }, 500)
+            };
+        });        
     };
 
     //Wird von checkCollisions() ausgeführt

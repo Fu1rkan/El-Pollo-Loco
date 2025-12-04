@@ -68,8 +68,8 @@ class World {
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy)) {
-                if (enemy.energy > 0) {
-                    if (this.characterIsJumpingOn(enemy)) {
+                if (enemy.energy > 0) {                                        
+                    if (this.characterIsJumpingOn(enemy) && this.character.canHitEnemys) {
                         this.character.jump();
                         enemy.energy = 0;
                     } else {
@@ -78,9 +78,9 @@ class World {
                             this.character.energy,
                             this.statusbarHealth.STATUS_HEALTH_IMAGES
                         );
-                    }
-                } 
-            }
+                    };
+                };
+            };
         });
     }
 
