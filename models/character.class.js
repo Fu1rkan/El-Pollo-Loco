@@ -1,7 +1,7 @@
 class Character extends MovableObject {
 
     world;
-    speed = 20;
+    speed = 10;
     x = 0;
     y = 225;
     width = 100;
@@ -122,7 +122,7 @@ class Character extends MovableObject {
             };
 
             if (this.world.keyboard.UP == true && this.isOnGround() || this.world.keyboard.SPACE == true && this.isOnGround()) {
-                this.jump();
+                this.jump(30);
             }
 
             this.world.cameraX = -this.x + 100;

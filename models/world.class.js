@@ -52,9 +52,11 @@ class World {
     run() {
         let intervalId = setInterval(() => {
             this.checkCollisions();
-            this.checkThrowObjects();
         }, 0);
-        DrawableObject.intervalArr.push(intervalId);
+        let intervalThrowItems = setInterval(() => {
+            this.checkThrowObjects();
+        }, 180);
+        DrawableObject.intervalArr.push(intervalId, intervalThrowItems);
     };
 
     checkThrowObjects() {
@@ -68,9 +70,9 @@ class World {
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy)) {
-                if (enemy.energy > 0) {                                        
+                if (enemy.energy > 0) {
                     if (this.characterIsJumpingOn(enemy) && this.character.canHitEnemys) {
-                        this.character.jump();
+                        this.character.jump(20);
                         enemy.energy = 0;
                     } else {
                         this.character.hit();
@@ -81,6 +83,11 @@ class World {
                     };
                 };
             };
+            this.throwableObject.forEach(t => {
+                if (this.character.isCollidingByItem(enemy, t)) {
+                    enemy.energy = 0;
+                }
+            })
         });
     }
 

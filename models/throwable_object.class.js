@@ -49,7 +49,7 @@ class ThrowableObject extends MovableObject {
         this.currentImage = 0;
         let intervalId = setInterval(() => {
             this.playLimitedAnimation(this.IMAGES_BOTTLE_SPLASH, intervalId);
-        }, 25)
+        }, 25);
         DrawableObject.intervalArr.push(intervalId);
     };
 

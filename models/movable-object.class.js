@@ -27,8 +27,7 @@ class MovableObject extends DrawableObject {
         // checkt ob das von throwable object kommt
         if (this instanceof ThrowableObject) {
             return this.y <= 340;
-            //kommt vom character
-        } else {
+        } else { //kommt vom character
             return this.y <= 225;
         };
     };
@@ -76,15 +75,15 @@ class MovableObject extends DrawableObject {
         this.x -= this.speed;
     };
 
-    jump() {
-        this.speedY = 30;
+    jump(speed) {
+        this.speedY = speed;
         let enemy = this.world.level.enemies;
         enemy.forEach(e => {            
             if (this.isColliding(e)) {                
                 this.canHitEnemys = false;
                 setTimeout(() => {
                     this.canHitEnemys = true;
-                }, 500)
+                }, 100)
             };
         });        
     };
@@ -96,6 +95,13 @@ class MovableObject extends DrawableObject {
             this.y + this.height > object.y &&
             this.y < object.y + object.height;
     };
+
+    isCollidingByItem(object, item){
+        return item.x + item.width > object.x &&
+            item.x < object.x + object.width &&
+            item.y + item.height > object.y &&
+            item.y < object.y + object.height;
+    }
 
 
     //Muss überarbeitet werden
