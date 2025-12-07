@@ -16,12 +16,13 @@ class ThrowableObject extends MovableObject {
         'img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png'
     ];
 
-    constructor(x, y) {
+    constructor(x, y, world) {
         super();
         this.x = x;
         this.y = y;
         this.width = 80;
         this.height = 100;
+        this.world = world;
         this.loadImg('img/6_salsa_bottle/salsa_bottle.png');
         this.loadImages(this.IMAGES_THROW_BOTTLE);
         this.loadImages(this.IMAGES_BOTTLE_SPLASH);
@@ -36,13 +37,15 @@ class ThrowableObject extends MovableObject {
     };
 
     animateThrowingBottle() {
-        let intervalId = setInterval(() => {
+        let intervalId = setInterval(() => {                        
             if (this.y < 340) {
                 this.x += 10;
             } else {
                 clearInterval(intervalId);
             };
         }, 25);
+        DrawableObject.intervalArr.push(intervalId);
+
     };
 
     animateSplashedBottle() {
