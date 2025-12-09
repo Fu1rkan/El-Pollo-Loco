@@ -29,6 +29,7 @@ class World {
         this.addObjectsToMap(this.level.background);
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.level.endboss);
         this.addObjectsToMap(this.throwableObject);
         this.addToMap(this.character);
 
@@ -52,7 +53,7 @@ class World {
     run() {
         let intervalId = setInterval(() => {
             this.checkCollisions();
-        }, 0);
+        }, 1000 / 60);
         let intervalThrowItems = setInterval(() => {
             this.checkThrowObjects();
         }, 180);
@@ -93,6 +94,13 @@ class World {
                 }
             })
         });
+        if (this.character.isColliding(this.level.endboss[0])) {
+            this.character.hit();
+            this.statusbarHealth.setPercentage(
+                this.character.energy,
+                this.statusbarHealth.STATUS_HEALTH_IMAGES
+            );
+        };
     }
 
     characterIsJumpingOn(object) {

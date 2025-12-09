@@ -10,7 +10,9 @@ function startLevel() {
             new Chicken(),
             new Chicken(),
             new Chicken(),
-            new Endboss(300, 300)
+        ],
+        [
+            new Endboss()
         ],
         [
             new Clouds('img/5_background/layers/4_clouds/2.png', 720, 480, -720, 0),
