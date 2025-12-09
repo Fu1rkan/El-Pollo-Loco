@@ -1,4 +1,4 @@
-class Endboss extends MovableObject{
+class Endboss extends MovableObject {
 
     IMAGES_STANDING = [
         'img/4_enemie_boss_chicken/2_alert/G5.png',
@@ -11,7 +11,7 @@ class Endboss extends MovableObject{
         'img/4_enemie_boss_chicken/2_alert/G12.png'
     ];
 
-    constructor(){
+    constructor() {
         super();
         this.loadImg(this.IMAGES_STANDING[0]);
         this.loadImages(this.IMAGES_STANDING);
@@ -19,10 +19,11 @@ class Endboss extends MovableObject{
         this.y = 140;
         this.width = 300;
         this.height = 300;
+        this.energy = 100;
         this.animate();
     };
 
-    animate(){
+    animate() {
         let intervalId = setInterval(() => {
             this.playAnimation(this.IMAGES_STANDING);
         }, 500);

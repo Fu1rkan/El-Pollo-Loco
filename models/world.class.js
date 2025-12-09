@@ -7,7 +7,9 @@ class World {
     statusbarHealth = new StatusbarHealth();
     statusbarCoin = new StatusBarCoin();
     statusbarBottle = new StatusBarBottle();
+    statusbarHealthEndboss = new StatusbarHealthEndboss();
     throwableObject = [];
+    bossCanTakeDmg = true;
 
     constructor(canvas, keyboard) {
         //speichert 2d Context Objekte in einer Klasse ab 
@@ -37,6 +39,7 @@ class World {
         this.addToMap(this.statusbarHealth);
         this.addToMap(this.statusbarCoin);
         this.addToMap(this.statusbarBottle);
+        this.addToMap(this.statusbarHealthEndboss);
 
 
         let self = this;
@@ -91,7 +94,24 @@ class World {
             this.throwableObject.forEach(t => {
                 if (this.character.isCollidingByItem(enemy, t)) {
                     enemy.energy = 0;
-                }
+                };
+                if (this.character.isCollidingByItem(this.level.endboss[0], t) && this.bossCanTakeDmg) {
+                    this.level.endboss[0].energy -= 20;
+                    this.bossCanTakeDmg = false;
+                    setTimeout(() => {
+                        this.bossCanTakeDmg = true;
+                    }, 3000);
+                    this.statusbarHealthEndboss.setPercentage(
+                        
+                        this.level.endboss[0].energy,
+                        this.statusbarHealthEndboss.STATUS_HEALTH_ENDBOSS_IMAGES
+                    );
+                };
+                if (this.level.endboss[0].energy == 0) {
+                    DrawableObject.intervalArr.forEach(i => {
+                        clearInterval(i);
+                    });
+                };
             })
         });
         if (this.character.isColliding(this.level.endboss[0])) {
