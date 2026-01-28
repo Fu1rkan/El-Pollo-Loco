@@ -102,15 +102,13 @@ class World {
                         this.bossCanTakeDmg = true;
                     }, 3000);
                     this.statusbarHealthEndboss.setPercentage(
-                        
+
                         this.level.endboss[0].energy,
                         this.statusbarHealthEndboss.STATUS_HEALTH_ENDBOSS_IMAGES
                     );
                 };
                 if (this.level.endboss[0].energy == 0) {
-                    DrawableObject.intervalArr.forEach(i => {
-                        clearInterval(i);
-                    });
+                    this.endGame();
                 };
             })
         });
@@ -121,6 +119,12 @@ class World {
                 this.statusbarHealth.STATUS_HEALTH_IMAGES
             );
         };
+    }
+
+    endGame() {
+        DrawableObject.intervalArr.forEach(i => {
+            clearInterval(i);
+        });
     }
 
     characterIsJumpingOn(object) {

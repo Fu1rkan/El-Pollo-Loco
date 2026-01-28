@@ -63,7 +63,7 @@ document.addEventListener('keyup', (event) => {
         keyboard.UP = false;
     } else if (event.key === 'e') {
         keyboard.E = false;
-    }
+    };
 });
 
 function startTimer() {
@@ -78,6 +78,8 @@ function checkKeyPressed() {
 
 function startGame(){    
     document.getElementById('canvas').classList.remove('background-img');
+    document.getElementById('start-button').disabled = true;
+    document.getElementById('restart-button').disabled = false;
     init();
 }
 
