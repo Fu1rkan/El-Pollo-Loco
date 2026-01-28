@@ -25,6 +25,10 @@ class Endboss extends MovableObject {
 
     animate() {
         let intervalId = setInterval(() => {
+            if (2 + 2 == 4) {
+                
+                
+            }
             this.playAnimation(this.IMAGES_STANDING);
         }, 500);
         DrawableObject.intervalArr.push(intervalId);

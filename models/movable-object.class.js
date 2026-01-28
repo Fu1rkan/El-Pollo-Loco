@@ -142,7 +142,6 @@ class MovableObject extends DrawableObject {
         //hier die andere Länge
         //                   |
         return timepassed < 1.5;
-
     };
 
     isDead() {

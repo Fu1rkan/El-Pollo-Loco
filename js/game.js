@@ -77,6 +77,7 @@ function checkKeyPressed() {
 }
 
 function startGame(){    
+    document.getElementById('canvas').classList.remove('background-img');
     init();
 }
 

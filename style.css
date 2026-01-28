@@ -36,6 +36,13 @@ canvas{
     box-shadow: 0 0 8px black;
 }
 
+.background-img{
+    background-image: url(./img/9_intro_outro_screens/start/startscreen_2.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 100% 100%;
+}
+
 .btn{
     display: flex;
     justify-content: center;
