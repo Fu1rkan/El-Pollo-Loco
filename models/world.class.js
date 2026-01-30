@@ -8,8 +8,12 @@ class World {
     statusbarCoin = new StatusBarCoin();
     statusbarBottle = new StatusBarBottle();
     statusbarHealthEndboss = new StatusbarHealthEndboss();
+    winScreen = new Win();
+    loseScreen = new Lose();
     throwableObject = [];
     bossCanTakeDmg = true;
+    gameLost = false;
+    gameWon = false;
 
     constructor(canvas, keyboard) {
         //speichert 2d Context Objekte in einer Klasse ab 
@@ -40,6 +44,13 @@ class World {
         this.addToMap(this.statusbarCoin);
         this.addToMap(this.statusbarBottle);
         this.addToMap(this.statusbarHealthEndboss);
+
+        if (this.gameLost) {
+            this.addObjectsToMap(this.level.loseScreen);
+        }
+        if (this.gameWon) {
+            this.addObjectsToMap(this.level.winScreen);
+        }
 
 
         let self = this;
@@ -100,7 +111,7 @@ class World {
                     this.bossCanTakeDmg = false;
                     setTimeout(() => {
                         this.bossCanTakeDmg = true;
-                    }, 3000);
+                    }, 500);
                     this.statusbarHealthEndboss.setPercentage(
 
                         this.level.endboss[0].energy,
@@ -108,7 +119,7 @@ class World {
                     );
                 };
                 if (this.level.endboss[0].energy == 0) {
-                    this.endGame();
+                    this.endGame(1);
                 };
             })
         });
@@ -121,10 +132,17 @@ class World {
         };
     }
 
-    endGame() {
+    endGame(int) {        
+        if (int == 0) {
+            this.gameLost = true;
+        }else{
+            this.gameWon = true;
+        }
+        
         DrawableObject.intervalArr.forEach(i => {
             clearInterval(i);
         });
+
     }
 
     characterIsJumpingOn(object) {

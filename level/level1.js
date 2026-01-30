@@ -50,6 +50,12 @@ function startLevel() {
             new Background('img/5_background/layers/3_third_layer/1.png', 720, 480, 2880, 0),
             new Background('img/5_background/layers/2_second_layer/1.png', 720, 480, 2880, 0),
             new Background('img/5_background/layers/1_first_layer/1.png', 720, 480, 2880, 0)
+        ],
+        [
+            new Win('img/You_won_you_lost/You_Win_A.png', 400, 200, 160, 140)
+        ],
+        [
+            new Lose('img/You_won_you_lost/You_lost.png', 400, 200, 160, 140)
         ]
     )
 };

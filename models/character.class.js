@@ -91,9 +91,7 @@ class Character extends MovableObject {
         let intervalId = setInterval(() => {
             if (this.isDead()) {
                 this.playLastAnimation(this.IMAGES_DEAD);
-                DrawableObject.intervalArr.forEach(i => {
-                    clearInterval(i);
-                });
+                world.endGame(0);
             } else if (this.isHurt()) {
                 this.playLimitedAnimation(this.IMAGES_HURT);
             } else if (this.isAboutGround()) {
