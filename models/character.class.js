@@ -89,19 +89,22 @@ class Character extends MovableObject {
     animate() {
 
         let intervalId = setInterval(() => {
-            if (this.isDead()) {
-                this.playLastAnimation(this.IMAGES_DEAD);
-                world.endGame(0);
-            } else if (this.isHurt()) {
-                this.playLimitedAnimation(this.IMAGES_HURT);
-            } else if (this.isAboutGround()) {
-                this.playAnimation(this.IMAGES_JUMPING);
-            } else if (this.world.keyboard.RIGHT == true || this.world.keyboard.LEFT == true) {
-                this.playAnimation(this.IMAGES_WALKING);
-            } else if (this.world.keyboard.KEY == false) {
-                this.playAnimation(this.IMAGES_SLEEPING);
-            } else {
-                this.playAnimation(this.IMAGES_STANDING);
+            if (isRunning) {
+                
+                if (this.isDead()) {
+                    this.playLastAnimation(this.IMAGES_DEAD);
+                    world.endGame(0);
+                } else if (this.isHurt()) {
+                    this.playLimitedAnimation(this.IMAGES_HURT);
+                } else if (this.isAboutGround()) {
+                    this.playAnimation(this.IMAGES_JUMPING);
+                } else if (this.world.keyboard.RIGHT == true || this.world.keyboard.LEFT == true) {
+                    this.playAnimation(this.IMAGES_WALKING);
+                } else if (this.world.keyboard.KEY == false) {
+                    this.playAnimation(this.IMAGES_SLEEPING);
+                } else {
+                    this.playAnimation(this.IMAGES_STANDING);
+                }
             }
         }, 100)
         DrawableObject.intervalArr.push(intervalId);
@@ -109,21 +112,24 @@ class Character extends MovableObject {
 
     moveCamera() {
         let camera = setInterval(() => {
-            if (this.world.keyboard.RIGHT == true && this.x < this.world.level.levelEndX) {
-                this.otherDirection = false;
-                this.moveRight();
-            };
-
-            if (this.world.keyboard.LEFT == true && this.x > 0) {
-                this.otherDirection = true;
-                this.moveLeft();
-            };
-
-            if (this.world.keyboard.UP == true && this.isOnGround() || this.world.keyboard.SPACE == true && this.isOnGround()) {
-                this.jump(30);
+            if (isRunning) {
+                
+                if (this.world.keyboard.RIGHT == true && this.x < this.world.level.levelEndX) {
+                    this.otherDirection = false;
+                    this.moveRight();
+                };
+                
+                if (this.world.keyboard.LEFT == true && this.x > 0) {
+                    this.otherDirection = true;
+                    this.moveLeft();
+                };
+                
+                if (this.world.keyboard.UP == true && this.isOnGround() || this.world.keyboard.SPACE == true && this.isOnGround()) {
+                    this.jump(30);
+                }
+                
+                this.world.cameraX = -this.x + 100;
             }
-
-            this.world.cameraX = -this.x + 100;
         }, 1000 / 60);
         DrawableObject.intervalArr.push(camera);
     };

@@ -66,10 +66,14 @@ class World {
     //Wird in constructor ausgeführt
     run() {
         let intervalId = setInterval(() => {
-            this.checkCollisions();
+            if (isRunning) {
+                this.checkCollisions();
+            }
         }, 1000 / 60);
         let intervalThrowItems = setInterval(() => {
-            this.checkThrowObjects();
+            if (isRunning) {
+                this.checkThrowObjects();
+            }
         }, 180);
         DrawableObject.intervalArr.push(intervalId, intervalThrowItems);
     };
@@ -132,16 +136,17 @@ class World {
         };
     }
 
-    endGame(int) {        
+    endGame(int) {
         if (int == 0) {
             this.gameLost = true;
-        }else{
+        } else {
             this.gameWon = true;
         }
-        
+
         DrawableObject.intervalArr.forEach(i => {
             clearInterval(i);
         });
+        document.getElementById('start-button').disabled = true;
 
     }
 

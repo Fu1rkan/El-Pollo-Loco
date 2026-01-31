@@ -2,6 +2,7 @@ let canvas;
 let keyboard = new Keyboard();
 let world;
 let timer;
+let isRunning = true;
 
 function init() {
     canvas = document.getElementById('canvas');
@@ -76,9 +77,11 @@ function checkKeyPressed() {
     return keyboard.UP || keyboard.RIGHT || keyboard.LEFT || keyboard.SPACE || keyboard.E;
 }
 
-function startGame(){    
+function startGame() {
     document.getElementById('canvas').classList.remove('background-img');
-    document.getElementById('start-button').disabled = true;
+    document.getElementById('start-button').innerHTML = 'Pause';
+    document.getElementById('start-button').setAttribute('onclick', 'pauseGame()')
+
     document.getElementById('restart-button').disabled = false;
     init();
 }
@@ -93,5 +96,18 @@ function restartGame() {
     level1.clouds = [];
     level1.backgroundObjects = [];
     keyboard.KEY = true;
+    document.getElementById('start-button').disabled = false;
     init();
+}
+
+function pauseGame() {
+    isRunning = false;
+    document.getElementById('start-button').innerHTML = 'resume';
+    document.getElementById('start-button').setAttribute('onclick', 'resumeGame()')
+}
+
+function resumeGame() {
+    isRunning = true;
+    document.getElementById('start-button').innerHTML = 'pause';
+    document.getElementById('start-button').setAttribute('onclick', 'pauseGame()')
 }

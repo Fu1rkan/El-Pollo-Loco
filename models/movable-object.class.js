@@ -15,10 +15,13 @@ class MovableObject extends DrawableObject {
 
     applyGravity() {
         let intervalId = setInterval(() => {
-            if (this.isAboutGround() || this.speedY > 0) {
-                this.y -= this.speedY;
-                this.speedY -= this.acceleration;
-            };
+            if (isRunning) {
+                
+                if (this.isAboutGround() || this.speedY > 0) {
+                    this.y -= this.speedY;
+                    this.speedY -= this.acceleration;
+                };
+            }
         }, 1000 / 25);
         DrawableObject.intervalArr.push(intervalId);
     };
@@ -56,14 +59,16 @@ class MovableObject extends DrawableObject {
 
     playLastAnimation(images) {
         let intervalId = setInterval(() => {
-            let i = this.currentImage % images.length;
-            let path = images[i];
-            this.img = this.imageCache[path];
-            if (i + 1 !== images.length) {
-                this.currentImage++;
-            }else{
-                clearInterval(intervalId);
-            };
+            if (isRunning) {
+                let i = this.currentImage % images.length;
+                let path = images[i];
+                this.img = this.imageCache[path];
+                if (i + 1 !== images.length) {
+                    this.currentImage++;
+                }else{
+                    clearInterval(intervalId);
+                };
+            }            
         }, 100);
     };
 
