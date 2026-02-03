@@ -34,6 +34,8 @@ class World {
 
         this.addObjectsToMap(this.level.background);
         this.addObjectsToMap(this.level.clouds);
+        this.addObjectsToMap(this.level.coins);
+        this.addObjectsToMap(this.level.salsas);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.endboss);
         this.addObjectsToMap(this.throwableObject);
@@ -180,7 +182,7 @@ class World {
         this.ctx.translate(object.width, 0);
         this.ctx.scale(-1, 1);
         object.x = object.x * -1
-    };
+    }; 
 
     flipImageBack(object) {
         object.x = object.x * -1
