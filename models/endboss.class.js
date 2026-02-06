@@ -27,13 +27,13 @@ class Endboss extends MovableObject {
         'img/4_enemie_boss_chicken/3_attack/G19.png',
         'img/4_enemie_boss_chicken/3_attack/G20.png'
     ]
-    
+
     IMAGES_HURT = [
         'img/4_enemie_boss_chicken/4_hurt/G21.png',
         'img/4_enemie_boss_chicken/4_hurt/G22.png',
         'img/4_enemie_boss_chicken/4_hurt/G23.png'
     ]
-    
+
     IMAGES_DEAD = [
         'img/4_enemie_boss_chicken/5_dead/G24.png',
         'img/4_enemie_boss_chicken/5_dead/G25.png',
@@ -53,20 +53,41 @@ class Endboss extends MovableObject {
         this.width = 300;
         this.height = 300;
         this.energy = 100;
+        this.speed = 2;
         this.animate();
     };
 
     animate() {
         let intervalId = setInterval(() => {
             if (isRunning) {
-                
+
                 if (world.character.x >= 3600) {
-                    this.playAnimation(this.IMAGES_ATTACK);
-                }else{
+                    this.endbossIsAngry = true;
+                }
+                if (this.endbossIsAngry) {
+                    
+                    if (this.energy <= 0) {
+                        this.playAnimation(this.IMAGES_DEAD)
+                    }else if (!world.bossCanTakeDmg) {
+                        this.playAnimation(this.IMAGES_HURT)   
+                    }else if (this.x - world.character.x <= 100) {
+                        this.playAnimation(this.IMAGES_ATTACK);
+                    }else{
+                        this.playAnimation(this.IMAGES_WALK);
+                    }
+                } else {
                     this.playAnimation(this.IMAGES_STANDING);
                 }
             }
-        }, 500);
+        }, 250);
         DrawableObject.intervalArr.push(intervalId);
+        let bossIsWalkingInterval = setInterval(() => {
+            if (this.endbossIsAngry) {
+                if (isRunning) {
+                    this.moveLeft();
+                }
+            }
+        }, 1000 / 60);
+        DrawableObject.intervalArr.push(bossIsWalkingInterval);
     };
 };

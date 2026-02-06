@@ -14,6 +14,7 @@ class World {
     bossCanTakeDmg = true;
     gameLost = false;
     gameWon = false;
+    endbossIsAngry = false;
 
     constructor(canvas, keyboard) {
         //speichert 2d Context Objekte in einer Klasse ab 
@@ -117,7 +118,7 @@ class World {
                     this.bossCanTakeDmg = false;
                     setTimeout(() => {
                         this.bossCanTakeDmg = true;
-                    }, 500);
+                    }, 1000);
                     this.statusbarHealthEndboss.setPercentage(
 
                         this.level.endboss[0].energy,
@@ -125,7 +126,7 @@ class World {
                     );
                 };
                 if (this.level.endboss[0].energy == 0) {
-                    this.endGame(1);
+                    // this.endGame(1);
                 };
             })
         });
