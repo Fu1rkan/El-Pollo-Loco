@@ -14,7 +14,7 @@ class World {
     bossCanTakeDmg = true;
     gameLost = false;
     gameWon = false;
-    endbossIsAngry = false;
+
 
     constructor(canvas, keyboard) {
         //speichert 2d Context Objekte in einer Klasse ab 
