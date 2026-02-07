@@ -48,39 +48,17 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
-        this.x = 3880;
+        this.x = 500;
         this.y = 140;
         this.width = 300;
         this.height = 300;
         this.energy = 100;
-        this.speed = 2;
+        this.speed = 0.5;
         this.animate();
     };
 
     animate() {
-        let intervalId = setInterval(() => {
-            if (isRunning) {
-
-                if (world.character.x >= 3600) {
-                    this.endbossIsAngry = true;
-                }
-                if (this.endbossIsAngry) {
-                    
-                    if (this.energy <= 0) {
-                        this.playAnimation(this.IMAGES_DEAD)
-                    }else if (!world.bossCanTakeDmg) {
-                        this.playAnimation(this.IMAGES_HURT)   
-                    }else if (this.x - world.character.x <= 100) {
-                        this.playAnimation(this.IMAGES_ATTACK);
-                    }else{
-                        this.playAnimation(this.IMAGES_WALK);
-                    }
-                } else {
-                    this.playAnimation(this.IMAGES_STANDING);
-                }
-            }
-        }, 250);
-        DrawableObject.intervalArr.push(intervalId);
+        this.playEndbossAnimation();
         let bossIsWalkingInterval = setInterval(() => {
             if (this.endbossIsAngry) {
                 if (isRunning) {
@@ -90,4 +68,44 @@ class Endboss extends MovableObject {
         }, 1000 / 60);
         DrawableObject.intervalArr.push(bossIsWalkingInterval);
     };
+    playEndbossAnimation() {
+        let intervalId = setInterval(() => {
+            if (isRunning) {
+
+                if (world.character.x >= this.x - 200) {
+                    this.endbossIsAngry = true;
+                }
+                if (this.endbossIsAngry) {
+
+                    if (this.energy <= 0) {
+                        this.playAnimation(this.IMAGES_DEAD)
+                    } else if (!world.bossCanTakeDmg) {
+                        clearInterval(intervalId)
+                        let hurtAnimateEndbossInterval = setInterval(() => {
+                            this.playAnimation(this.IMAGES_HURT)
+                            if (world.bossCanTakeDmg) {
+                                clearInterval(hurtAnimateEndbossInterval)
+                                this.playEndbossAnimation()
+                            }
+                        }, 100)
+                    } else if (world.character.x + world.character.width >= this.x && this.x + this.width >= world.character.x) {
+                        let attackAnimateEndbossInterval = setInterval(() => {
+                            this.playAnimation(this.IMAGES_ATTACK);
+                            if (world.character.x + world.character.width <= this.x || this.x + this.width <= world.character.x) {
+                                clearInterval(attackAnimateEndbossInterval)
+                                this.playEndbossAnimation()
+                            }
+                            DrawableObject.intervalArr.push(attackAnimateEndbossInterval);
+                        }, 150);
+                        clearInterval(intervalId)
+                    } else {
+                        this.playAnimation(this.IMAGES_WALK);
+                    }
+                } else {
+                    this.playAnimation(this.IMAGES_STANDING);
+                }
+            }
+        }, 250);
+        DrawableObject.intervalArr.push(intervalId);
+    }
 };
