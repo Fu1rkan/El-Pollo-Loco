@@ -46,7 +46,9 @@ class MovableObject extends DrawableObject {
         this.currentImage++;
     };
 
-    playLimitedAnimation(images) {
+    playLimitedAnimation(images, id) {
+        console.log(this.currentImage, 5);
+        
         let i = this.currentImage % images.length;
         let path = images[i];
         this.img = this.imageCache[path];
@@ -55,6 +57,12 @@ class MovableObject extends DrawableObject {
         if (i + 1 !== images.length) {
             this.currentImage++;
         };
+
+        if (id && i + 1 === images.length) {
+            clearInterval(id);
+            console.log('hi');
+            
+        }
     };
 
     playLastAnimation(images) {

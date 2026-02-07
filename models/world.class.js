@@ -113,9 +113,11 @@ class World {
                 if (this.character.isCollidingByItem(enemy, t)) {
                     enemy.energy = 0;
                 };
-                if (this.character.isCollidingByItem(this.level.endboss[0], t) && this.bossCanTakeDmg) {
+                if (this.character.isCollidingByItem(this.level.endboss[0], t) && this.bossCanTakeDmg){
                     this.level.endboss[0].energy -= 20;
-                    this.bossCanTakeDmg = false;
+                    if (this.level.endboss[0].energy > 0) {
+                        this.bossCanTakeDmg = false;                        
+                    }
                     setTimeout(() => {
                         this.bossCanTakeDmg = true;
                     }, 1000);
@@ -124,9 +126,6 @@ class World {
                         this.level.endboss[0].energy,
                         this.statusbarHealthEndboss.STATUS_HEALTH_ENDBOSS_IMAGES
                     );
-                };
-                if (this.level.endboss[0].energy == 0) {
-                    // this.endGame(1);
                 };
             })
         });
