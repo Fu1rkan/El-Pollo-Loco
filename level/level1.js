@@ -49,7 +49,15 @@ function startLevel() {
             new Background('img/5_background/layers/air.png', 720, 480, 2880, 0),
             new Background('img/5_background/layers/3_third_layer/1.png', 720, 480, 2880, 0),
             new Background('img/5_background/layers/2_second_layer/1.png', 720, 480, 2880, 0),
-            new Background('img/5_background/layers/1_first_layer/1.png', 720, 480, 2880, 0)
+            new Background('img/5_background/layers/1_first_layer/1.png', 720, 480, 2880, 0),
+            new Background('img/5_background/layers/air.png', 720, 480, 3600, 0),
+            new Background('img/5_background/layers/3_third_layer/2.png', 720, 480, 3600, 0),
+            new Background('img/5_background/layers/2_second_layer/2.png', 720, 480, 3600, 0),
+            new Background('img/5_background/layers/1_first_layer/2.png', 720, 480, 3600, 0),
+            new Background('img/5_background/layers/air.png', 720, 480, 4320, 0),
+            new Background('img/5_background/layers/3_third_layer/1.png', 720, 480, 4320, 0),
+            new Background('img/5_background/layers/2_second_layer/1.png', 720, 480, 4320, 0),
+            new Background('img/5_background/layers/1_first_layer/1.png', 720, 480, 4320, 0)
         ],
         [
             new Coin('img/8_coin/coin_1.png', 150, 150, 400, 280),

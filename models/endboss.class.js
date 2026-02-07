@@ -54,7 +54,7 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
-        this.x = 500;
+        this.x = 4700;
         this.y = 140;
         this.width = 300;
         this.height = 300;
@@ -93,7 +93,7 @@ class Endboss extends MovableObject {
 
         //Interval => Endboss wird aktiviert wenn sich spieler nähert
         let checkCharacterApproachingEndbossInterval = setInterval(() => {
-            if (world.character.x >= this.x - 200) {
+            if (world.character.x >= this.x - 400) {
 
                 this.endbossAlert = true;
 
