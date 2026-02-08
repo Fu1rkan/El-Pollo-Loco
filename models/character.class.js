@@ -86,48 +86,171 @@ class Character extends MovableObject {
         this.animate();
     };
 
-    animate() {
+    isWalking() {
+        if (this.world.keyboard.RIGHT == true || this.world.keyboard.LEFT == true) {
+            return true
+        } else {
+            return false
+        };
+    }
 
+    isSleeping() {
+        if (this.world.keyboard.KEY == false) {
+            return true;
+        } else {
+            return false;
+        };
+    }
+
+    checkAllInteractions() {
+        if (this.isDead() || this.isHurt() || this.isAboutGround() || this.isWalking() || this.isSleeping()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    animate() {
+        this.playCharacterAnimation();
+    };
+
+    playCharacterAnimation() {
         let intervalId = setInterval(() => {
             if (isRunning) {
-                
+
                 if (this.isDead()) {
-                    this.playLastAnimation(this.IMAGES_DEAD);
-                    world.endGame(0);
+                    this.deathAnimationCharacter(intervalId);
                 } else if (this.isHurt()) {
-                    this.playLimitedAnimation(this.IMAGES_HURT);
+                    this.hurtAnimationCharacter(intervalId);
                 } else if (this.isAboutGround()) {
-                    this.playAnimation(this.IMAGES_JUMPING);
-                } else if (this.world.keyboard.RIGHT == true || this.world.keyboard.LEFT == true) {
-                    this.playAnimation(this.IMAGES_WALKING);
-                } else if (this.world.keyboard.KEY == false) {
-                    this.playAnimation(this.IMAGES_SLEEPING);
+                    this.jumpAnimationCharacter(intervalId);
+                } else if (this.isWalking()) {
+                    this.walkAnimationCharacter(intervalId)
+                } else if (this.isSleeping()) {
+                    this.sleepAnimationCharacter(intervalId);
                 } else {
-                    this.playAnimation(this.IMAGES_STANDING);
+                    this.standAnimationCharacter(intervalId);
                 }
             }
         }, 100)
         DrawableObject.intervalArr.push(intervalId);
-    };
+    }
+
+    deathAnimationCharacter(intervalId) {
+        clearInterval(intervalId);
+
+        this.currentImage = 0;
+
+        let deatAnimationCharacterInterval = setInterval(() => {
+            this.playLastAnimation(this.IMAGES_DEAD);
+        }, 100)
+
+        DrawableObject.intervalArr.push(deatAnimationCharacterInterval);
+
+        setTimeout(() => {
+            world.endGame(0);
+        }, 600);
+    }
+
+    hurtAnimationCharacter(intervalId) {
+        clearInterval(intervalId)
+
+        this.currentImage = 0;
+
+        let hurtAnimationCharacterInterval = setInterval(() => {
+            this.playLimitedAnimation(this.IMAGES_HURT);
+            if (!this.isHurt()) {
+                clearInterval(hurtAnimationCharacterInterval)
+                this.playCharacterAnimation()
+            }
+        }, 100)
+
+        DrawableObject.intervalArr.push(hurtAnimationCharacterInterval);
+    }
+
+    jumpAnimationCharacter(intervalId) {
+        clearInterval(intervalId)
+
+        this.currentImage = 0;
+
+        let jumpAnimationCharacterInterval = setInterval(() => {
+            this.playLimitedAnimation(this.IMAGES_JUMPING);
+            if (!this.isAboutGround()) {
+                clearInterval(jumpAnimationCharacterInterval)
+                this.playCharacterAnimation()
+            }
+        }, 100)
+
+        DrawableObject.intervalArr.push(jumpAnimationCharacterInterval);
+    }
+
+    walkAnimationCharacter(intervalId) {
+        clearInterval(intervalId)
+
+        this.currentImage = 0;
+
+        let walkAnimationCharacterInterval = setInterval(() => {
+            this.playAnimation(this.IMAGES_WALKING);
+            if (!this.isWalking()) {
+                clearInterval(walkAnimationCharacterInterval)
+                this.playCharacterAnimation()
+            }
+        }, 100)
+
+        DrawableObject.intervalArr.push(walkAnimationCharacterInterval);
+    }
+
+    sleepAnimationCharacter(intervalId) {
+        clearInterval(intervalId)
+
+        this.currentImage = 0;
+
+        let sleepAnimationCharacterInterval = setInterval(() => {
+            this.playAnimation(this.IMAGES_SLEEPING);
+            if (!this.isSleeping()) {
+                clearInterval(sleepAnimationCharacterInterval)
+                this.playCharacterAnimation()
+            }
+        }, 100)
+
+        DrawableObject.intervalArr.push(sleepAnimationCharacterInterval);
+    }
+
+    standAnimationCharacter(intervalId) {
+        clearInterval(intervalId)
+
+        this.currentImage = 0;
+
+        let standAnimationCharacterInterval = setInterval(() => {
+            this.playAnimation(this.IMAGES_STANDING);
+
+            if (this.checkAllInteractions()) {
+                clearInterval(standAnimationCharacterInterval)
+                this.playCharacterAnimation()
+            }
+        }, 100)
+
+        DrawableObject.intervalArr.push(standAnimationCharacterInterval);
+    }
 
     moveCamera() {
         let camera = setInterval(() => {
             if (isRunning) {
-                
+
                 if (this.world.keyboard.RIGHT == true && this.x < this.world.level.levelEndX) {
                     this.otherDirection = false;
                     this.moveRight();
                 };
-                
+
                 if (this.world.keyboard.LEFT == true && this.x > 0) {
                     this.otherDirection = true;
                     this.moveLeft();
                 };
-                
+
                 if (this.world.keyboard.UP == true && this.isOnGround() || this.world.keyboard.SPACE == true && this.isOnGround()) {
                     this.jump(30);
                 }
-                
+
                 this.world.cameraX = -this.x + 100;
             }
         }, 1000 / 60);

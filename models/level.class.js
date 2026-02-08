@@ -7,7 +7,7 @@ class Level {
     salsas;
     winScreen;
     loseScreen;
-    levelEndX = 4400;
+    levelEndX = 4200;
 
     constructor(enemies, endboss, clouds, background, coins, salsas, winScreen, loseScreen){
         this.enemies = enemies;
