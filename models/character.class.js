@@ -1,7 +1,7 @@
 class Character extends MovableObject {
 
     world;
-    speed = 10;
+    speed = 5;
     x = 0;
     y = 225;
     width = 100;
@@ -110,6 +110,14 @@ class Character extends MovableObject {
         }
     }
 
+    checkAllInteractions2() {
+        if (this.isDead() || this.isHurt() || this.isAboutGround() || this.isWalking()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     animate() {
         this.playCharacterAnimation();
     };
@@ -124,7 +132,7 @@ class Character extends MovableObject {
                     this.hurtAnimationCharacter(intervalId);
                 } else if (this.isAboutGround()) {
                     this.jumpAnimationCharacter(intervalId);
-                } else if (this.isWalking()) {
+                } else if (this.isWalking() && !world.character.x == 0) {
                     this.walkAnimationCharacter(intervalId)
                 } else if (this.isSleeping()) {
                     this.sleepAnimationCharacter(intervalId);
@@ -132,7 +140,7 @@ class Character extends MovableObject {
                     this.standAnimationCharacter(intervalId);
                 }
             }
-        }, 100)
+        }, 10)
         DrawableObject.intervalArr.push(intervalId);
     }
 
@@ -159,7 +167,7 @@ class Character extends MovableObject {
 
         let hurtAnimationCharacterInterval = setInterval(() => {
             this.playLimitedAnimation(this.IMAGES_HURT);
-            if (!this.isHurt()) {
+            if (!this.isHurt() || this.isDead()) {
                 clearInterval(hurtAnimationCharacterInterval)
                 this.playCharacterAnimation()
             }
@@ -175,7 +183,7 @@ class Character extends MovableObject {
 
         let jumpAnimationCharacterInterval = setInterval(() => {
             this.playLimitedAnimation(this.IMAGES_JUMPING);
-            if (!this.isAboutGround()) {
+            if (!this.isAboutGround() || this.isHurt() || this.isDead()) {
                 clearInterval(jumpAnimationCharacterInterval)
                 this.playCharacterAnimation()
             }
@@ -191,7 +199,7 @@ class Character extends MovableObject {
 
         let walkAnimationCharacterInterval = setInterval(() => {
             this.playAnimation(this.IMAGES_WALKING);
-            if (!this.isWalking()) {
+            if (!this.isWalking() || this.isHurt() || this.isAboutGround() || this.isDead() || world.character.x == 0) {
                 clearInterval(walkAnimationCharacterInterval)
                 this.playCharacterAnimation()
             }
@@ -207,7 +215,7 @@ class Character extends MovableObject {
 
         let sleepAnimationCharacterInterval = setInterval(() => {
             this.playAnimation(this.IMAGES_SLEEPING);
-            if (!this.isSleeping()) {
+            if (this.isDead() || this.isHurt() || this.isAboutGround() || this.isWalking()) {
                 clearInterval(sleepAnimationCharacterInterval)
                 this.playCharacterAnimation()
             }
