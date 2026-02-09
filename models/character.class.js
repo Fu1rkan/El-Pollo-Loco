@@ -3,7 +3,7 @@ class Character extends MovableObject {
     world;
     speed = 5;
     x = 0;
-    y = 225;
+    y = 223.5;
     width = 100;
     height = 200;
 
@@ -17,8 +17,6 @@ class Character extends MovableObject {
     ];
 
     IMAGES_JUMPING = [
-        'img/2_character_pepe/3_jump/J-31.png',
-        'img/2_character_pepe/3_jump/J-32.png',
         'img/2_character_pepe/3_jump/J-33.png',
         'img/2_character_pepe/3_jump/J-34.png',
         'img/2_character_pepe/3_jump/J-35.png',
@@ -183,11 +181,17 @@ class Character extends MovableObject {
 
         let jumpAnimationCharacterInterval = setInterval(() => {
             this.playLimitedAnimation(this.IMAGES_JUMPING);
-            if (!this.isAboutGround() || this.isHurt() || this.isDead()) {
+            if (this.world.jumpedOnEnemy) {
+                this.world.jumpedOnEnemy = false
+                clearInterval(jumpAnimationCharacterInterval)
+                this.jumpAnimationCharacter(intervalId);
+            }
+
+            if (!this.isAboutGround() || this.isHurt() || this.isDead() || this.world.jumpedOnEnemy) {
                 clearInterval(jumpAnimationCharacterInterval)
                 this.playCharacterAnimation()
             }
-        }, 100)
+        }, 150)
 
         DrawableObject.intervalArr.push(jumpAnimationCharacterInterval);
     }
@@ -215,13 +219,17 @@ class Character extends MovableObject {
 
         let sleepAnimationCharacterInterval = setInterval(() => {
             this.playAnimation(this.IMAGES_SLEEPING);
-            if (this.isDead() || this.isHurt() || this.isAboutGround() || this.isWalking()) {
-                clearInterval(sleepAnimationCharacterInterval)
-                this.playCharacterAnimation()
-            }
-        }, 100)
+        }, 250)
 
-        DrawableObject.intervalArr.push(sleepAnimationCharacterInterval);
+        let checkInteractionsInterval = setInterval(() => {
+            if (this.isDead() || this.isHurt() || this.isAboutGround() || this.isWalking()) {
+                clearInterval(sleepAnimationCharacterInterval, checkInteractionsInterval);
+                clearInterval(checkInteractionsInterval);
+                this.playCharacterAnimation();
+            }
+        }, 10);
+
+        DrawableObject.intervalArr.push(sleepAnimationCharacterInterval, checkInteractionsInterval);
     }
 
     standAnimationCharacter(intervalId) {
@@ -231,14 +239,17 @@ class Character extends MovableObject {
 
         let standAnimationCharacterInterval = setInterval(() => {
             this.playAnimation(this.IMAGES_STANDING);
+        }, 250)
 
+        let checkInteractionsInterval = setInterval(() => {
             if (this.checkAllInteractions()) {
-                clearInterval(standAnimationCharacterInterval)
-                this.playCharacterAnimation()
+                clearInterval(standAnimationCharacterInterval);
+                clearInterval(checkInteractionsInterval);
+                this.playCharacterAnimation();
             }
-        }, 100)
+        }, 10);
 
-        DrawableObject.intervalArr.push(standAnimationCharacterInterval);
+        DrawableObject.intervalArr.push(standAnimationCharacterInterval, checkInteractionsInterval);
     }
 
     moveCamera() {
@@ -256,7 +267,7 @@ class Character extends MovableObject {
                 };
 
                 if (this.world.keyboard.UP == true && this.isOnGround() || this.world.keyboard.SPACE == true && this.isOnGround()) {
-                    this.jump(30);
+                    this.jump(21);
                 }
 
                 this.world.cameraX = -this.x + 100;

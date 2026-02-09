@@ -14,6 +14,7 @@ class World {
     bossCanTakeDmg = true;
     gameLost = false;
     gameWon = false;
+    jumpedOnEnemy = false;
 
 
     constructor(canvas, keyboard) {
@@ -98,7 +99,8 @@ class World {
             if (this.character.isColliding(enemy)) {
                 if (enemy.energy > 0) {
                     if (this.characterIsJumpingOn(enemy) && this.character.canHitEnemys) {
-                        this.character.jump(20);
+                        this.character.jump(15);
+                        this.jumpedOnEnemy = true;
                         enemy.energy = 0;
                     } else {
                         this.character.hit();
