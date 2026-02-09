@@ -104,6 +104,7 @@ class World {
                         enemy.energy = 0;
                     } else {
                         this.character.hit();
+                        resetSleepingTimer();
                         this.statusbarHealth.setPercentage(
                             this.character.energy,
                             this.statusbarHealth.STATUS_HEALTH_IMAGES

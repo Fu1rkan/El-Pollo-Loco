@@ -35,11 +35,7 @@ document.addEventListener('keydown', (event) => {
     }
 
     if (checkKeyPressed() == true) {
-        clearTimeout(timer);
-        keyboard.KEY = true;
-        timer = setTimeout(() => {
-            keyboard.KEY = false
-        }, 15000);
+        resetSleepingTimer();
     }
 });
 
@@ -110,4 +106,12 @@ function resumeGame() {
     isRunning = true;
     document.getElementById('start-button').innerHTML = 'pause';
     document.getElementById('start-button').setAttribute('onclick', 'pauseGame()')
+}
+
+function resetSleepingTimer() {
+    clearTimeout(timer);
+    keyboard.KEY = true;
+    timer = setTimeout(() => {
+        keyboard.KEY = false
+    }, 15000);
 }
