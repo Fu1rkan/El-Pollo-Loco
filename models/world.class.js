@@ -17,6 +17,8 @@ class World {
     jumpedOnEnemy = false;
     collectedCoins = 0;
     collectedBottles = 0;
+    throwCooldown = false;
+
 
 
     constructor(canvas, keyboard) {
@@ -95,13 +97,22 @@ class World {
     };
 
     checkThrowObjects() {
-        if (this.keyboard.E) {
+        if (this.keyboard.E && this.collectedBottles > 0 && !this.throwCooldown) {
+            this.throwCooldown = true;
+            setTimeout(() =>{
+                this.throwCooldown = false;
+            }, 2000)
             let bottle = new ThrowableObject(this.character.x, this.character.y, this);
             bottle.world = this;
             this.throwableObject.push(bottle);
             setTimeout(() => {
                 this.throwableObject.splice(bottle, 1)
             }, 2000);
+            this.collectedBottles -= 1;
+            this.statusbarBottle.setPercentageOfBottles(
+                this.collectedBottles,
+                this.statusbarBottle.STATUSBAR_BOTTLE_IMAGES
+            );
         };
     };
 
@@ -135,7 +146,7 @@ class World {
                     }
                     setTimeout(() => {
                         this.bossCanTakeDmg = true;
-                    }, 1000);
+                    }, 2000);
                     this.statusbarHealthEndboss.setPercentage(
 
                         this.level.endboss[0].energy,

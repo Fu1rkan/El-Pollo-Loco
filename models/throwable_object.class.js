@@ -30,7 +30,7 @@ class ThrowableObject extends MovableObject {
     };
 
     trow() {
-        this.speedY = 30;
+        this.speedY = 15;
         this.applyGravity();
         this.animate();
         this.animateThrowingBottle();
