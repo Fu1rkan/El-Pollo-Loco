@@ -43,6 +43,18 @@ class DrawableObject {
         this.img = this.imageCache[path];
     };
 
+    setPercentageOfCoins(percentage, statusItem) {
+        this.percentage = percentage;
+        let path = statusItem[this.checkCollectedCoins()]
+        this.img = this.imageCache[path];
+    };
+
+    setPercentageOfBottles(percentage, statusItem) {
+        this.percentage = percentage;
+        let path = statusItem[this.checkCollectedBottles()]
+        this.img = this.imageCache[path];
+    };
+
     //checkt die Prozente vom Status
     resolveImageIndex() {
         if (this.percentage == 100) {
@@ -58,6 +70,38 @@ class DrawableObject {
         } else {
             return 0;
         };
+        
     };
 
+    checkCollectedCoins() {
+        if (world.collectedCoins == 11) {
+            return 5;
+        } else if (world.collectedCoins >= 8) {
+            return 4;
+        } else if (world.collectedCoins >= 6) {
+            return 3;
+        } else if (world.collectedCoins >= 4) {
+            return 2;
+        } else if (world.collectedCoins >= 2) {
+            return 1;
+        } else {
+            return 0;
+        };
+    };
+
+    checkCollectedBottles() {
+        if (world.collectedBottles >= 5) {
+            return 5;
+        } else if (world.collectedBottles >= 4) {
+            return 4;
+        } else if (world.collectedBottles >= 3) {
+            return 3;
+        } else if (world.collectedBottles >= 2) {
+            return 2;
+        } else if (world.collectedBottles >= 1) {
+            return 1;
+        } else {
+            return 0;
+        };
+    };
 };

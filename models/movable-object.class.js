@@ -65,8 +65,6 @@ class MovableObject extends DrawableObject {
 
         if (id && i + 1 === images.length) {
             clearInterval(id);
-            console.log('hi');
-            
         }
     };
 

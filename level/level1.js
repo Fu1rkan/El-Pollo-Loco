@@ -83,7 +83,6 @@ function startLevel() {
             new Salsa('img/6_salsa_bottle/1_salsa_bottle_on_ground.png', 100, 100, 2200, 330),
             new Salsa('img/6_salsa_bottle/1_salsa_bottle_on_ground.png', 100, 100, 2600, 330),
             new Salsa('img/6_salsa_bottle/2_salsa_bottle_on_ground.png', 100, 100, 200, 330),
-            new Salsa('img/6_salsa_bottle/1_salsa_bottle_on_ground.png', 100, 100, 700, 330),
         ],
         [
             new Win('img/You_won_you_lost/You_Win_A.png', 400, 200, 160, 140)

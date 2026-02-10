@@ -16,7 +16,7 @@ class World {
     gameWon = false;
     jumpedOnEnemy = false;
     collectedCoins = 0;
-    collectedbottles = 0;
+    collectedBottles = 0;
 
 
     constructor(canvas, keyboard) {
@@ -159,26 +159,34 @@ class World {
                 let index = this.level.coins.indexOf(coin)
                 this.level.coins.splice(index, 1);
                 this.collectedCoins += 1;
+                this.statusbarCoin.setPercentageOfCoins(
+                    this.collectedCoins,
+                    this.statusbarCoin.STATUSBAR_COIN_IMAGES
+                );
             };
-        })
-    }
+        });
+    };
 
     checkCollectBottles() {
         this.level.salsas.forEach((salsa) => {
             if (this.character.isColliding(salsa)) {
                 let index = this.level.salsas.indexOf(salsa)
                 this.level.salsas.splice(index, 1);
-                this.collectedbottles += 1;
+                this.collectedBottles += 1;
+                this.statusbarBottle.setPercentageOfBottles(
+                    this.collectedBottles,
+                    this.statusbarBottle.STATUSBAR_BOTTLE_IMAGES
+                );
             };
-        })
-    }
+        });
+    };
 
     endGame(int) {
         if (int == 0) {
             this.gameLost = true;
         } else {
             this.gameWon = true;
-        }
+        };
 
         DrawableObject.intervalArr.forEach(i => {
             clearInterval(i);

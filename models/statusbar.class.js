@@ -40,9 +40,9 @@ class Statusbar extends DrawableObject {
     height = 40;
     percentage = 100;
 
-    loadStatusBar(status, x, y) {
+    loadStatusBar(status, value, x, y) {
         this.loadImages(status);
-        this.setPercentage(100, status);
+        this.setPercentage(value, status);
         this.y = y;
         this.x = x;
     };
@@ -51,27 +51,27 @@ class Statusbar extends DrawableObject {
 class StatusbarHealth extends Statusbar {
     constructor() {
         super();
-        this.loadStatusBar(this.STATUS_HEALTH_IMAGES, 20, 5);
+        this.loadStatusBar(this.STATUS_HEALTH_IMAGES, 100, 20, 5);
     };
 };
 
 class StatusBarBottle extends Statusbar {
     constructor() {
         super();
-        this.loadStatusBar(this.STATUSBAR_BOTTLE_IMAGES, 20, 35);
+        this.loadStatusBar(this.STATUSBAR_BOTTLE_IMAGES, 0, 20, 35);
     };
 };
 
 class StatusBarCoin extends Statusbar {
     constructor() {
         super();
-        this.loadStatusBar(this.STATUSBAR_COIN_IMAGES, 20, 65);
+        this.loadStatusBar(this.STATUSBAR_COIN_IMAGES, 0, 20, 65);
     };
 };
 
 class StatusbarHealthEndboss extends Statusbar {
     constructor() {
         super();
-        this.loadStatusBar(this.STATUS_HEALTH_ENDBOSS_IMAGES, 550, 5);
+        this.loadStatusBar(this.STATUS_HEALTH_ENDBOSS_IMAGES, 100, 550, 5);
     };
 };
