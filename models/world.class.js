@@ -15,6 +15,8 @@ class World {
     gameLost = false;
     gameWon = false;
     jumpedOnEnemy = false;
+    collectedCoins = 0;
+    collectedbottles = 0;
 
 
     constructor(canvas, keyboard) {
@@ -79,7 +81,17 @@ class World {
                 this.checkThrowObjects();
             }
         }, 180);
-        DrawableObject.intervalArr.push(intervalId, intervalThrowItems);
+        let intervalCollectCoins = setInterval(() => {
+            if (isRunning) {
+                this.checkCollectCoins();
+            }
+        }, 180);
+        let intervalCollectBottles = setInterval(() => {
+            if (isRunning) {
+                this.checkCollectBottles();
+            }
+        }, 180);
+        DrawableObject.intervalArr.push(intervalId, intervalThrowItems, intervalCollectCoins, intervalCollectBottles);
     };
 
     checkThrowObjects() {
@@ -116,10 +128,10 @@ class World {
                 if (this.character.isCollidingByItem(enemy, t)) {
                     enemy.energy = 0;
                 };
-                if (this.character.isCollidingByItem(this.level.endboss[0], t) && this.bossCanTakeDmg){
+                if (this.character.isCollidingByItem(this.level.endboss[0], t) && this.bossCanTakeDmg) {
                     this.level.endboss[0].energy -= 20;
                     if (this.level.endboss[0].energy > 0) {
-                        this.bossCanTakeDmg = false;                        
+                        this.bossCanTakeDmg = false;
                     }
                     setTimeout(() => {
                         this.bossCanTakeDmg = true;
@@ -139,6 +151,26 @@ class World {
                 this.statusbarHealth.STATUS_HEALTH_IMAGES
             );
         };
+    }
+
+    checkCollectCoins() {
+        this.level.coins.forEach((coin) => {
+            if (this.character.isColliding(coin)) {
+                let index = this.level.coins.indexOf(coin)
+                this.level.coins.splice(index, 1);
+                this.collectedCoins += 1;
+            };
+        })
+    }
+
+    checkCollectBottles() {
+        this.level.salsas.forEach((salsa) => {
+            if (this.character.isColliding(salsa)) {
+                let index = this.level.salsas.indexOf(salsa)
+                this.level.salsas.splice(index, 1);
+                this.collectedbottles += 1;
+            };
+        })
     }
 
     endGame(int) {
@@ -185,7 +217,7 @@ class World {
         this.ctx.translate(object.width, 0);
         this.ctx.scale(-1, 1);
         object.x = object.x * -1
-    }; 
+    };
 
     flipImageBack(object) {
         object.x = object.x * -1
