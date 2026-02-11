@@ -6,6 +6,7 @@ class MovableObject extends DrawableObject {
     energy = 1000;
     lastHit = 0;
     canTakeDamage = true;
+    canKillEnemys = true;
     canHitEnemys = true;
     animationIsDone = false;
     
@@ -97,10 +98,10 @@ class MovableObject extends DrawableObject {
         enemy.forEach(e => {            
             if (this.isColliding(e)) {          
                 this.canHitEnemys = false;
-                this.canTakeDamage = false;
+                this.canKillEnemys = false;
                 setTimeout(() => {
                     this.canHitEnemys = true;
-                    this.canTakeDamage = true;
+                    this.canKillEnemys = true;
                 }, 100)
             };
         });        

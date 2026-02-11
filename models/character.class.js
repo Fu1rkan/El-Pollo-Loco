@@ -100,7 +100,7 @@ class Character extends MovableObject {
     }
 
     checkAllInteractions() {
-        if (this.isDead() || this.isHurt() || this.isAboutGround() || this.isWalking() || this.isSleeping()) {
+        if (this.isDead() || this.isHurt() || this.isAboutGround() || this.isWalking() && world.character.x <= 4199 && !world.character.x == 0|| this.isSleeping()) {
             return true;
         } else {
             return false;
@@ -129,7 +129,7 @@ class Character extends MovableObject {
                     this.hurtAnimationCharacter(intervalId);
                 } else if (this.isAboutGround()) {
                     this.jumpAnimationCharacter(intervalId);
-                } else if (this.isWalking() && !world.character.x == 0) {
+                } else if (this.isWalking() && world.character.x <= 4199 && !world.character.x == 0) {
                     this.walkAnimationCharacter(intervalId)
                 } else if (this.isSleeping()) {
                     this.sleepAnimationCharacter(intervalId);
@@ -202,7 +202,9 @@ class Character extends MovableObject {
 
         let walkAnimationCharacterInterval = setInterval(() => {
             this.playAnimation(this.IMAGES_WALKING);
-            if (!this.isWalking() || this.isHurt() || this.isAboutGround() || this.isDead() || world.character.x == 0) {
+            if (!this.isWalking() || this.isHurt() || this.isAboutGround() || this.isDead() || world.character.x == 0 || world.character.x >= 4200) {
+                console.log(5);
+
                 clearInterval(walkAnimationCharacterInterval)
                 this.playCharacterAnimation()
             }

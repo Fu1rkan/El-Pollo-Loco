@@ -128,7 +128,7 @@ class World {
                         this.jumpedOnEnemy = true
                         
                         enemy.energy = 0;
-                    } else if (this.character.canTakeDamage){
+                    } else if (this.character.canHitEnemys){
                         this.character.hit();
                         resetSleepingTimer();
                         this.statusbarHealth.setPercentage(
