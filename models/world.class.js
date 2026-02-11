@@ -123,9 +123,12 @@ class World {
                 if (enemy.energy > 0) {
                     if (this.characterIsJumpingOn(enemy) && this.character.canHitEnemys) {
                         this.character.jump(15);
-                        this.jumpedOnEnemy = true;
+
+                        // weiß nicht mehr wofür das war
+                        this.jumpedOnEnemy = true
+                        
                         enemy.energy = 0;
-                    } else {
+                    } else if (this.character.canTakeDamage){
                         this.character.hit();
                         resetSleepingTimer();
                         this.statusbarHealth.setPercentage(
@@ -209,8 +212,9 @@ class World {
     characterIsJumpingOn(object) {
         return this.character.x + this.character.width > object.x &&
             this.character.x < object.x + object.width &&
-            this.character.y + this.character.height - 5 > object.y &&
-            this.character.y + this.character.height < object.y + object.height
+            this.character.y + this.character.height > object.y &&
+            this.character.y + this.character.height < object.y + object.height - 70&&
+            this.character.canTakeDamage;
     }
 
     addObjectsToMap(object) {

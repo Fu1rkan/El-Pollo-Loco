@@ -95,10 +95,12 @@ class MovableObject extends DrawableObject {
         this.speedY = speed;
         let enemy = this.world.level.enemies;
         enemy.forEach(e => {            
-            if (this.isColliding(e)) {                
+            if (this.isColliding(e)) {          
                 this.canHitEnemys = false;
+                this.canTakeDamage = false;
                 setTimeout(() => {
                     this.canHitEnemys = true;
+                    this.canTakeDamage = true;
                 }, 100)
             };
         });        
