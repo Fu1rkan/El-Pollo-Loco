@@ -29,18 +29,33 @@ class ThrowableObject extends MovableObject {
         this.trow();
     };
 
+    isSplashed = false;
+
     trow() {
         this.speedY = 15;
-        this.applyGravity();
+        this.applyGravityBottle();
         this.animate();
         this.animateThrowingBottle();
+    };
+
+    applyGravityBottle() {
+        let intervalId = setInterval(() => {
+            if (isRunning) {
+
+                if (this.isAboutGround() && !this.isSplashed || this.speedY > 0 && !this.isSplashed) {
+                    this.y -= this.speedY;
+                    this.speedY -= this.acceleration;
+                };
+            }
+        }, 1000 / 25);
+        DrawableObject.intervalArr.push(intervalId);
     };
 
     animateThrowingBottle() {
         let intervalId = setInterval(() => {
             if (isRunning) {
 
-                if (this.y < 340) {
+                if (this.y < 340 && !this.isSplashed) {
                     this.x += 10;
                 } else {
                     clearInterval(intervalId);
@@ -64,13 +79,15 @@ class ThrowableObject extends MovableObject {
     animate() {
         let intervalId = setInterval(() => {
             if (isRunning) {
-
                 this.playAnimation(this.IMAGES_THROW_BOTTLE);
-                if (this.y >= 340) {
-                    clearInterval(intervalId);
-                    this.animateSplashedBottle();
-                }
-            }
+                world.level.enemies.forEach((e) => {
+                    if (this.y >= 340 || this.isCollidingByItem(e, this) || this.isColliding(this.world.level.endboss[0], this)) {
+                        this.isSplashed = true;
+                        clearInterval(intervalId);
+                        this.animateSplashedBottle();
+                    };
+                });
+            };
         }, 75);
         DrawableObject.intervalArr.push(intervalId);
     };

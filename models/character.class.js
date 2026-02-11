@@ -203,8 +203,6 @@ class Character extends MovableObject {
         let walkAnimationCharacterInterval = setInterval(() => {
             this.playAnimation(this.IMAGES_WALKING);
             if (!this.isWalking() || this.isHurt() || this.isAboutGround() || this.isDead() || world.character.x == 0 || world.character.x >= 4200) {
-                console.log(5);
-
                 clearInterval(walkAnimationCharacterInterval)
                 this.playCharacterAnimation()
             }
