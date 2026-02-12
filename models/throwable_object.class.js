@@ -29,8 +29,6 @@ class ThrowableObject extends MovableObject {
         this.trow();
     };
 
-    isSplashed = false;
-
     trow() {
         this.speedY = 15;
         this.applyGravityBottle();
@@ -42,7 +40,7 @@ class ThrowableObject extends MovableObject {
         let intervalId = setInterval(() => {
             if (isRunning) {
 
-                if (this.isAboutGround() && !this.isSplashed || this.speedY > 0 && !this.isSplashed) {
+                if (this.isAboutGround() || this.speedY > 0) {
                     this.y -= this.speedY;
                     this.speedY -= this.acceleration;
                 };
@@ -72,7 +70,7 @@ class ThrowableObject extends MovableObject {
             if (isRunning) {
                 this.playLimitedAnimation(this.IMAGES_BOTTLE_SPLASH, intervalId);
             }
-        }, 25);
+        }, 105);
         DrawableObject.intervalArr.push(intervalId);
     };
 
@@ -80,13 +78,13 @@ class ThrowableObject extends MovableObject {
         let intervalId = setInterval(() => {
             if (isRunning) {
                 this.playAnimation(this.IMAGES_THROW_BOTTLE);
-                world.level.enemies.forEach((e) => {
-                    if (this.y >= 340 || this.isCollidingByItem(e, this) || this.isColliding(this.world.level.endboss[0], this)) {
-                        this.isSplashed = true;
+                for (let index = 0; index < world.level.enemies.length; index++) {
+                    if (this.y >= 340 || this.isCollidingByItem(world.level.enemies[index], this) || this.isColliding(this.world.level.endboss[0], this)) {
                         clearInterval(intervalId);
                         this.animateSplashedBottle();
+                        break;
                     };
-                });
+                }
             };
         }, 75);
         DrawableObject.intervalArr.push(intervalId);
