@@ -12,52 +12,32 @@ function init() {
 }
 
 document.addEventListener('keydown', (event) => {
-    if (event.key === 'w') {
+    if (event.key === 'w' || event.key === 'W' || event.key === 'ArrowUp' || event.key === ' ') {
         keyboard.UP = true;
-    } else if (event.key === 'a') {
+    } else if (event.key === 'a' || event.key === 'A' || event.key === 'ArrowLeft') {
         keyboard.LEFT = true;
-    } else if (event.key === 's') {
+    } else if (event.key === 's' || event.key === 'S' || event.key === 'ArrowDown') {
         keyboard.DOWN = true;
-    } else if (event.key === 'd') {
+    } else if (event.key === 'd' || event.key === 'D' || event.key === 'ArrowRight') {
         keyboard.RIGHT = true;
-    } else if (event.key === ' ') {
-        keyboard.SPACE = true;
-    } else if (event.key === 'ArrowLeft') {
-        keyboard.LEFT = true;
-    } else if (event.key === 'ArrowDown') {
-        keyboard.DOWN = true;
-    } else if (event.key === 'ArrowRight') {
-        keyboard.RIGHT = true;
-    } else if (event.key === 'ArrowUp') {
-        keyboard.UP = true;
     } else if (event.key === 'e') {
         keyboard.E = true;
-    }
+    };
 
     if (checkKeyPressed() == true) {
         resetSleepingTimer();
-    }
+    };
 });
 
 document.addEventListener('keyup', (event) => {
-    if (event.key === 'w') {
+     if (event.key === 'w' || event.key === 'W' || event.key === 'ArrowUp' || event.key === ' ') {
         keyboard.UP = false;
-    } else if (event.key === 'a') {
+    } else if (event.key === 'a' || event.key === 'A' || event.key === 'ArrowLeft') {
         keyboard.LEFT = false;
-    } else if (event.key === 's') {
+    } else if (event.key === 's' || event.key === 'S' || event.key === 'ArrowDown') {
         keyboard.DOWN = false;
-    } else if (event.key === 'd') {
+    } else if (event.key === 'd' || event.key === 'D' || event.key === 'ArrowRight') {
         keyboard.RIGHT = false;
-    } else if (event.key === ' ') {
-        keyboard.SPACE = false;
-    } else if (event.key === 'ArrowLeft') {
-        keyboard.LEFT = false;
-    } else if (event.key === 'ArrowDown') {
-        keyboard.DOWN = false;
-    } else if (event.key === 'ArrowRight') {
-        keyboard.RIGHT = false;
-    } else if (event.key === 'ArrowUp') {
-        keyboard.UP = false;
     } else if (event.key === 'e') {
         keyboard.E = false;
     };

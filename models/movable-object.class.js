@@ -142,6 +142,16 @@ class MovableObject extends DrawableObject {
     hit() {
         if (!this.isHurt()) {
             this.energy -= 20;
+            let index = 0;
+            let recoilInterval = setInterval(() => {
+                if (this.x > 0) {
+                    this.x -= 3;
+                }
+                index++;
+                if (index > 30) {
+                    clearInterval(recoilInterval);
+                }
+            },1000 / 60)
         };
         if (this.energy < 0) {
             this.energy = 0
@@ -159,7 +169,7 @@ class MovableObject extends DrawableObject {
 
         //länge einmal hier ändern und unten
         //               |
-        if (timepassed < 1.5) {
+        if (timepassed < 0.5) {
             this.canTakeDamage = false;
         }else{
             this.canTakeDamage = true;
@@ -167,7 +177,7 @@ class MovableObject extends DrawableObject {
 
         //hier die andere Länge
         //                   |
-        return timepassed < 1.5;
+        return timepassed < 0.5;
     };
 
     isDead() {

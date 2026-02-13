@@ -74,15 +74,15 @@ class DrawableObject {
     };
 
     checkCollectedCoins() {
-        if (world.collectedCoins == 11) {
+        if (world.collectedCoins == 20) {
             return 5;
-        } else if (world.collectedCoins >= 8) {
+        } else if (world.collectedCoins >= 16) {
             return 4;
-        } else if (world.collectedCoins >= 6) {
+        } else if (world.collectedCoins >= 12) {
             return 3;
-        } else if (world.collectedCoins >= 4) {
+        } else if (world.collectedCoins >= 8) {
             return 2;
-        } else if (world.collectedCoins >= 2) {
+        } else if (world.collectedCoins >= 4) {
             return 1;
         } else {
             return 0;
