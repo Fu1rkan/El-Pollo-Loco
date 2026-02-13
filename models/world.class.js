@@ -183,7 +183,7 @@ class World {
 
     checkCollectBottles() {
         this.level.salsas.forEach((salsa) => {
-            if (this.character.isColliding(salsa)) {
+            if (this.character.isColliding(salsa) && this.collectedBottles < 5 ) {
                 let index = this.level.salsas.indexOf(salsa)
                 this.level.salsas.splice(index, 1);
                 this.collectedBottles += 1;

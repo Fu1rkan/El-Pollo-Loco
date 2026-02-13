@@ -86,12 +86,12 @@ function startLevel() {
             new Coin('img/8_coin/coin_1.png', 150, 150, 3600, 280),
         ],
         [
-            new Salsa('img/6_salsa_bottle/2_salsa_bottle_on_ground.png', 100, 100, 200, 330),
+            new Salsa('img/6_salsa_bottle/2_salsa_bottle_on_ground.png', 100, 100, 350, 330),
             new Salsa('img/6_salsa_bottle/2_salsa_bottle_on_ground.png', 100, 100, 1000, 330),
-            new Salsa('img/6_salsa_bottle/1_salsa_bottle_on_ground.png', 100, 100, 1500, 330),
+            new Salsa('img/6_salsa_bottle/1_salsa_bottle_on_ground.png', 100, 100, 1800, 330),
             new Salsa('img/6_salsa_bottle/1_salsa_bottle_on_ground.png', 100, 100, 2200, 330),
-            new Salsa('img/6_salsa_bottle/1_salsa_bottle_on_ground.png', 100, 100, 2600, 330),
-            new Salsa('img/6_salsa_bottle/2_salsa_bottle_on_ground.png', 100, 100, 3200, 330),
+            new Salsa('img/6_salsa_bottle/1_salsa_bottle_on_ground.png', 100, 100, 2700, 330),
+            new Salsa('img/6_salsa_bottle/2_salsa_bottle_on_ground.png', 100, 100, 3000, 330),
             new Salsa('img/6_salsa_bottle/1_salsa_bottle_on_ground.png', 100, 100, 3500, 330),
         ],
         [
