@@ -142,7 +142,7 @@ class World {
                 if (this.character.isCollidingByItem(enemy, t)) {
                     enemy.energy = 0;
                 };
-                if (this.character.isCollidingByItem(this.level.endboss[0], t) && this.bossCanTakeDmg) {
+                if (this.character.bossIsCollidingByItem(this.level.endboss[0], t) && this.bossCanTakeDmg) {
                     this.level.endboss[0].energy -= 20;
                     if (this.level.endboss[0].energy > 0) {
                         this.bossCanTakeDmg = false;
@@ -210,17 +210,17 @@ class World {
     }
 
     characterIsJumpingOn(object) {
-        return this.character.x + this.character.width > object.x &&
-            this.character.x < object.x + object.width &&
-            this.character.y + this.character.height > object.y &&
-            this.character.y + this.character.height < object.y + object.height - 70&&
+        return this.character.x + this.character.width - 40> object.x &&
+            this.character.x +15 < object.x + object.width &&
+            this.character.y + 80 + this.character.height - 85 > object.y &&
+            this.character.y + 80 + this.character.height - 85 < object.y + object.height - 70&&
             this.character.canTakeDamage;
     }
 
     addObjectsToMap(object) {
         object.forEach(o => {
             this.ctx.drawImage(o.img, o.x, o.y, o.width, o.height);
-            o.drawFrame(this.ctx);
+            // o.drawFrame(this.ctx);
         });
     };
 
@@ -229,7 +229,7 @@ class World {
             this.flipImage(object);
         };
         object.draw(this.ctx);
-        object.drawFrame(this.ctx);
+        // object.drawFrame(this.ctx);
         if (object.otherDirection) {
             this.flipImageBack(object);
         };

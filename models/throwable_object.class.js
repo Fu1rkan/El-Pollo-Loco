@@ -53,8 +53,8 @@ class ThrowableObject extends MovableObject {
         let intervalId = setInterval(() => {
             if (isRunning) {
 
-                if (this.y < 340 && !this.isSplashed) {
-                    this.x += 10;
+                if (this.y < 340) {
+                    this.x += 6;
                 } else {
                     clearInterval(intervalId);
                 };

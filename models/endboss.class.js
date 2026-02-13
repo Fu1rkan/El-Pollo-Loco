@@ -64,11 +64,11 @@ class Endboss extends MovableObject {
     };
 
     characterTouchEndboss() {
-        return world.character.x + world.character.width >= this.x && this.x + this.width >= world.character.x;
+        return world.character.x + world.character.width >= this.x + 5 && this.x + 5 + this.width -45 >= world.character.x;
     }
 
     characterDontTouchEndboss() {
-        return world.character.x + world.character.width <= this.x || this.x + this.width <= world.character.x;
+        return world.character.x + world.character.width <= this.x +5 || this.x + 5 + this.width -45 <= world.character.x;
     }
 
     endbossIsDeath() {
@@ -84,7 +84,7 @@ class Endboss extends MovableObject {
 
         //Interval => Endboss läuft
         let bossIsWalkingInterval = setInterval(() => {
-            if (this.endbossIsAngry) {
+            if (this.endbossIsAngry && this.x > 0) {
                 if (isRunning) {
                     this.moveLeft();
                 }
@@ -93,6 +93,7 @@ class Endboss extends MovableObject {
 
         //Interval => Endboss wird aktiviert wenn sich spieler nähert
         let checkCharacterApproachingEndbossInterval = setInterval(() => {
+
             if (world.character.x >= this.x - 400) {
 
                 this.endbossAlert = true;

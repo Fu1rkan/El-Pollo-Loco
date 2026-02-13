@@ -102,17 +102,17 @@ class MovableObject extends DrawableObject {
                 setTimeout(() => {
                     this.canHitEnemys = true;
                     this.canKillEnemys = true;
-                }, 100)
+                }, 100);
             };
         });        
     };
 
     //Wird von checkCollisions() ausgeführt
     isColliding(object) {
-        return this.x + this.width > object.x &&
-            this.x < object.x + object.width &&
-            this.y + this.height > object.y &&
-            this.y < object.y + object.height;
+        return this.x + 15 + this.width - 40 > object.x &&
+            this.x + 15 < object.x + object.width &&
+            this.y + 80 + this.height - 85> object.y &&
+            this.y + 80 < object.y + object.height;
     };
 
     isCollidingByItem(object, item){
@@ -120,6 +120,13 @@ class MovableObject extends DrawableObject {
             item.x < object.x + object.width &&
             item.y + item.height > object.y &&
             item.y < object.y + object.height;
+    }
+
+    bossIsCollidingByItem(object, item){
+        return item.x + item.width > object.x + 5&&
+            item.x < object.x + 5 + object.width -45 &&
+            item.y + item.height > object.y + 60&&
+            item.y < object.y + 60 + object.height -70;
     }
 
 
