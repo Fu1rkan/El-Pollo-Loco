@@ -12,6 +12,14 @@ function startLevel() {
             new Chicken(),
         ],
         [
+            new BabyChicken(),
+            new BabyChicken(),
+            new BabyChicken(),
+            new BabyChicken(),
+            new BabyChicken(),
+            new BabyChicken(),
+        ],
+        [
             new Endboss()
         ],
         [

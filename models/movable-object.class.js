@@ -116,6 +116,13 @@ class MovableObject extends DrawableObject {
             this.y + 80 < object.y + 20 + object.height - 40;
     };
 
+    isCollidingByBabyChicken(object) {
+        return this.x + 15 + this.width - 40 > object.x + 10 &&
+            this.x + 15 < object.x + 10 + object.width - 20 &&
+            this.y + 80 + this.height - 85 > object.y + 10 &&
+            this.y + 80 < object.y + 10 + object.height - 20;
+    };
+
     isCollidingByBoss(object) {
         return this.x + 15 + this.width - 40 > object.x + 60 &&
             this.x + 15 < object.x + 60 + object.width - 100 &&

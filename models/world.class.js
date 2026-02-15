@@ -43,6 +43,7 @@ class World {
         this.addObjectsToMap(this.level.coins);
         this.addObjectsToMap(this.level.salsas);
         this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.level.babyChicken);
         this.addObjectsToMap(this.level.endboss);
         this.addObjectsToMap(this.throwableObject);
         this.addToMap(this.character);
@@ -158,6 +159,46 @@ class World {
                 };
             })
         });
+        this.level.babyChicken.forEach((babyChicken) => {
+            if (this.character.isCollidingByBabyChicken(babyChicken)) {
+                if (babyChicken.energy > 0) {
+                    if (this.characterIsJumpingOnBabyChicken(babyChicken) && this.character.canHitEnemys) {
+                        this.character.jump(15);
+
+                        // weiß nicht mehr wofür das war
+                        this.jumpedOnEnemy = true
+                        
+                        babyChicken.energy = 0;
+                    } else if (this.character.canHitEnemys){
+                        this.character.hit(babyChicken);
+                        resetSleepingTimer();
+                        this.statusbarHealth.setPercentage(
+                            this.character.energy,
+                            this.statusbarHealth.STATUS_HEALTH_IMAGES
+                        );
+                    };
+                };
+            };
+            this.throwableObject.forEach(t => {
+                if (this.character.isCollidingByItem(babyChicken, t)) {
+                    babyChicken.energy = 0; 
+                };
+                if (this.character.bossIsCollidingByItem(this.level.endboss[0], t) && this.bossCanTakeDmg) {
+                    this.level.endboss[0].energy -= 20;
+                    if (this.level.endboss[0].energy > 0) {
+                        this.bossCanTakeDmg = false;
+                    }
+                    setTimeout(() => {
+                        this.bossCanTakeDmg = true;
+                    }, 2000);
+                    this.statusbarHealthEndboss.setPercentage(
+
+                        this.level.endboss[0].energy,
+                        this.statusbarHealthEndboss.STATUS_HEALTH_ENDBOSS_IMAGES
+                    );
+                };
+            })
+        });
         if (this.character.isCollidingByBoss(this.level.endboss[0])) {
             this.character.hit(this.level.endboss[0]);
             this.statusbarHealth.setPercentage(
@@ -214,6 +255,14 @@ class World {
             this.character.x +15 < object.x + 10 + object.width - 20&&
             this.character.y + 80 + this.character.height - 85 > object.y + 20&&
             this.character.y + 80 + this.character.height - 85 < object.y + 20 + object.height - 40&&
+            this.character.canTakeDamage;
+    }
+
+    characterIsJumpingOnBabyChicken(object) {
+        return this.character.x + this.character.width - 40> object.x + 10&&
+            this.character.x +15 < object.x + 10 + object.width - 20&&
+            this.character.y + 80 + this.character.height - 85 > object.y + 10&&
+            this.character.y + 80 + this.character.height - 85 < object.y + 10 + object.height - 20&&
             this.character.canTakeDamage;
     }
 
