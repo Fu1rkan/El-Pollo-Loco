@@ -169,7 +169,7 @@ class World {
 
     checkCollectCoins() {
         this.level.coins.forEach((coin) => {
-            if (this.character.isColliding(coin)) {
+            if (this.character.isCollidingToCoin(coin)) {
                 let index = this.level.coins.indexOf(coin)
                 this.level.coins.splice(index, 1);
                 this.collectedCoins += 1;
@@ -183,7 +183,7 @@ class World {
 
     checkCollectBottles() {
         this.level.salsas.forEach((salsa) => {
-            if (this.character.isColliding(salsa) && this.collectedBottles < 5 ) {
+            if (this.character.isCollidingToBottle(salsa) && this.collectedBottles < 5 ) {
                 let index = this.level.salsas.indexOf(salsa)
                 this.level.salsas.splice(index, 1);
                 this.collectedBottles += 1;
@@ -220,7 +220,7 @@ class World {
     addObjectsToMap(object) {
         object.forEach(o => {
             this.ctx.drawImage(o.img, o.x, o.y, o.width, o.height);
-            o.drawFrame(this.ctx);
+            // o.drawFrame(this.ctx);
         });
     };
 

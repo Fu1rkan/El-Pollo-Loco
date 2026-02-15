@@ -27,11 +27,11 @@ class DrawableObject {
     };
 
     drawFrame(ctx) {
-        if (this instanceof Character || this instanceof Chicken || this instanceof Endboss) {
+        if (this instanceof Character || this instanceof Chicken || this instanceof Endboss || this instanceof Coin || this instanceof Salsa) {
             ctx.beginPath();
             ctx.lineWidth = '5';
             ctx.strokeStyle = 'blue';
-            ctx.rect(this.x + 60, this.y + 120, this.width - 100, this.height - 130);
+            ctx.rect(this.x, this.y, this.width, this.height);
             ctx.stroke();
         };
     };

@@ -9,16 +9,16 @@ class MovableObject extends DrawableObject {
     canKillEnemys = true;
     canHitEnemys = true;
     animationIsDone = false;
-    
-    
-    constructor(){
+
+
+    constructor() {
         super();
     }
 
     applyGravity() {
         let intervalId = setInterval(() => {
             if (isRunning) {
-                
+
                 if (this.isAboutGround() || this.speedY > 0) {
                     this.y -= this.speedY;
                     this.speedY -= this.acceleration;
@@ -46,10 +46,10 @@ class MovableObject extends DrawableObject {
         let path = images[i];
         this.img = this.imageCache[path];
         this.currentImage++;
-        
-        if (i+1 == images.length) {
+
+        if (i + 1 == images.length) {
             this.animationIsDone = true;
-        } else{
+        } else {
             this.animationIsDone = false;
         }
     };
@@ -77,10 +77,10 @@ class MovableObject extends DrawableObject {
                 this.img = this.imageCache[path];
                 if (i + 1 !== images.length) {
                     this.currentImage++;
-                }else{
+                } else {
                     clearInterval(intervalId);
                 };
-            }            
+            }
         }, 100);
     };
 
@@ -95,8 +95,8 @@ class MovableObject extends DrawableObject {
     jump(speed) {
         this.speedY = speed;
         let enemy = this.world.level.enemies;
-        enemy.forEach(e => {            
-            if (this.isColliding(e)) {          
+        enemy.forEach(e => {
+            if (this.isColliding(e)) {
                 this.canHitEnemys = false;
                 this.canKillEnemys = false;
                 setTimeout(() => {
@@ -104,38 +104,51 @@ class MovableObject extends DrawableObject {
                     this.canKillEnemys = true;
                 }, 100);
             };
-        });        
+        });
     };
 
     //Wird von checkCollisions() ausgeführt
     isColliding(object) {
-        return this.x + 15 + this.width - 40 > object.x + 10&&
-            this.x + 15 < object.x + 10 + object.width - 20&&
-            this.y + 80 + this.height - 85> object.y + 20&&
+        return this.x + 15 + this.width - 40 > object.x + 10 &&
+            this.x + 15 < object.x + 10 + object.width - 20 &&
+            this.y + 80 + this.height - 85 > object.y + 20 &&
             this.y + 80 < object.y + 20 + object.height - 40;
     };
 
     isCollidingByBoss(object) {
-        return this.x + 15 + this.width - 40 > object.x + 60&&
-            this.x + 15 < object.x + 60 + object.width - 100&&
-            this.y + 80 + this.height - 85> object.y + 120&&
+        return this.x + 15 + this.width - 40 > object.x + 60 &&
+            this.x + 15 < object.x + 60 + object.width - 100 &&
+            this.y + 80 + this.height - 85 > object.y + 120 &&
             this.y + 80 < object.y + 120 + object.height - 130;
     };
 
-    isCollidingByItem(object, item){
+    isCollidingByItem(object, item) {
         return item.x + item.width > object.x &&
             item.x < object.x + object.width &&
             item.y + item.height > object.y &&
             item.y < object.y + object.height;
-    }
+    };
 
-    bossIsCollidingByItem(object, item){
-        return item.x + item.width > object.x + 5&&
-            item.x < object.x + 5 + object.width -45 &&
-            item.y + item.height > object.y + 60&&
-            item.y < object.y + 60 + object.height -70;
-    }
+    bossIsCollidingByItem(object, item) {
+        return item.x + item.width > object.x + 5 &&
+            item.x < object.x + 5 + object.width - 45 &&
+            item.y + item.height > object.y + 60 &&
+            item.y < object.y + 60 + object.height - 70;
+    };
 
+    isCollidingToBottle(object) {
+        return this.x + 15 + this.width - 40 > object.x + 30 &&
+            this.x + 15 < object.x + 30 + object.width - 60 &&
+            this.y + 80 + this.height - 85 > object.y + 20 &&
+            this.y + 80 < object.y + 20 + object.height - 30;
+    };
+
+    isCollidingToCoin(object) {
+        return this.x + 15 + this.width - 40 > object.x + 55 &&
+            this.x + 15 < object.x + 55 + object.width - 110 &&
+            this.y + 80 + this.height - 85 > object.y + 55 &&
+            this.y + 80 < object.y + 55 + object.height - 110;
+    };
 
     //Muss überarbeitet werden
     isCollidingByJump() {
@@ -158,11 +171,11 @@ class MovableObject extends DrawableObject {
                 if (index > 30) {
                     clearInterval(recoilInterval);
                 }
-            },1000 / 60)
+            }, 1000 / 60)
         };
         if (this.energy < 0) {
             this.energy = 0
-        } else if(this.canTakeDamage){
+        } else if (this.canTakeDamage) {
             this.lastHit = new Date().getTime();
         };
     };
@@ -178,7 +191,7 @@ class MovableObject extends DrawableObject {
         //               |
         if (timepassed < 0.5) {
             this.canTakeDamage = false;
-        }else{
+        } else {
             this.canTakeDamage = true;
         };
 
