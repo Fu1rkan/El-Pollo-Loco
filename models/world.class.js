@@ -129,7 +129,7 @@ class World {
                         
                         enemy.energy = 0;
                     } else if (this.character.canHitEnemys){
-                        this.character.hit();
+                        this.character.hit(enemy);
                         resetSleepingTimer();
                         this.statusbarHealth.setPercentage(
                             this.character.energy,
@@ -140,7 +140,7 @@ class World {
             };
             this.throwableObject.forEach(t => {
                 if (this.character.isCollidingByItem(enemy, t)) {
-                    enemy.energy = 0;
+                    enemy.energy = 0; 
                 };
                 if (this.character.bossIsCollidingByItem(this.level.endboss[0], t) && this.bossCanTakeDmg) {
                     this.level.endboss[0].energy -= 20;
@@ -159,7 +159,7 @@ class World {
             })
         });
         if (this.character.isCollidingByBoss(this.level.endboss[0])) {
-            this.character.hit();
+            this.character.hit(this.level.endboss[0]);
             this.statusbarHealth.setPercentage(
                 this.character.energy,
                 this.statusbarHealth.STATUS_HEALTH_IMAGES

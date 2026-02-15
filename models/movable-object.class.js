@@ -3,12 +3,13 @@ class MovableObject extends DrawableObject {
     otherDirection = false;
     speedY = 0;
     acceleration = 1.5;
-    energy = 1000;
+    energy = 100;
     lastHit = 0;
     canTakeDamage = true;
     canKillEnemys = true;
     canHitEnemys = true;
     animationIsDone = false;
+    canWalk = true;
 
 
     constructor() {
@@ -159,13 +160,16 @@ class MovableObject extends DrawableObject {
 
     // Spieler Schaden wird hier hinzugefügt 
     //Wird von checkCollisions() ausgeführt
-    hit() {
+    hit(enemy) {
+        
         if (!this.isHurt()) {
             this.energy -= 20;
             let index = 0;
             let recoilInterval = setInterval(() => {
-                if (this.x > 0) {
+                if (this.x > 0 && this.x < enemy.x) {
                     this.x -= 3;
+                }else if (this.x > 0 && this.x > enemy.x) {
+                    this.x += 3;
                 }
                 index++;
                 if (index > 30) {
@@ -191,8 +195,10 @@ class MovableObject extends DrawableObject {
         //               |
         if (timepassed < 0.5) {
             this.canTakeDamage = false;
+            this.canWalk = false;
         } else {
             this.canTakeDamage = true;
+            this.canWalk = true;
         };
 
         //hier die andere Länge

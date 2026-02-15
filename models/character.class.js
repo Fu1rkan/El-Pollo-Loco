@@ -255,12 +255,12 @@ class Character extends MovableObject {
         let camera = setInterval(() => {
             if (isRunning) {
 
-                if (this.world.keyboard.RIGHT == true && this.x < this.world.level.levelEndX) {
+                if (this.world.keyboard.RIGHT == true && this.x < this.world.level.levelEndX && this.canWalk) {
                     this.otherDirection = false;
                     this.moveRight();
                 };
 
-                if (this.world.keyboard.LEFT == true && this.x > 0) {
+                if (this.world.keyboard.LEFT == true && this.x > 0 && this.canWalk) {
                     this.otherDirection = true;
                     this.moveLeft();
                 };
