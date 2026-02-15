@@ -158,7 +158,7 @@ class World {
                 };
             })
         });
-        if (this.character.isColliding(this.level.endboss[0])) {
+        if (this.character.isCollidingByBoss(this.level.endboss[0])) {
             this.character.hit();
             this.statusbarHealth.setPercentage(
                 this.character.energy,
@@ -210,17 +210,17 @@ class World {
     }
 
     characterIsJumpingOn(object) {
-        return this.character.x + this.character.width - 40> object.x &&
-            this.character.x +15 < object.x + object.width &&
-            this.character.y + 80 + this.character.height - 85 > object.y &&
-            this.character.y + 80 + this.character.height - 85 < object.y + object.height - 70&&
+        return this.character.x + this.character.width - 40> object.x + 10&&
+            this.character.x +15 < object.x + 10 + object.width - 20&&
+            this.character.y + 80 + this.character.height - 85 > object.y + 20&&
+            this.character.y + 80 + this.character.height - 85 < object.y + 20 + object.height - 40&&
             this.character.canTakeDamage;
     }
 
     addObjectsToMap(object) {
         object.forEach(o => {
             this.ctx.drawImage(o.img, o.x, o.y, o.width, o.height);
-            // o.drawFrame(this.ctx);
+            o.drawFrame(this.ctx);
         });
     };
 
