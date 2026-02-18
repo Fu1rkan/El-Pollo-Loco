@@ -71,7 +71,6 @@ class Character extends MovableObject {
     constructor() {
         super();
         this.loadImg('img/2_character_pepe/2_walk/W-21.png');
-
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_JUMPING);
         this.loadImages(this.IMAGES_DEAD);
@@ -99,7 +98,19 @@ class Character extends MovableObject {
         };
     }
 
-    checkAllInteractions() {
+    isNotHurtAnymore() {
+        return !world.character.isHurt() || world.character.isDead();
+    }
+
+    isNotWalkingAnymore() {
+        return !world.character.isWalking() || world.character.isHurt() || world.character.isAboutGround() || world.character.isDead() || world.character.x == 0 || world.character.x >= 4200;
+    }
+
+    isNotSleepingAnymore() {
+        return world.character.isDead() || world.character.isHurt() || world.character.isAboutGround() || world.character.isWalking();
+    }
+
+    isNotStandingAnymore() {
         if (this.isDead() || this.isHurt() || this.isAboutGround() || this.isWalking() && world.character.x <= 4199 && !world.character.x == 0 || this.isSleeping()) {
             return true;
         } else {
@@ -107,12 +118,12 @@ class Character extends MovableObject {
         }
     }
 
-    checkAllInteractions2() {
-        if (this.isDead() || this.isHurt() || this.isAboutGround() || this.isWalking()) {
-            return true;
-        } else {
-            return false;
-        }
+    isNotTouchingTheBorder() {
+        return world.character.x <= 4199 && !world.character.x == 0;
+    }
+
+    isNotJumpingAnymore(){
+        return !world.character.isAboutGround() || world.character.isHurt() || world.character.isDead() || world.character.world.jumpedOnEnemy;
     }
 
     animate() {
@@ -125,56 +136,24 @@ class Character extends MovableObject {
 
     characterActivities(id) {
         if (world.character.isDead()) {
-            world.character.deathAnimationCharacter(id);
+            world.character.animationCharacter(id, world.character.playDeathAnimation, 100);
         } else if (world.character.isHurt()) {
-            world.character.hurtAnimationCharacter(id);
+            world.character.animationCharacter(id, world.character.playHurtAnimation, 100);
         } else if (world.character.isAboutGround()) {
-            world.character.jumpAnimationCharacter(id);
-        } else if (world.character.isWalking() && world.character.x <= 4199 && !world.character.x == 0) {
-            world.character.walkAnimationCharacter(id)
+            world.character.animationCharacter(id, world.character.playJumpAnimation, 150);
+        } else if (world.character.isWalking() && world.characterisNotTouchingTheBorder()) {
+            world.character.animationCharacter(id, world.character.playWalkAnimation, 100)
         } else if (world.character.isSleeping()) {
-            world.character.sleepAnimationCharacter(id);
+            world.character.animationCharacter(id, world.character.playSleepingAnimation, 250);
         } else {
-            world.character.standAnimationCharacter(id);
+            world.character.animationCharacter(id, world.character.playStandAnimation, 250);
         }
     }
 
-    deathAnimationCharacter(id) {
+    animationCharacter(id, interaction, time) {
         clearInterval(id);
         this.currentImage = 0;
-        this.createInterval(this.playDeathAnimation, 100);
-    }
-
-    //Stoppt characterActivities und erstellt den Interval für die Hurt Animation
-    hurtAnimationCharacter(id) {
-        clearInterval(id)
-        this.currentImage = 0;
-        this.createInterval(this.playHurtAnimation, 100);
-    }
-    //Stoppt characterActivities und erstellt den Interval für die Jump Animation
-    jumpAnimationCharacter(id) {
-        clearInterval(id)
-        this.currentImage = 0;
-        this.createInterval(this.playJumpAnimation, 150)
-    }
-
-    //Stoppt characterActivities und erstellt den Interval für die Walk Animation
-    walkAnimationCharacter(id) {
-        clearInterval(id)
-        this.currentImage = 0;
-        this.createInterval(this.playWalkAnimation, 100)
-    }
-
-    sleepAnimationCharacter(id) {
-        clearInterval(id)
-        this.currentImage = 0;
-        this.createInterval(this.playSleepingAnimation, 250);
-    }
-
-    standAnimationCharacter(id) {
-        clearInterval(id)
-        this.currentImage = 0;
-        this.createInterval(this.playStandAnimation, 250)
+        this.createInterval(interaction, time);
     }
 
     //Startet die Jump animation neu, sobald der Character auf ein Enemy springt
@@ -182,8 +161,17 @@ class Character extends MovableObject {
         if (world.character.world.jumpedOnEnemy) {
             world.character.world.jumpedOnEnemy = false
             clearInterval(id)
-            world.character.jumpAnimationCharacter(id);
+            world.character.animationCharacter(id, world.character.playJumpAnimation, 150);
         };
+    }
+
+    playJumpAnimation(id) {
+        world.character.playLimitedAnimation(world.character.IMAGES_JUMPING);
+        world.character.restartJumpAnimation(id);
+        if (world.character.isNotJumpingAnymore()) {
+            clearInterval(id)
+            world.character.playCharacterAnimation()
+        }
     }
 
     playDeathAnimation(id) {
@@ -193,32 +181,17 @@ class Character extends MovableObject {
         }, 600);
     }
 
-
-    //spielt die Animation ab und beendet das Interval sobald die Animation fertig ist. Startet anschließend characterActivities
     playHurtAnimation(id) {
         world.character.playLimitedAnimation(world.character.IMAGES_HURT);
-        if (!world.character.isHurt() || world.character.isDead()) {
+        if (world.character.isNotHurtAnymore()) {
             clearInterval(id)
             world.character.playCharacterAnimation()
         }
     }
 
-
-    //spielt die Animation ab, checkt ob nochmal gesprungen wird und beendet das Interval sobald der character wieder auf den Boden ist. Startet anschließend characterActivities
-    playJumpAnimation(id) {
-        world.character.playLimitedAnimation(world.character.IMAGES_JUMPING);
-        world.character.restartJumpAnimation(id);
-        if (!world.character.isAboutGround() || world.character.isHurt() || world.character.isDead() || world.character.world.jumpedOnEnemy) {
-            clearInterval(id)
-            world.character.playCharacterAnimation()
-        }
-    }
-
-
-    //spielt die Animation ab und beendet das Interval sobald eine andere Interaktion vom Character stattfindet. Startet anschließend characterActivities
     playWalkAnimation(id) {
         world.character.playAnimation(world.character.IMAGES_WALKING);
-        if (!world.character.isWalking() || world.character.isHurt() || world.character.isAboutGround() || world.character.isDead() || world.character.x == 0 || world.character.x >= 4200) {
+        if (world.character.isNotWalkingAnymore()) {
             clearInterval(id)
             world.character.playCharacterAnimation()
         }
@@ -227,7 +200,7 @@ class Character extends MovableObject {
 
     playSleepingAnimation(id) {
         world.character.playAnimation(world.character.IMAGES_SLEEPING);
-        if (world.character.isDead() || world.character.isHurt() || world.character.isAboutGround() || world.character.isWalking()) {
+        if (world.character.isNotSleepingAnymore()) {
             clearInterval(id);
             world.character.playCharacterAnimation();
         };
@@ -236,7 +209,7 @@ class Character extends MovableObject {
 
     playStandAnimation(id) {
         world.character.playAnimation(world.character.IMAGES_STANDING);
-        if (world.character.checkAllInteractions()) {
+        if (world.character.isNotStandingAnymore()) {
             clearInterval(id);
             world.character.playCharacterAnimation();
         }
