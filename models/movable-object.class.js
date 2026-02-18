@@ -20,10 +20,12 @@ class MovableObject extends DrawableObject {
         let intervalId = setInterval(() => {
             if (isRunning) {
 
-                if (this.isAboutGround() || this.speedY > 0) {
+                if (this.isAboutGround() || this.speedY > 1.5) {
+                    console.log(this.y);
+                    
                     this.y -= this.speedY;
                     this.speedY -= this.acceleration;
-                };
+                }
             }
         }, 1000 / 25);
         DrawableObject.intervalArr.push(intervalId);
@@ -34,12 +36,12 @@ class MovableObject extends DrawableObject {
         if (this instanceof ThrowableObject) {
             return this.y <= 340;
         } else { //kommt vom character
-            return this.y <= 225;
+            return this.y <= 228;
         };
     };
 
     isOnGround() {
-        return this.y >= 225;
+        return this.y >= 228;
     };
 
     playAnimation(images) {

@@ -3,7 +3,7 @@ class Character extends MovableObject {
     world;
     speed = 5;
     x = 0;
-    y = 223.5;
+    y = 228;
     width = 100;
     height = 200;
 
@@ -100,7 +100,7 @@ class Character extends MovableObject {
     }
 
     checkAllInteractions() {
-        if (this.isDead() || this.isHurt() || this.isAboutGround() || this.isWalking() && world.character.x <= 4199 && !world.character.x == 0|| this.isSleeping()) {
+        if (this.isDead() || this.isHurt() || this.isAboutGround() || this.isWalking() && world.character.x <= 4199 && !world.character.x == 0 || this.isSleeping()) {
             return true;
         } else {
             return false;
@@ -120,38 +120,31 @@ class Character extends MovableObject {
     };
 
     playCharacterAnimation() {
-        let intervalId = setInterval(() => {
-            if (isRunning) {
-
-                if (this.isDead()) {
-                    this.deathAnimationCharacter(intervalId);
-                } else if (this.isHurt()) {
-                    this.hurtAnimationCharacter(intervalId);
-                } else if (this.isAboutGround()) {
-                    this.jumpAnimationCharacter(intervalId);
-                } else if (this.isWalking() && world.character.x <= 4199 && !world.character.x == 0) {
-                    this.walkAnimationCharacter(intervalId)
-                } else if (this.isSleeping()) {
-                    this.sleepAnimationCharacter(intervalId);
-                } else {
-                    this.standAnimationCharacter(intervalId);
-                }
-            }
-        }, 10)
-        DrawableObject.intervalArr.push(intervalId);
+        this.createInterval(this.characterActivities, 10);
     }
 
-    deathAnimationCharacter(intervalId) {
-        clearInterval(intervalId);
+    characterActivities(id) {
+        if (world.character.isDead()) {
+            world.character.deathAnimationCharacter(id);
+        } else if (world.character.isHurt()) {
+            world.character.hurtAnimationCharacter(id);
+        } else if (world.character.isAboutGround()) {
+            world.character.jumpAnimationCharacter(id);
+        } else if (world.character.isWalking() && world.character.x <= 4199 && !world.character.x == 0) {
+            world.character.walkAnimationCharacter(id)
+        } else if (world.character.isSleeping()) {
+            world.character.sleepAnimationCharacter(id);
+        } else {
+            world.character.standAnimationCharacter(id);
+        }
+    }
 
+    deathAnimationCharacter(id) {
+        clearInterval(id);
         this.currentImage = 0;
-
-        let deatAnimationCharacterInterval = setInterval(() => {
-            this.playLastAnimation(this.IMAGES_DEAD);
-        }, 100)
-
-        DrawableObject.intervalArr.push(deatAnimationCharacterInterval);
-
+        this.createInterval(
+            () => this.playLastAnimation(this.IMAGES_DEAD), 100
+        );
         setTimeout(() => {
             world.endGame(0);
         }, 600);
@@ -161,16 +154,15 @@ class Character extends MovableObject {
         clearInterval(intervalId)
 
         this.currentImage = 0;
+        this.createInterval(this.playHurtAnimation, 100);
+    }
 
-        let hurtAnimationCharacterInterval = setInterval(() => {
-            this.playLimitedAnimation(this.IMAGES_HURT);
-            if (!this.isHurt() || this.isDead()) {
-                clearInterval(hurtAnimationCharacterInterval)
-                this.playCharacterAnimation()
-            }
-        }, 100)
-
-        DrawableObject.intervalArr.push(hurtAnimationCharacterInterval);
+    playHurtAnimation(id) {
+        world.character.playLimitedAnimation(world.character.IMAGES_HURT);
+        if (!world.character.isHurt() || world.character.isDead()) {
+            clearInterval(id)
+            world.character.playCharacterAnimation()
+        }
     }
 
     jumpAnimationCharacter(intervalId) {
@@ -254,21 +246,17 @@ class Character extends MovableObject {
     moveCamera() {
         let camera = setInterval(() => {
             if (isRunning) {
-
                 if (this.world.keyboard.RIGHT == true && this.x < this.world.level.levelEndX && this.canWalk) {
                     this.otherDirection = false;
                     this.moveRight();
                 };
-
                 if (this.world.keyboard.LEFT == true && this.x > 0 && this.canWalk) {
                     this.otherDirection = true;
                     this.moveLeft();
                 };
-
                 if (this.world.keyboard.UP == true && this.isOnGround() || this.world.keyboard.SPACE == true && this.isOnGround()) {
                     this.jump(21);
                 };
-
                 this.world.cameraX = -this.x + 100;
             }
         }, 1000 / 60);

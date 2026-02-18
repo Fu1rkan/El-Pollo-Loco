@@ -36,6 +36,22 @@ class DrawableObject {
         };
     };
 
+    createInterval(func, time) {
+        let id = setInterval(() => {
+            func(id);
+        }, time)
+        
+        this.constructor.intervalArr.push(id);
+    }
+
+    createInterval(func, time) {
+        let id = setInterval(() => {
+            func(id);
+        }, time)
+        
+        this.constructor.intervalArr.push(id);
+    }
+
     //übernimmt die Prozente vom Status
     setPercentage(percentage, statusItem) {
         this.percentage = percentage;
@@ -70,7 +86,7 @@ class DrawableObject {
         } else {
             return 0;
         };
-        
+
     };
 
     checkCollectedCoins() {
