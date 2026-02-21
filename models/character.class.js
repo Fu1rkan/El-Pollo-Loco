@@ -7,6 +7,7 @@ class Character extends MovableObject {
     width = 100;
     height = 200;
 
+    //Images vom Character beim laufen
     IMAGES_WALKING = [
         'img/2_character_pepe/2_walk/W-21.png',
         'img/2_character_pepe/2_walk/W-22.png',
@@ -16,6 +17,7 @@ class Character extends MovableObject {
         'img/2_character_pepe/2_walk/W-26.png'
     ];
 
+    //Images vom Character beim springen
     IMAGES_JUMPING = [
         'img/2_character_pepe/3_jump/J-33.png',
         'img/2_character_pepe/3_jump/J-34.png',
@@ -26,6 +28,7 @@ class Character extends MovableObject {
         'img/2_character_pepe/3_jump/J-39.png'
     ];
 
+    //Images vom Character beim sterben
     IMAGES_DEAD = [
         'img/2_character_pepe/5_dead/D-51.png',
         'img/2_character_pepe/5_dead/D-52.png',
@@ -36,12 +39,14 @@ class Character extends MovableObject {
         'img/2_character_pepe/5_dead/D-57.png'
     ];
 
+    //Images vom Character beim verletzen
     IMAGES_HURT = [
         'img/2_character_pepe/4_hurt/H-41.png',
         'img/2_character_pepe/4_hurt/H-42.png',
         'img/2_character_pepe/4_hurt/H-43.png'
     ];
 
+    //Images vom Character beim stehen
     IMAGES_STANDING = [
         'img/2_character_pepe/1_idle/idle/I-1.png',
         'img/2_character_pepe/1_idle/idle/I-2.png',
@@ -55,6 +60,7 @@ class Character extends MovableObject {
         'img/2_character_pepe/1_idle/idle/I-10.png'
     ];
 
+    //Images vom Character beim schlafen
     IMAGES_SLEEPING = [
         'img/2_character_pepe/1_idle/long_idle/I-11.png',
         'img/2_character_pepe/1_idle/long_idle/I-12.png',
@@ -68,6 +74,7 @@ class Character extends MovableObject {
         'img/2_character_pepe/1_idle/long_idle/I-20.png'
     ];
 
+    //
     constructor() {
         super();
         this.loadImg('img/2_character_pepe/2_walk/W-21.png');
@@ -141,7 +148,7 @@ class Character extends MovableObject {
             world.character.animationCharacter(id, world.character.playHurtAnimation, 100);
         } else if (world.character.isAboutGround()) {
             world.character.animationCharacter(id, world.character.playJumpAnimation, 150);
-        } else if (world.character.isWalking() && world.characterisNotTouchingTheBorder()) {
+        } else if (world.character.isWalking() && world.character.isNotTouchingTheBorder()) {
             world.character.animationCharacter(id, world.character.playWalkAnimation, 100)
         } else if (world.character.isSleeping()) {
             world.character.animationCharacter(id, world.character.playSleepingAnimation, 250);
@@ -156,7 +163,6 @@ class Character extends MovableObject {
         this.createInterval(interaction, time);
     }
 
-    //Startet die Jump animation neu, sobald der Character auf ein Enemy springt
     restartJumpAnimation(id) {
         if (world.character.world.jumpedOnEnemy) {
             world.character.world.jumpedOnEnemy = false
@@ -197,7 +203,6 @@ class Character extends MovableObject {
         }
     }
 
-
     playSleepingAnimation(id) {
         world.character.playAnimation(world.character.IMAGES_SLEEPING);
         if (world.character.isNotSleepingAnymore()) {
@@ -205,7 +210,6 @@ class Character extends MovableObject {
             world.character.playCharacterAnimation();
         };
     };
-
 
     playStandAnimation(id) {
         world.character.playAnimation(world.character.IMAGES_STANDING);

@@ -39,7 +39,6 @@ class ThrowableObject extends MovableObject {
     applyGravityBottle() {
         let intervalId = setInterval(() => {
             if (isRunning) {
-
                 if (this.isAboutGround() || this.speedY > 0) {
                     this.y -= this.speedY;
                     this.speedY -= this.acceleration;
@@ -52,7 +51,6 @@ class ThrowableObject extends MovableObject {
     animateThrowingBottle() {
         let intervalId = setInterval(() => {
             if (isRunning) {
-
                 if (this.y < 340) {
                     this.x += 6;
                 } else {
@@ -61,7 +59,6 @@ class ThrowableObject extends MovableObject {
             }
         }, 25);
         DrawableObject.intervalArr.push(intervalId);
-
     };
 
     animateSplashedBottle() {

@@ -218,18 +218,4 @@ class MovableObject extends DrawableObject {
     isDead() {
         return this.energy == 0;
     };
-
-
-    // Ist noch nicht in Betrieb. Zum pushen von Intervalen in einen Array
-    // vll beim clean coden. Alles in einem Intzervall muss in eine Funktion umgelaggert werden
-    // setStoppableInterval(fn, time) {
-    //     const id = setInterval(fn, time);
-    //     this.intervalIds.push(id);
-    // }
-
-    // stopInterval() {
-    //     this.intervalIds.forEach(i => {
-    //         clearInterval(i);
-    //     });
-    // };
 };

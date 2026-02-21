@@ -37,7 +37,18 @@ class World {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.ctx.translate(this.cameraX, 0);
+        this.drawStaticObjects();
+        this.ctx.translate(-this.cameraX, 0);
 
+        this.drawFixedObjects();
+        this.drawEndscreen();
+
+        requestAnimationFrame(() => {
+            this.draw();
+        });
+    };
+
+    drawStaticObjects() {
         this.addObjectsToMap(this.level.background);
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.coins);
@@ -47,26 +58,23 @@ class World {
         this.addObjectsToMap(this.level.endboss);
         this.addObjectsToMap(this.throwableObject);
         this.addToMap(this.character);
+    }
 
-        this.ctx.translate(-this.cameraX, 0);
+    drawFixedObjects() {
         this.addToMap(this.statusbarHealth);
         this.addToMap(this.statusbarCoin);
         this.addToMap(this.statusbarBottle);
         this.addToMap(this.statusbarHealthEndboss);
+    }
 
+    drawEndscreen() {
         if (this.gameLost) {
             this.addObjectsToMap(this.level.loseScreen);
         }
         if (this.gameWon) {
             this.addObjectsToMap(this.level.winScreen);
         }
-
-
-        let self = this;
-        requestAnimationFrame(function () {
-            self.draw();
-        });
-    };
+    }
 
     setWorld() {
         this.character.world = this;
@@ -74,131 +82,84 @@ class World {
 
     //Wird in constructor ausgeführt
     run() {
-        let intervalId = setInterval(() => {
-            if (isRunning) {
-                this.checkCollisions();
-            }
-        }, 1000 / 60);
-        let intervalThrowItems = setInterval(() => {
-            if (isRunning) {
-                this.checkThrowObjects();
-            }
-        }, 180);
-        let intervalCollectCoins = setInterval(() => {
-            if (isRunning) {
-                this.checkCollectCoins();
-            }
-        }, 180);
-        let intervalCollectBottles = setInterval(() => {
-            if (isRunning) {
-                this.checkCollectBottles();
-            }
-        }, 180);
-        DrawableObject.intervalArr.push(intervalId, intervalThrowItems, intervalCollectCoins, intervalCollectBottles);
+        this.character.createInterval(() => world.checkCollisions(), 1000 / 60)
+        this.character.createInterval(() => world.checkThrowObjects(), 180)
+        this.character.createInterval(() => world.checkCollectCoins(), 180)
+        this.character.createInterval(() => world.checkCollectBottles(), 180)
     };
 
+    canThrowBottles() {
+        return this.keyboard.E && this.collectedBottles > 0 && !this.throwCooldown;
+    }
+
     checkThrowObjects() {
-        if (this.keyboard.E && this.collectedBottles > 0 && !this.throwCooldown) {
-            this.throwCooldown = true;
-            setTimeout(() =>{
-                this.throwCooldown = false;
-            }, 2000)
-            let bottle = new ThrowableObject(this.character.x, this.character.y, this);
-            bottle.world = this;
-            this.throwableObject.push(bottle);
-            setTimeout(() => {
-                this.throwableObject.splice(bottle, 1)
-            }, 2000);
-            this.collectedBottles -= 1;
-            this.statusbarBottle.setPercentageOfBottles(
-                this.collectedBottles,
-                this.statusbarBottle.STATUSBAR_BOTTLE_IMAGES
-            );
+        if (this.canThrowBottles()) {
+            this.setCoolDown();
+            this.updateInventory();
+            this.generateBottle();
         };
+    };
+
+    generateBottle() {
+        let bottle = new ThrowableObject(this.character.x, this.character.y, this);
+        bottle.world = this;
+        this.throwableObject.push(bottle);
+
+        setTimeout(() => {
+            this.throwableObject.splice(bottle, 1)
+        }, 2000);
+    }
+
+    setCoolDown() {
+        this.throwCooldown = true;
+        setTimeout(() => {
+            this.throwCooldown = false;
+        }, 2000);
+    };
+
+    updateInventory() {
+        this.collectedBottles -= 1;
+        this.statusbarBottle.setPercentageOfBottles(
+            this.collectedBottles,
+            this.statusbarBottle.STATUSBAR_BOTTLE_IMAGES
+        );
     };
 
     //Wird von run() ausgeführt, läuft permanent
     checkCollisions() {
+        this.collisionWithChicken();
+        this.collisionWithBabyChicken();
+        this.collisionWithEndboss();
+    };
+
+    collisionWithChicken() {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy)) {
+                // evt kommt die If Abfrage raus wenn die toten enemys aus canvas verschwinden
                 if (enemy.energy > 0) {
-                    if (this.characterIsJumpingOn(enemy) && this.character.canHitEnemys) {
-                        this.character.jump(15);
-
-                        // weiß nicht mehr wofür das war
-                        this.jumpedOnEnemy = true
-                        
-                        enemy.energy = 0;
-                    } else if (this.character.canHitEnemys){
-                        this.character.hit(enemy);
-                        resetSleepingTimer();
-                        this.statusbarHealth.setPercentage(
-                            this.character.energy,
-                            this.statusbarHealth.STATUS_HEALTH_IMAGES
-                        );
-                    };
+                    this.checkCollisionByJumpingOnEnemy(enemy, 20, 40, 10, 20);
+                    this.checkCollisionWithChicken(enemy);
                 };
             };
-            this.throwableObject.forEach(t => {
-                if (this.character.isCollidingByItem(enemy, t)) {
-                    enemy.energy = 0; 
-                };
-                if (this.character.bossIsCollidingByItem(this.level.endboss[0], t) && this.bossCanTakeDmg) {
-                    this.level.endboss[0].energy -= 20;
-                    if (this.level.endboss[0].energy > 0) {
-                        this.bossCanTakeDmg = false;
-                    }
-                    setTimeout(() => {
-                        this.bossCanTakeDmg = true;
-                    }, 2000);
-                    this.statusbarHealthEndboss.setPercentage(
-
-                        this.level.endboss[0].energy,
-                        this.statusbarHealthEndboss.STATUS_HEALTH_ENDBOSS_IMAGES
-                    );
-                };
-            })
+            this.checkCollisionBottleWithEnemy(enemy);
         });
-        this.level.babyChicken.forEach((babyChicken) => {
-            if (this.character.isCollidingByBabyChicken(babyChicken)) {
-                if (babyChicken.energy > 0) {
-                    if (this.characterIsJumpingOnBabyChicken(babyChicken) && this.character.canHitEnemys) {
-                        this.character.jump(15);
-
-                        // weiß nicht mehr wofür das war
-                        this.jumpedOnEnemy = true
-                        
-                        babyChicken.energy = 0;
-                    } else if (this.character.canHitEnemys){
-                        this.character.hit(babyChicken);
-                        resetSleepingTimer();
-                        this.statusbarHealth.setPercentage(
-                            this.character.energy,
-                            this.statusbarHealth.STATUS_HEALTH_IMAGES
-                        );
-                    };
+    };
+    
+    //ist fast gleich zum oberen
+    collisionWithBabyChicken() {
+        this.level.babyChicken.forEach((enemy) => {
+            if (this.character.isColliding(enemy)) {
+                // evt kommt die If Abfrage raus wenn die toten enemys aus canvas verschwinden
+                if (enemy.energy > 0) {
+                    this.checkCollisionByJumpingOnEnemy(enemy, 20, 20, 10, 10);
+                    this.checkCollisionWithChicken(enemy);
                 };
             };
-            this.throwableObject.forEach(t => {
-                if (this.character.isCollidingByItem(babyChicken, t)) {
-                    babyChicken.energy = 0; 
-                };
-                if (this.character.bossIsCollidingByItem(this.level.endboss[0], t) && this.bossCanTakeDmg) {
-                    this.level.endboss[0].energy -= 20;
-                    if (this.level.endboss[0].energy > 0) {
-                        this.bossCanTakeDmg = false;
-                    }
-                    setTimeout(() => {
-                        this.bossCanTakeDmg = true;
-                    }, 2000);
-                    this.statusbarHealthEndboss.setPercentage(
-
-                        this.level.endboss[0].energy,
-                        this.statusbarHealthEndboss.STATUS_HEALTH_ENDBOSS_IMAGES
-                    );
-                };
-            })
+            this.checkCollisionBottleWithEnemy(enemy);
         });
+    }
+
+    collisionWithEndboss() {
         if (this.character.isCollidingByBoss(this.level.endboss[0])) {
             this.character.hit(this.level.endboss[0]);
             this.statusbarHealth.setPercentage(
@@ -206,6 +167,47 @@ class World {
                 this.statusbarHealth.STATUS_HEALTH_IMAGES
             );
         };
+    }
+
+    checkCollisionByJumpingOnEnemy(enemy, w, h, wx, hy) {
+        if (this.characterIsJumpingOn(enemy, w, h, wx, hy) && this.character.canHitEnemys) {
+            this.character.jump(15);
+            this.jumpedOnEnemy = true
+            enemy.energy = 0;
+        };
+    }
+
+    checkCollisionWithChicken(enemy) {
+        if (this.character.canHitEnemys) {
+            this.character.hit(enemy);
+            resetSleepingTimer();
+            this.statusbarHealth.setPercentage(
+                this.character.energy,
+                this.statusbarHealth.STATUS_HEALTH_IMAGES
+            );
+        };
+    }
+
+    checkCollisionBottleWithEnemy(enemy) {
+        this.throwableObject.forEach(t => {
+            if (this.character.isCollidingByItem(enemy, t)) {
+                enemy.energy = 0;
+            };
+            if (this.character.bossIsCollidingByItem(this.level.endboss[0], t) && this.bossCanTakeDmg) {
+                this.level.endboss[0].energy -= 20;
+                if (this.level.endboss[0].energy > 0) {
+                    this.bossCanTakeDmg = false;
+                }
+                setTimeout(() => {
+                    this.bossCanTakeDmg = true;
+                }, 2000);
+                this.statusbarHealthEndboss.setPercentage(
+
+                    this.level.endboss[0].energy,
+                    this.statusbarHealthEndboss.STATUS_HEALTH_ENDBOSS_IMAGES
+                );
+            };
+        });
     }
 
     checkCollectCoins() {
@@ -224,7 +226,7 @@ class World {
 
     checkCollectBottles() {
         this.level.salsas.forEach((salsa) => {
-            if (this.character.isCollidingToBottle(salsa) && this.collectedBottles < 5 ) {
+            if (this.character.isCollidingToBottle(salsa) && this.collectedBottles < 5) {
                 let index = this.level.salsas.indexOf(salsa)
                 this.level.salsas.splice(index, 1);
                 this.collectedBottles += 1;
@@ -250,19 +252,11 @@ class World {
 
     }
 
-    characterIsJumpingOn(object) {
-        return this.character.x + this.character.width - 40> object.x + 10&&
-            this.character.x +15 < object.x + 10 + object.width - 20&&
-            this.character.y + 80 + this.character.height - 85 > object.y + 20&&
-            this.character.y + 80 + this.character.height - 85 < object.y + 20 + object.height - 40&&
-            this.character.canTakeDamage;
-    }
-
-    characterIsJumpingOnBabyChicken(object) {
-        return this.character.x + this.character.width - 40> object.x + 10&&
-            this.character.x +15 < object.x + 10 + object.width - 20&&
-            this.character.y + 80 + this.character.height - 85 > object.y + 10&&
-            this.character.y + 80 + this.character.height - 85 < object.y + 10 + object.height - 20&&
+    characterIsJumpingOn(object, w, h, wx, hy) {
+        return this.character.x + this.character.width - 40 > object.x + wx &&
+            this.character.x + 15 < object.x + wx + object.width - w &&
+            this.character.y + 80 + this.character.height - 85 > object.y + hy &&
+            this.character.y + 80 + this.character.height - 85 < object.y + hy + object.height - h &&
             this.character.canTakeDamage;
     }
 
