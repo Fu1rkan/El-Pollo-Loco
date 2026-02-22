@@ -29,61 +29,54 @@ class ThrowableObject extends MovableObject {
         this.trow();
     };
 
+    bottleGetSplashed(index) {
+        return world.throwableObject[0].y >= 340 || 
+        world.throwableObject[0].isCollidingByItem(world.level.enemies[index], world.throwableObject[0]) || 
+        world.throwableObject[0].isColliding(world.throwableObject[0].world.level.endboss[0], world.throwableObject[0]);
+    }
+
     trow() {
-        this.speedY = 15;
-        this.applyGravityBottle();
-        this.animate();
-        this.animateThrowingBottle();
+        setTimeout(() => {
+            this.speedY = 15;
+            this.createInterval(world.throwableObject[0].applyGravityBottle, 1000 / 25);
+            this.createInterval(world.throwableObject[0].animate, 75);
+            this.createInterval(world.throwableObject[0].animateThrowingBottle, 25);
+        }, 10);
     };
 
-    applyGravityBottle() {
-        let intervalId = setInterval(() => {
-            if (isRunning) {
-                if (this.isAboutGround() || this.speedY > 0) {
-                    this.y -= this.speedY;
-                    this.speedY -= this.acceleration;
-                };
-            }
-        }, 1000 / 25);
-        DrawableObject.intervalArr.push(intervalId);
+    applyGravityBottle(id) {
+        if (world.throwableObject[0].isAboutGround() || world.throwableObject[0].speedY > 0) {
+            world.throwableObject[0].y -= world.throwableObject[0].speedY;
+            world.throwableObject[0].speedY -= world.throwableObject[0].acceleration;
+        } else {
+            clearInterval(id)
+        };
     };
 
-    animateThrowingBottle() {
-        let intervalId = setInterval(() => {
-            if (isRunning) {
-                if (this.y < 340) {
-                    this.x += 6;
-                } else {
-                    clearInterval(intervalId);
-                };
-            }
-        }, 25);
-        DrawableObject.intervalArr.push(intervalId);
+    animateThrowingBottle(id) {
+        if (world.throwableObject[0].y < 340) {
+            world.throwableObject[0].x += 6;
+        } else {
+            clearInterval(id);
+        };
+
     };
 
-    animateSplashedBottle() {
-        this.currentImage = 0;
-        let intervalId = setInterval(() => {
-            if (isRunning) {
-                this.playLimitedAnimation(this.IMAGES_BOTTLE_SPLASH, intervalId);
-            }
-        }, 105);
-        DrawableObject.intervalArr.push(intervalId);
+    animateSplashedBottle(id) {
+        if (isRunning) {
+            world.throwableObject[0].playLimitedAnimation(world.throwableObject[0].IMAGES_BOTTLE_SPLASH, id);
+        };
     };
 
-    animate() {
-        let intervalId = setInterval(() => {
-            if (isRunning) {
-                this.playAnimation(this.IMAGES_THROW_BOTTLE);
-                for (let index = 0; index < world.level.enemies.length; index++) {
-                    if (this.y >= 340 || this.isCollidingByItem(world.level.enemies[index], this) || this.isColliding(this.world.level.endboss[0], this)) {
-                        clearInterval(intervalId);
-                        this.animateSplashedBottle();
-                        break;
-                    };
-                }
+    animate(id) {
+        world.throwableObject[0].playAnimation(world.throwableObject[0].IMAGES_THROW_BOTTLE);
+        for (let index = 0; index < world.level.enemies.length; index++) {
+            if (world.throwableObject[0].bottleGetSplashed(index)) {
+                clearInterval(id);
+                world.throwableObject[0].currentImage = 0;
+                world.character.createInterval(world.throwableObject[0].animateSplashedBottle, 105);
+                break;
             };
-        }, 75);
-        DrawableObject.intervalArr.push(intervalId);
+        };
     };
 };

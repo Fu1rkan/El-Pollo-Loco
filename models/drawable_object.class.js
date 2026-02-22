@@ -36,7 +36,7 @@ class DrawableObject {
         };
     };
 
-    createInterval(func, time) {
+    createInterval(func, time) {        
         let id = setInterval(() => {
             func(id);
         }, time)
