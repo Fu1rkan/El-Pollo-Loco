@@ -13,12 +13,6 @@ class Clouds extends MovableObject {
 
 
     animate() {
-        let intervalId = setInterval(() => {
-            if (isRunning) {   
-                this.moveLeft();
-            }
-        }, 1000 / 60);
-        DrawableObject.intervalArr.push(intervalId);
-        // requestAnimationFrame(() => this.animate());
+        this.createInterval(() => this.moveLeft(), 1000 / 60)
     };
 };

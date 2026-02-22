@@ -17,19 +17,15 @@ class MovableObject extends DrawableObject {
     }
 
     applyGravity() {
-        let intervalId = setInterval(() => {
-            if (isRunning) {
-
-                if (this.isAboutGround() || this.speedY > 1.5) {
-                    console.log(this.y);
-                    
-                    this.y -= this.speedY;
-                    this.speedY -= this.acceleration;
-                }
-            }
-        }, 1000 / 25);
-        DrawableObject.intervalArr.push(intervalId);
+        this.createInterval(() => this.checkGravity(), 1000 / 25)
     };
+
+    checkGravity() {
+        if (this.isAboutGround() || this.speedY > 1.5) {
+            this.y -= this.speedY;
+            this.speedY -= this.acceleration;
+        }
+    }
 
     isAboutGround() {
         // checkt ob das von throwable object kommt
@@ -72,21 +68,6 @@ class MovableObject extends DrawableObject {
         }
     };
 
-    playLastAnimation(images) {
-        let intervalId = setInterval(() => {
-            if (isRunning) {
-                let i = this.currentImage % images.length;
-                let path = images[i];
-                this.img = this.imageCache[path];
-                if (i + 1 !== images.length) {
-                    this.currentImage++;
-                } else {
-                    clearInterval(intervalId);
-                };
-            }
-        }, 100);
-    };
-
     moveRight() {
         this.x += this.speed;
     };
@@ -97,67 +78,43 @@ class MovableObject extends DrawableObject {
 
     jump(speed) {
         this.speedY = speed;
-        let enemy = this.world.level.enemies;
-        enemy.forEach(e => {
-            if (this.isColliding(e)) {
-                this.canHitEnemys = false;
-                this.canKillEnemys = false;
-                setTimeout(() => {
-                    this.canHitEnemys = true;
-                    this.canKillEnemys = true;
-                }, 100);
-            };
+        this.world.level.enemies.forEach(e => {
+            this.checkJumpingOnEnemies(e);
         });
     };
 
+    checkJumpingOnEnemies(e) {
+        if (this.isColliding(e, 40, 20, 20, 10)) {
+            this.canHitEnemys = false;
+            this.canKillEnemys = false;
+            setTimeout(() => {
+                this.canHitEnemys = true;
+                this.canKillEnemys = true;
+            }, 100);
+        };
+    }
+
     //Wird von checkCollisions() ausgeführt
-    isColliding(object) {
-        return this.x + 15 + this.width - 40 > object.x + 10 &&
-            this.x + 15 < object.x + 10 + object.width - 20 &&
-            this.y + 80 + this.height - 85 > object.y + 20 &&
-            this.y + 80 < object.y + 20 + object.height - 40;
+    isColliding(object, h, w, hy, wx) {
+        return this.x + 15 + this.width - 40 > object.x + wx &&
+            this.x + 15 < object.x + wx + object.width - w &&
+            this.y + 80 + this.height - 85 > object.y + hy &&
+            this.y + 80 < object.y + hy + object.height - h;
     };
 
-    isCollidingByBabyChicken(object) {
-        return this.x + 15 + this.width - 40 > object.x + 10 &&
-            this.x + 15 < object.x + 10 + object.width - 20 &&
-            this.y + 80 + this.height - 85 > object.y + 10 &&
-            this.y + 80 < object.y + 10 + object.height - 20;
-    };
+    characterIsJumpingOn(object, w, h, wx, hy) {
+        return this.x + this.width - 40 > object.x + wx &&
+            this.x + 15 < object.x + wx + object.width - w &&
+            this.y + 80 + this.height - 85 > object.y + hy &&
+            this.y + 80 + this.height - 85 < object.y + hy + object.height - h &&
+            this.canTakeDamage;
+    }
 
-    isCollidingByBoss(object) {
-        return this.x + 15 + this.width - 40 > object.x + 60 &&
-            this.x + 15 < object.x + 60 + object.width - 100 &&
-            this.y + 80 + this.height - 85 > object.y + 120 &&
-            this.y + 80 < object.y + 120 + object.height - 130;
-    };
-
-    isCollidingByItem(object, item) {
-        return item.x + item.width > object.x &&
-            item.x < object.x + object.width &&
-            item.y + item.height > object.y &&
-            item.y < object.y + object.height;
-    };
-
-    bossIsCollidingByItem(object, item) {
-        return item.x + item.width > object.x + 5 &&
-            item.x < object.x + 5 + object.width - 45 &&
-            item.y + item.height > object.y + 60 &&
-            item.y < object.y + 60 + object.height - 70;
-    };
-
-    isCollidingToBottle(object) {
-        return this.x + 15 + this.width - 40 > object.x + 30 &&
-            this.x + 15 < object.x + 30 + object.width - 60 &&
-            this.y + 80 + this.height - 85 > object.y + 20 &&
-            this.y + 80 < object.y + 20 + object.height - 30;
-    };
-
-    isCollidingToCoin(object) {
-        return this.x + 15 + this.width - 40 > object.x + 55 &&
-            this.x + 15 < object.x + 55 + object.width - 110 &&
-            this.y + 80 + this.height - 85 > object.y + 55 &&
-            this.y + 80 < object.y + 55 + object.height - 110;
+    isCollidingByItem(object, item, h, w, hy, wx) {
+        return item.x + 30 + item.width - 60 > object.x + wx &&
+            item.x + 30 < object.x + wx + object.width - w &&
+            item.y + 20 + item.height + 30 > object.y + hy &&
+            item.y + 20 < object.y + hy + object.height - h;
     };
 
     //Muss überarbeitet werden
@@ -170,14 +127,14 @@ class MovableObject extends DrawableObject {
     // Spieler Schaden wird hier hinzugefügt 
     //Wird von checkCollisions() ausgeführt
     hit(enemy) {
-        
+
         if (!this.isHurt()) {
             this.energy -= 20;
             let index = 0;
             let recoilInterval = setInterval(() => {
                 if (this.x > 0 && this.x < enemy.x) {
                     this.x -= 3;
-                }else if (this.x > 0 && this.x > enemy.x) {
+                } else if (this.x > 0 && this.x > enemy.x) {
                     this.x += 3;
                 }
                 index++;

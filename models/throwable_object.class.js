@@ -31,8 +31,8 @@ class ThrowableObject extends MovableObject {
 
     bottleGetSplashed(index) {
         return world.throwableObject[0].y >= 340 || 
-        world.throwableObject[0].isCollidingByItem(world.level.enemies[index], world.throwableObject[0]) || 
-        world.throwableObject[0].isColliding(world.throwableObject[0].world.level.endboss[0], world.throwableObject[0]);
+        world.throwableObject[0].isCollidingByItem(world.level.enemies[index], world.throwableObject[0], 20, 20, 10, 10) || 
+        world.throwableObject[0].isCollidingByItem(world.level.endboss[0], world.throwableObject[0], 70, 45, 60, 5);
     }
 
     trow() {

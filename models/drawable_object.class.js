@@ -36,12 +36,13 @@ class DrawableObject {
         };
     };
 
-    createInterval(func, time) {        
+    createInterval(func, time) {
         let id = setInterval(() => {
             func(id);
         }, time)
         
         this.constructor.intervalArr.push(id);
+        return id;
     }
 
     //übernimmt die Prozente vom Status

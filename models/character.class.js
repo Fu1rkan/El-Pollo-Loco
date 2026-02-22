@@ -181,7 +181,7 @@ class Character extends MovableObject {
     }
 
     playDeathAnimation(id) {
-        world.character.playLastAnimation(world.character.IMAGES_DEAD);
+        world.character.playLimitedAnimation(world.character.IMAGES_DEAD);
         setTimeout(() => {
             world.endGame(0);
         }, 600);
