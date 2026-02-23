@@ -39,8 +39,8 @@ class DrawableObject {
     createInterval(func, time) {
         let id = setInterval(() => {
             func(id);
-        }, time)
-        
+        }, time);
+
         this.constructor.intervalArr.push(id);
         return id;
     }
@@ -66,51 +66,14 @@ class DrawableObject {
 
     //checkt die Prozente vom Status
     resolveImageIndex() {
-        if (this.percentage == 100) {
-            return 5;
-        } else if (this.percentage >= 80) {
-            return 4;
-        } else if (this.percentage >= 60) {
-            return 3;
-        } else if (this.percentage >= 40) {
-            return 2;
-        } else if (this.percentage >= 20) {
-            return 1;
-        } else {
-            return 0;
-        };
-
+        return Math.min(5, Math.floor(this.percentage / 20));
     };
 
     checkCollectedCoins() {
-        if (world.collectedCoins == 20) {
-            return 5;
-        } else if (world.collectedCoins >= 16) {
-            return 4;
-        } else if (world.collectedCoins >= 12) {
-            return 3;
-        } else if (world.collectedCoins >= 8) {
-            return 2;
-        } else if (world.collectedCoins >= 4) {
-            return 1;
-        } else {
-            return 0;
-        };
+        return Math.min(5, Math.floor(world.collectedCoins / 4));
     };
 
     checkCollectedBottles() {
-        if (world.collectedBottles >= 5) {
-            return 5;
-        } else if (world.collectedBottles >= 4) {
-            return 4;
-        } else if (world.collectedBottles >= 3) {
-            return 3;
-        } else if (world.collectedBottles >= 2) {
-            return 2;
-        } else if (world.collectedBottles >= 1) {
-            return 1;
-        } else {
-            return 0;
-        };
+        return Math.min(5, world.collectedBottles);
     };
 };

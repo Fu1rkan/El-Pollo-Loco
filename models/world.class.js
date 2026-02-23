@@ -99,7 +99,7 @@ class World {
         setTimeout(() => {
             this.throwableObject.splice(bottle, 1)
         }, 2500);
-    }
+    };
 
     setCoolDown() {
         this.throwCooldown = true;
@@ -232,8 +232,8 @@ class World {
 
 
     hurtEndboss() {
-        this.level.endboss[0].energy -= 20;
         if (this.level.endboss[0].energy > 0) {
+            this.level.endboss[0].energy -= 20;
             this.bossCanTakeDmg = false;
         }
         setTimeout(() => {

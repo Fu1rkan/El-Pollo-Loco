@@ -72,7 +72,7 @@ class Endboss extends MovableObject {
     }
 
     endbossIsDeath() {
-        return this.energy <= 0;
+        return this.energy == 0;
     }
 
     endbossGetHurt() {

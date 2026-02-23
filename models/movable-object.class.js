@@ -10,6 +10,7 @@ class MovableObject extends DrawableObject {
     canHitEnemys = true;
     animationIsDone = false;
     canWalk = true;
+    recoilIndex = 0;
 
 
     constructor() {
@@ -127,38 +128,47 @@ class MovableObject extends DrawableObject {
     // Spieler Schaden wird hier hinzugefügt 
     //Wird von checkCollisions() ausgeführt
     hit(enemy) {
+        this.recoilToCharacter(enemy);
+        this.resetDamageCooldown()
+    };
 
+    recoilToCharacter(enemy) {
         if (!this.isHurt()) {
             this.energy -= 20;
-            let index = 0;
-            let recoilInterval = setInterval(() => {
-                if (this.x > 0 && this.x < enemy.x) {
-                    this.x -= 3;
-                } else if (this.x > 0 && this.x > enemy.x) {
-                    this.x += 3;
-                }
-                index++;
-                if (index > 30) {
-                    clearInterval(recoilInterval);
-                }
-            }, 1000 / 60)
+            let intervalId = this.createInterval(() => this.activateRecoil(enemy, intervalId), 1000 / 60)
         };
+    }
+
+    activateRecoil(enemy, intervalId) {
+        if (this.x > 0 && this.x < enemy.x) {
+            this.x -= 3;
+        } else if (this.x > 0 && this.x > enemy.x) {
+            this.x += 3;
+        }
+        this.recoilIndex++;
+        if (this.recoilIndex > 30) {
+            clearInterval(intervalId);
+            this.recoilIndex = 0;
+        }
+    }
+
+    resetDamageCooldown() {
         if (this.energy < 0) {
             this.energy = 0
         } else if (this.canTakeDamage) {
             this.lastHit = new Date().getTime();
         };
-    };
+    }
 
     isHurt() {
-
         let timepassed = new Date().getTime() - this.lastHit;
         // zählt ab jetzt von 0 wieder auf
         timepassed = timepassed / 1000;
-        //rechnet es in Sekunden um
+        this.checkDamageCooldown(timepassed);
+        return timepassed < 0.5;
+    };
 
-        //länge einmal hier ändern und unten
-        //               |
+    checkDamageCooldown(timepassed) {
         if (timepassed < 0.5) {
             this.canTakeDamage = false;
             this.canWalk = false;
@@ -166,11 +176,7 @@ class MovableObject extends DrawableObject {
             this.canTakeDamage = true;
             this.canWalk = true;
         };
-
-        //hier die andere Länge
-        //                   |
-        return timepassed < 0.5;
-    };
+    }
 
     isDead() {
         return this.energy == 0;
