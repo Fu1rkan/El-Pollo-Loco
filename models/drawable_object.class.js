@@ -38,7 +38,9 @@ class DrawableObject {
 
     createInterval(func, time) {
         let id = setInterval(() => {
-            func(id);
+            if (isRunning) {
+                func(id);
+            }
         }, time);
 
         this.constructor.intervalArr.push(id);

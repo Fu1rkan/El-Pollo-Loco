@@ -129,17 +129,13 @@ class Character extends MovableObject {
         return world.character.x <= 4199 && !world.character.x == 0;
     }
 
-    isNotJumpingAnymore(){
+    isNotJumpingAnymore() {
         return !world.character.isAboutGround() || world.character.isHurt() || world.character.isDead() || world.character.world.jumpedOnEnemy;
     }
 
     animate() {
-        this.playCharacterAnimation();
-    };
-
-    playCharacterAnimation() {
         this.createInterval(this.characterActivities, 10);
-    }
+    };
 
     characterActivities(id) {
         if (world.character.isDead()) {
@@ -176,7 +172,7 @@ class Character extends MovableObject {
         world.character.restartJumpAnimation(id);
         if (world.character.isNotJumpingAnymore()) {
             clearInterval(id)
-            world.character.playCharacterAnimation()
+            world.character.animate();
         }
     }
 
@@ -191,7 +187,7 @@ class Character extends MovableObject {
         world.character.playLimitedAnimation(world.character.IMAGES_HURT);
         if (world.character.isNotHurtAnymore()) {
             clearInterval(id)
-            world.character.playCharacterAnimation()
+            world.character.animate();
         }
     }
 
@@ -199,7 +195,7 @@ class Character extends MovableObject {
         world.character.playAnimation(world.character.IMAGES_WALKING);
         if (world.character.isNotWalkingAnymore()) {
             clearInterval(id)
-            world.character.playCharacterAnimation()
+            world.character.animate();
         }
     }
 
@@ -207,7 +203,7 @@ class Character extends MovableObject {
         world.character.playAnimation(world.character.IMAGES_SLEEPING);
         if (world.character.isNotSleepingAnymore()) {
             clearInterval(id);
-            world.character.playCharacterAnimation();
+            world.character.animate();
         };
     };
 
@@ -215,7 +211,7 @@ class Character extends MovableObject {
         world.character.playAnimation(world.character.IMAGES_STANDING);
         if (world.character.isNotStandingAnymore()) {
             clearInterval(id);
-            world.character.playCharacterAnimation();
+            world.character.animate();
         }
     }
 
