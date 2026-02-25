@@ -35,7 +35,7 @@ class World {
 
     canThrowBottles() {
         return this.keyboard.E && this.collectedBottles > 0 && !this.throwCooldown;
-    }
+    };
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -62,14 +62,14 @@ class World {
         this.addObjectsToMap(this.level.endboss);
         this.addObjectsToMap(this.throwableObject);
         this.addToMap(this.character);
-    }
+    };
 
     drawFixedObjects() {
         this.addToMap(this.statusbarHealth);
         this.addToMap(this.statusbarCoin);
         this.addToMap(this.statusbarBottle);
         this.addToMap(this.statusbarHealthEndboss);
-    }
+    };
 
     drawEndscreen() {
         if (this.gameLost) {
@@ -78,7 +78,7 @@ class World {
         if (this.gameWon) {
             this.addObjectsToMap(this.level.winScreen);
         }
-    }
+    };
 
     setWorld() {
         this.character.world = this;
@@ -124,7 +124,7 @@ class World {
             this.character.energy,
             this.statusbarHealth.STATUS_HEALTH_IMAGES
         );
-    }
+    };
 
     updateStatusbarEndboss() {
         this.statusbarHealthEndboss.setPercentage(
@@ -138,14 +138,14 @@ class World {
             this.collectedCoins,
             this.statusbarCoin.STATUSBAR_COIN_IMAGES
         );
-    }
+    };
 
     updateStatusbarbottle() {
         this.statusbarBottle.setPercentageOfBottles(
             this.collectedBottles,
             this.statusbarBottle.STATUSBAR_BOTTLE_IMAGES
         );
-    }
+    };
 
 
 
@@ -207,7 +207,7 @@ class World {
             this.jumpedOnEnemy = true;
             enemy.energy = 0;
         };
-    }
+    };
 
     checkCollisionWithChicken(enemy) {
         if (this.character.canHitEnemys) {
@@ -227,10 +227,6 @@ class World {
         });
     }
 
-
-
-
-
     hurtEndboss() {
         if (this.level.endboss[0].energy > 0) {
             this.level.endboss[0].energy -= 20;
@@ -245,7 +241,7 @@ class World {
         if (this.character.isCollidingByItem(enemy, t, h, w, hy, wx)) {
             enemy.energy = 0;
         };
-    }
+    };
 
     checkCollectCoins() {
         this.level.coins.forEach((coin) => {
@@ -260,14 +256,14 @@ class World {
         this.level.coins.splice(index, 1);
         this.collectedCoins += 1;
         this.updateStatusbarCoin();
-    }
+    };
 
     collectBottle(bottle) {
         let index = this.level.salsas.indexOf(bottle)
         this.level.salsas.splice(index, 1);
         this.collectedBottles += 1;
         this.updateStatusbarbottle();
-    }
+    };
 
     checkCollectBottles() {
         this.level.salsas.forEach((bottle) => {
@@ -287,7 +283,7 @@ class World {
             clearInterval(i);
         });
         document.getElementById('start-button').disabled = true;
-    }
+    };
 
     addObjectsToMap(object) {
         object.forEach(o => {

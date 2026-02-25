@@ -128,16 +128,18 @@ class Character extends MovableObject {
         clearInterval(id);
         this.currentImage = 0;
         let intervalId = this.createInterval(interaction, time);
-        let intervalId2 = setInterval(() => {
-            if (func) {
-                if (func()) {
-                    clearInterval(intervalId);
-                    clearInterval(intervalId2);
-                    world.character.animate();
-                    world.character.world.jumpedOnEnemy = false
-                };
-            }
-        }, 1000 / 60);
+        let intervalId2 = this.createInterval(() => this.checkAnimationChance(intervalId, intervalId2, func), 1000 / 60);
+    };
+
+    checkAnimationChance(id, intervalId2, func) {
+        if (func) {
+            if (func()) {
+                clearInterval(id);
+                clearInterval(intervalId2);
+                world.character.animate();
+                world.character.world.jumpedOnEnemy = false;
+            };
+        };
     };
 
     playDeathAnimation() {
