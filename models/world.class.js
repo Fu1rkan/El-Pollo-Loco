@@ -203,7 +203,7 @@ class World {
 
     checkCollisionByJumpingOnEnemy(enemy, w, h, wx, hy) {
         if (this.character.characterIsJumpingOn(enemy, w, h, wx, hy) && this.character.canHitEnemys) {
-            this.character.jump(15);
+            this.character.jump(21);
             this.jumpedOnEnemy = true;
             enemy.energy = 0;
         };

@@ -3,7 +3,7 @@ class Character extends MovableObject {
     world;
     speed = 5;
     x = 0;
-    y = 228;
+    y = 229.5;
     width = 100;
     height = 200;
 
@@ -74,7 +74,6 @@ class Character extends MovableObject {
         'img/2_character_pepe/1_idle/long_idle/I-20.png'
     ];
 
-    //
     constructor() {
         super();
         this.loadImg('img/2_character_pepe/2_walk/W-21.png');
@@ -95,7 +94,7 @@ class Character extends MovableObject {
         } else {
             return false
         };
-    }
+    };
 
     isSleeping() {
         if (this.world.keyboard.KEY == false) {
@@ -103,35 +102,7 @@ class Character extends MovableObject {
         } else {
             return false;
         };
-    }
-
-    isNotHurtAnymore() {
-        return !world.character.isHurt() || world.character.isDead();
-    }
-
-    isNotWalkingAnymore() {
-        return !world.character.isWalking() || world.character.isHurt() || world.character.isAboutGround() || world.character.isDead() || world.character.x == 0 || world.character.x >= 4200;
-    }
-
-    isNotSleepingAnymore() {
-        return world.character.isDead() || world.character.isHurt() || world.character.isAboutGround() || world.character.isWalking();
-    }
-
-    isNotStandingAnymore() {
-        if (this.isDead() || this.isHurt() || this.isAboutGround() || this.isWalking() && world.character.x <= 4199 && !world.character.x == 0 || this.isSleeping()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    isNotTouchingTheBorder() {
-        return world.character.x <= 4199 && !world.character.x == 0;
-    }
-
-    isNotJumpingAnymore() {
-        return !world.character.isAboutGround() || world.character.isHurt() || world.character.isDead() || world.character.world.jumpedOnEnemy;
-    }
+    };
 
     animate() {
         this.createInterval(this.characterActivities, 10);
@@ -141,82 +112,91 @@ class Character extends MovableObject {
         if (world.character.isDead()) {
             world.character.animationCharacter(id, world.character.playDeathAnimation, 100);
         } else if (world.character.isHurt()) {
-            world.character.animationCharacter(id, world.character.playHurtAnimation, 100);
+            world.character.animationCharacter(id, world.character.playHurtAnimation, 100, world.character.isNotHurtAnymore);
         } else if (world.character.isAboutGround()) {
-            world.character.animationCharacter(id, world.character.playJumpAnimation, 150);
+            world.character.animationCharacter(id, world.character.playJumpAnimation, 150, world.character.isNotJumpingAnymore);
         } else if (world.character.isWalking() && world.character.isNotTouchingTheBorder()) {
-            world.character.animationCharacter(id, world.character.playWalkAnimation, 100)
+            world.character.animationCharacter(id, world.character.playWalkAnimation, 100, world.character.isNotWalkingAnymore)
         } else if (world.character.isSleeping()) {
-            world.character.animationCharacter(id, world.character.playSleepingAnimation, 250);
+            world.character.animationCharacter(id, world.character.playSleepingAnimation, 250, world.character.isNotSleepingAnymore);
         } else {
-            world.character.animationCharacter(id, world.character.playStandAnimation, 250);
-        }
-    }
+            world.character.animationCharacter(id, world.character.playStandAnimation, 250, world.character.isNotStandingAnymore);
+        };
+    };
 
-    animationCharacter(id, interaction, time) {
+    animationCharacter(id, interaction, time, func) {
         clearInterval(id);
         this.currentImage = 0;
-        this.createInterval(interaction, time);
-    }
+        let intervalId = this.createInterval(interaction, time);
+        let intervalId2 = setInterval(() => {
+            if (func) {
+                if (func()) {
+                    clearInterval(intervalId);
+                    clearInterval(intervalId2);
+                    world.character.animate();
+                    world.character.world.jumpedOnEnemy = false
+                };
+            }
+        }, 1000 / 60);
+    };
 
-    restartJumpAnimation(id) {
-        if (world.character.world.jumpedOnEnemy) {
-            world.character.world.jumpedOnEnemy = false
-            clearInterval(id)
-            world.character.animationCharacter(id, world.character.playJumpAnimation, 150);
-        };
-    }
-
-    playJumpAnimation(id) {
-        world.character.playLimitedAnimation(world.character.IMAGES_JUMPING);
-        world.character.restartJumpAnimation(id);
-        if (world.character.isNotJumpingAnymore()) {
-            clearInterval(id)
-            world.character.animate();
-        }
-    }
-
-    playDeathAnimation(id) {
+    playDeathAnimation() {
         world.character.playLimitedAnimation(world.character.IMAGES_DEAD);
         setTimeout(() => {
             world.endGame(0);
         }, 600);
-    }
+    };
 
-    playHurtAnimation(id) {
+    playJumpAnimation() {
+        world.character.playLimitedAnimation(world.character.IMAGES_JUMPING);
+    };
+
+    playHurtAnimation() {
         world.character.playLimitedAnimation(world.character.IMAGES_HURT);
-        if (world.character.isNotHurtAnymore()) {
-            clearInterval(id)
-            world.character.animate();
-        }
-    }
+    };
 
-    playWalkAnimation(id) {
+    playWalkAnimation() {
         world.character.playAnimation(world.character.IMAGES_WALKING);
-        if (world.character.isNotWalkingAnymore()) {
-            clearInterval(id)
-            world.character.animate();
-        }
-    }
+    };
 
-    playSleepingAnimation(id) {
+    playSleepingAnimation() {
         world.character.playAnimation(world.character.IMAGES_SLEEPING);
-        if (world.character.isNotSleepingAnymore()) {
-            clearInterval(id);
-            world.character.animate();
+    };
+
+    playStandAnimation() {
+        world.character.playAnimation(world.character.IMAGES_STANDING);
+    };
+
+    isNotHurtAnymore() {
+        return !world.character.isHurt() || world.character.isDead();
+    };
+
+    isNotWalkingAnymore() {
+        return !world.character.isWalking() || world.character.isHurt() || world.character.isAboutGround() || world.character.isDead() || world.character.x == 0 || world.character.x >= 4200;
+    };
+
+    isNotSleepingAnymore() {
+        return world.character.isDead() || world.character.isHurt() || world.character.isAboutGround() || world.character.isWalking();
+    };
+
+    isNotStandingAnymore() {
+        if (world.character.isDead() || world.character.isHurt() || world.character.isAboutGround() || world.character.isWalking() && world.character.x <= 4199 && !world.character.x == 0 || world.character.isSleeping()) {
+            return true;
+        } else {
+            return false;
         };
     };
 
-    playStandAnimation(id) {
-        world.character.playAnimation(world.character.IMAGES_STANDING);
-        if (world.character.isNotStandingAnymore()) {
-            clearInterval(id);
-            world.character.animate();
-        }
-    }
+    isNotTouchingTheBorder() {
+        return world.character.x <= 4199 && !world.character.x == 0;
+    };
+
+    isNotJumpingAnymore() {
+        return !world.character.isAboutGround() || world.character.isHurt() || world.character.isDead() || world.character.world.jumpedOnEnemy;
+    };
 
     moveCamera() {
-        this.createInterval(this.checkMovement, 1000 / 60)
+        this.createInterval(this.checkMovement, 1000 / 60);
     };
 
     checkMovement() {
@@ -232,17 +212,17 @@ class Character extends MovableObject {
             world.character.jump(21);
         };
         world.cameraX = -world.character.x + 100;
-    }
+    };
 
     isMovingRight() {
         return world.keyboard.RIGHT == true && world.character.x < world.level.levelEndX && world.character.canWalk;
-    }
+    };
 
     isMovingLeft() {
         return world.keyboard.LEFT == true && world.character.x > 0 && world.character.canWalk;
-    }
+    };
 
     isJumping() {
         return world.keyboard.UP == true && world.character.isOnGround() || world.keyboard.SPACE == true && world.character.isOnGround();
-    }
+    };
 };
