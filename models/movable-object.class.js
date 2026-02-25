@@ -80,12 +80,15 @@ class MovableObject extends DrawableObject {
     jump(speed) {
         this.speedY = speed;
         this.world.level.enemies.forEach(e => {
-            this.checkJumpingOnEnemies(e);
+            this.checkJumpingOnEnemies(e, 40, 20, 20, 10);
+        });
+        this.world.level.babyChicken.forEach(e => {
+            this.checkJumpingOnEnemies(e, 20, 20, 10, 10);
         });
     };
 
-    checkJumpingOnEnemies(e) {
-        if (this.isColliding(e, 40, 20, 20, 10)) {
+    checkJumpingOnEnemies(e, h, w, hy, wx) {
+        if (this.isColliding(e, h, w, hy, wx)) {
             this.canHitEnemys = false;
             this.canKillEnemys = false;
             setTimeout(() => {
