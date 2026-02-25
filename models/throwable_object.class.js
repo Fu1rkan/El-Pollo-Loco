@@ -51,7 +51,7 @@ class ThrowableObject extends MovableObject {
             this.y -= this.speedY;
             this.speedY -= this.acceleration;
         } else {
-            clearInterval(id)
+            clearInterval(id);
         };
     };
 

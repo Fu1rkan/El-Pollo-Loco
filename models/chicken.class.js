@@ -14,12 +14,12 @@ class Chicken extends MovableObject {
         this.loadImg('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_DEATH);
-        this.x = 760 + Math.random() * 3800;
+        this.x = 760 + Math.random() * 4000;
         this.y = 347;
         this.width = 80;
         this.height = 80;
         this.energy = 100;
-        this.speed = 0.2 + Math.random() * 0.25;
+        this.speed = 0.4 + Math.random() * 0.25;
         setTimeout(() => {
             this.animate();
         }, 1);
@@ -29,9 +29,9 @@ class Chicken extends MovableObject {
     moveInterval;
     animationInterval;
 
-    animate() {
+    animate() {        
         this.moveInterval = this.createInterval(() => this.moveLeft(), 1000 / 60);
-        this.animationInterval = this.createInterval(() => this.checkInteraction(), 200);
+        this.animationInterval = this.createInterval(() => this.checkInteraction(), 700 - (this.speed * 1000));
     };
 
     checkInteraction(id) {
@@ -41,6 +41,10 @@ class Chicken extends MovableObject {
             this.playLimitedAnimation(this.IMAGES_DEATH);
             clearInterval(this.moveInterval);
             clearInterval(this.animationInterval);
+            let index = world.level.enemies.indexOf(this);
+            setTimeout(() => {
+                world.level.enemies.splice(index, 1)
+            }, 1000);
         };
     };
 };
@@ -61,7 +65,7 @@ class BabyChicken extends MovableObject {
         this.loadImg('img/3_enemies_chicken/chicken_small/1_walk/1_w.png');
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_DEATH);
-        this.x = 760 + Math.random() * 3800;
+        this.x = 760 + Math.random() * 4000;
         this.y = 367;
         this.width = 60;
         this.height = 60;
@@ -78,16 +82,20 @@ class BabyChicken extends MovableObject {
 
     animate() {
         this.moveInterval = this.createInterval(() => this.moveLeft(), 1000 / 60);
-        this.animationInterval = this.createInterval(() => this.checkInteraction(), 200);
+        this.animationInterval = this.createInterval(() => this.checkInteraction(), 500 - (this.speed * 1000));
     };
 
-    checkInteraction(id) {
+    checkInteraction() {
         if (this.energy > 0) {
             this.playAnimation(this.IMAGES_WALKING);
         } else {
             this.playLimitedAnimation(this.IMAGES_DEATH);
             clearInterval(this.moveInterval);
             clearInterval(this.animationInterval);
+            let index = world.level.babyChicken.indexOf(this);
+            setTimeout(() => {
+                world.level.babyChicken.splice(index, 1)
+            }, 1000);
         };
     };
 };
