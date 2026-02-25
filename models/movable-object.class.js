@@ -15,7 +15,7 @@ class MovableObject extends DrawableObject {
 
     constructor() {
         super();
-    }
+    };
 
     applyGravity() {
         this.createInterval(() => this.checkGravity(), 1000 / 25)
@@ -25,8 +25,8 @@ class MovableObject extends DrawableObject {
         if (this.isAboutGround() || this.speedY > 1.5) {
             this.y -= this.speedY;
             this.speedY -= this.acceleration;
-        }
-    }
+        };
+    };
 
     isAboutGround() {
         // checkt ob das von throwable object kommt
@@ -51,7 +51,7 @@ class MovableObject extends DrawableObject {
             this.animationIsDone = true;
         } else {
             this.animationIsDone = false;
-        }
+        };
     };
 
     playLimitedAnimation(images, id) {
@@ -66,7 +66,7 @@ class MovableObject extends DrawableObject {
 
         if (id && i + 1 === images.length) {
             clearInterval(id);
-        }
+        };
     };
 
     moveRight() {
@@ -96,7 +96,7 @@ class MovableObject extends DrawableObject {
                 this.canKillEnemys = true;
             }, 100);
         };
-    }
+    };
 
     //Wird von checkCollisions() ausgeführt
     isColliding(object, h, w, hy, wx) {
@@ -112,7 +112,7 @@ class MovableObject extends DrawableObject {
             this.y + 80 + this.height - 85 > object.y + hy &&
             this.y + 80 + this.height - 85 < object.y + hy + object.height - h &&
             this.canTakeDamage;
-    }
+    };
 
     isCollidingByItem(object, item, h, w, hy, wx) {
         return item.x + 30 + item.width - 60 > object.x + wx &&
@@ -140,20 +140,20 @@ class MovableObject extends DrawableObject {
             this.energy -= 20;
             let intervalId = this.createInterval(() => this.activateRecoil(enemy, intervalId), 1000 / 60)
         };
-    }
+    };
 
     activateRecoil(enemy, intervalId) {
         if (this.x > 0 && this.x < enemy.x) {
             this.x -= 3;
         } else if (this.x > 0 && this.x > enemy.x) {
             this.x += 3;
-        }
+        };
         this.recoilIndex++;
         if (this.recoilIndex > 30) {
             clearInterval(intervalId);
             this.recoilIndex = 0;
-        }
-    }
+        };
+    };
 
     resetDamageCooldown() {
         if (this.energy < 0) {
@@ -161,7 +161,7 @@ class MovableObject extends DrawableObject {
         } else if (this.canTakeDamage) {
             this.lastHit = new Date().getTime();
         };
-    }
+    };
 
     isHurt() {
         let timepassed = new Date().getTime() - this.lastHit;
@@ -179,7 +179,7 @@ class MovableObject extends DrawableObject {
             this.canTakeDamage = true;
             this.canWalk = true;
         };
-    }
+    };
 
     isDead() {
         return this.energy == 0;

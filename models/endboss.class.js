@@ -6,7 +6,7 @@ class Endboss extends MovableObject {
         'img/4_enemie_boss_chicken/1_WALK/G2.png',
         'img/4_enemie_boss_chicken/1_WALK/G3.png',
         'img/4_enemie_boss_chicken/1_WALK/G4.png'
-    ]
+    ];
 
     IMAGES_STANDING = [
         'img/4_enemie_boss_chicken/2_alert/G5.png',
@@ -31,19 +31,19 @@ class Endboss extends MovableObject {
         'img/4_enemie_boss_chicken/3_attack/G18.png',
         'img/4_enemie_boss_chicken/3_attack/G19.png',
         'img/4_enemie_boss_chicken/3_attack/G20.png'
-    ]
+    ];
 
     IMAGES_HURT = [
         'img/4_enemie_boss_chicken/4_hurt/G21.png',
         'img/4_enemie_boss_chicken/4_hurt/G22.png',
         'img/4_enemie_boss_chicken/4_hurt/G23.png'
-    ]
+    ];
 
     IMAGES_DEAD = [
         'img/4_enemie_boss_chicken/5_dead/G24.png',
         'img/4_enemie_boss_chicken/5_dead/G25.png',
         'img/4_enemie_boss_chicken/5_dead/G26.png'
-    ]
+    ];
 
     constructor() {
         super();
@@ -65,25 +65,25 @@ class Endboss extends MovableObject {
 
     characterTouchEndboss() {
         return world.character.x + world.character.width >= this.x + 5 && this.x + 5 + this.width - 45 >= world.character.x;
-    }
+    };
 
     characterDontTouchEndboss() {
         return world.character.x + world.character.width <= this.x + 5 || this.x + 5 + this.width - 45 <= world.character.x;
-    }
+    };
 
     endbossIsDeath() {
         return this.energy == 0;
-    }
+    };
 
     endbossGetHurt() {
         return !world.bossCanTakeDmg;
-    }
+    };
 
     bossIsWalking() {
         if (world.level.endboss[0].endbossIsAngry && world.level.endboss[0].x > 0) {
             world.level.endboss[0].moveLeft();
-        }
-    }
+        };
+    };
 
     checkCharacterApproachingEndboss(id) {
         if (world.character.x >= world.level.endboss[0].x - 400) {
@@ -96,9 +96,9 @@ class Endboss extends MovableObject {
     }
 
     animate() {
-        this.createInterval(this.playEndbossAnimation, 1000 / 60)
-        this.createInterval(this.bossIsWalking, 1000 / 60)
-        this.createInterval(this.checkCharacterApproachingEndboss, 50)
+        this.createInterval(this.playEndbossAnimation, 1000 / 60);
+        this.createInterval(this.bossIsWalking, 1000 / 60);
+        this.createInterval(this.checkCharacterApproachingEndboss, 50);
     };
 
 
@@ -109,8 +109,8 @@ class Endboss extends MovableObject {
             world.level.endboss[0].animationEndboss(id, world.level.endboss[0].playAlertAnimation, 250);
         } else {
             world.level.endboss[0].animationEndboss(id, world.level.endboss[0].playStandAnimation, 500);
-        }
-    }
+        };
+    };
 
     checkEndbossActivity(id) {
         if (world.level.endboss[0].endbossIsDeath()) {
@@ -121,14 +121,14 @@ class Endboss extends MovableObject {
             world.level.endboss[0].animationEndboss(id, world.level.endboss[0].playAttackAnimation, 150);
         } else {
             world.level.endboss[0].animationEndboss(id, world.level.endboss[0].playWalkAnimation, 150);
-        }
-    }
+        };
+    };
 
     animationEndboss(id, interaction, time) {
         clearInterval(id);
         this.currentImage = 0;
         this.createInterval(interaction, time);
-    }
+    };
 
     playHurtAnimation(id) {
         world.level.endboss[0].playAnimation(world.level.endboss[0].IMAGES_HURT)
@@ -176,5 +176,5 @@ class Endboss extends MovableObject {
         setTimeout(() => {
             world.endGame(1);
         }, 600);
-    }
+    };
 };
