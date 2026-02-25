@@ -74,10 +74,10 @@ class World {
     drawEndscreen() {
         if (this.gameLost) {
             this.addObjectsToMap(this.level.loseScreen);
-        }
+        };
         if (this.gameWon) {
             this.addObjectsToMap(this.level.winScreen);
-        }
+        };
     };
 
     setWorld() {
@@ -86,20 +86,27 @@ class World {
 
     //Wird in constructor ausgeführt
     run() {
-        this.character.createInterval(() => world.checkCollisions(), 1000 / 60)
-        this.character.createInterval(() => world.checkThrowObjects(), 180)
-        this.character.createInterval(() => world.checkCollectCoins(), 180)
-        this.character.createInterval(() => world.checkCollectBottles(), 180)
+        this.character.createInterval(() => world.checkCollisions(), 1000 / 60);
+        this.character.createInterval(() => world.checkThrowObjects(), 180);
+        this.character.createInterval(() => world.checkCollectCoins(), 180);
+        this.character.createInterval(() => world.checkCollectBottles(), 180);
     };
 
     generateBottle() {
         let bottle = new ThrowableObject(this.character.x, this.character.y, this);
         bottle.world = this;
         this.throwableObject.push(bottle);
-        setTimeout(() => {
-            this.throwableObject.splice(bottle, 1)
-        }, 2500);
+        let intervalId = this.character.createInterval(() => this.checkBottleSplashed(bottle, intervalId))
     };
+
+    checkBottleSplashed(bottle, intervalId) {
+        if (bottle.isSplashed) {
+            setTimeout(() => {
+                this.throwableObject.splice(bottle, 1);
+            }, 900);
+            clearInterval(intervalId); 
+        }
+    }
 
     setCoolDown() {
         this.throwCooldown = true;
