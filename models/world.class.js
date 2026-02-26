@@ -4,6 +4,7 @@ class World {
     ctx;
     keyboard;
     cameraX = 0;
+    requestAnimation;
     statusbarHealth = new StatusbarHealth();
     statusbarCoin = new StatusBarCoin();
     statusbarBottle = new StatusBarBottle();
@@ -18,6 +19,7 @@ class World {
     collectedCoins = 0;
     collectedBottles = 0;
     throwCooldown = false;
+
 
 
 
@@ -37,7 +39,7 @@ class World {
         return this.keyboard.E && this.collectedBottles > 0 && !this.throwCooldown;
     };
 
-    draw() {
+    draw() {        
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.ctx.translate(this.cameraX, 0);
@@ -47,7 +49,7 @@ class World {
         this.drawFixedObjects();
         this.drawEndscreen();
 
-        requestAnimationFrame(() => {
+        this.requestAnimation = requestAnimationFrame(() => {
             this.draw();
         });
     };
@@ -179,7 +181,7 @@ class World {
             if (this.character.isColliding(enemy, 40, 20, 20, 10)) {
                 // evt kommt die If Abfrage raus wenn die toten enemys aus canvas verschwinden
                 if (enemy.energy > 0) {
-                    this.checkCollisionByJumpingOnEnemy(enemy, 20, 40, 10, 20);
+                    this.checkCollisionByJumpingOnEnemy(enemy, 20, 40, 10, 20, 18);
                     this.checkCollisionWithChicken(enemy);
                 };
             };
@@ -193,7 +195,7 @@ class World {
             if (this.character.isColliding(enemy, 20, 20, 10, 10)) {
                 // evt kommt die If Abfrage raus wenn die toten enemys aus canvas verschwinden
                 if (enemy.energy > 0) {
-                    this.checkCollisionByJumpingOnEnemy(enemy, 20, 20, 10, 10);
+                    this.checkCollisionByJumpingOnEnemy(enemy, 20, 20, 10, 10, 18);
                     this.checkCollisionWithChicken(enemy);
                 };
             };
@@ -203,14 +205,14 @@ class World {
 
     collisionWithEndboss() {
         if (this.character.isColliding(this.level.endboss[0], 130, 100, 120, 60)) {
-            this.character.hit(this.level.endboss[0]);
+            this.character.hit(this.level.endboss[0], 40);
             this.updateStatusbarCharacter();
         };
     };
 
-    checkCollisionByJumpingOnEnemy(enemy, w, h, wx, hy) {
+    checkCollisionByJumpingOnEnemy(enemy, w, h, wx, hy, jh) {
         if (this.character.characterIsJumpingOn(enemy, w, h, wx, hy) && this.character.canHitEnemys) {
-            this.character.jump(18);
+            this.character.jump(jh);
             this.jumpedOnEnemy = true;
             enemy.energy = 0;
         };
@@ -218,7 +220,7 @@ class World {
 
     checkCollisionWithChicken(enemy) {
         if (this.character.canHitEnemys) {
-            this.character.hit(enemy);
+            this.character.hit(enemy, 20);
             resetSleepingTimer();
             this.updateStatusbarCharacter();
         };

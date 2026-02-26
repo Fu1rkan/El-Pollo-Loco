@@ -31,10 +31,8 @@ class ThrowableObject extends MovableObject {
         this.trow();
     };
 
-    bottleGetSplashed(index) {
-        return this.y >= 340 ||
-            this.isCollidingByItem(world.level.enemies[index], this, 20, 20, 10, 10) ||
-            this.isCollidingByItem(world.level.endboss[0], this, 70, 45, 60, 5);
+    bottleGetSplashed(enemy, h, w, hy, wx) {
+        return this.y >= 340 || this.isCollidingByItem(enemy, this, h, w, hy, wx);
     }
 
     trow() {
@@ -46,7 +44,7 @@ class ThrowableObject extends MovableObject {
         }, 10);
     };
 
-    applyGravityBottle(id) {        
+    applyGravityBottle(id) {
         if (this.isAboutGround() || this.speedY > 0) {
             this.y -= this.speedY;
             this.speedY -= this.acceleration;
@@ -55,7 +53,7 @@ class ThrowableObject extends MovableObject {
         };
     };
 
-    animateThrowingBottle(id) {        
+    animateThrowingBottle(id) {
         if (this.y < 340) {
             this.x += 6;
         } else {
@@ -63,20 +61,27 @@ class ThrowableObject extends MovableObject {
         };
     };
 
-    animateSplashedBottle(id) {        
+    animateSplashedBottle(id) {
         this.playLimitedAnimation(this.IMAGES_BOTTLE_SPLASH, id);
     };
 
-    animate(id) {        
+    animate(id) {
         this.playAnimation(this.IMAGES_THROW_BOTTLE);
-        for (let index = 0; index < world.level.enemies.length; index++) {
-            if (this.bottleGetSplashed(index)) {
-                this.isSplashed = true;
-                clearInterval(id);
-                this.currentImage = 0;
-                let intervalId = world.character.createInterval(() => this.animateSplashedBottle(intervalId), 105);
-                break;
-            };
-        };
+        world.level.enemies.forEach(enemy => {
+            this.checkSplashByHittingEnemy(enemy, id, 40, 20, 20, 10);
+        });
+        world.level.babyChicken.forEach(enemy => {
+            this.checkSplashByHittingEnemy(enemy, id, 20, 20, 10, 10);
+        });
+        this.checkSplashByHittingEnemy(world.level.endboss[0], id, 70, 45, 60, 5)
     };
+
+    checkSplashByHittingEnemy(enemy, id, h, w, hy, wx) {
+        if (this.bottleGetSplashed(enemy, h, w, hy, wx)) {
+            this.isSplashed = true;
+            clearInterval(id);
+            this.currentImage = 0;
+            let intervalId = world.character.createInterval(() => this.animateSplashedBottle(intervalId), 105);
+        };
+    }
 };

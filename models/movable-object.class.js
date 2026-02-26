@@ -130,14 +130,14 @@ class MovableObject extends DrawableObject {
 
     // Spieler Schaden wird hier hinzugefügt 
     //Wird von checkCollisions() ausgeführt
-    hit(enemy) {
-        this.recoilToCharacter(enemy);
+    hit(enemy, dmg) {
+        this.recoilToCharacter(enemy, dmg);
         this.resetDamageCooldown()
     };
 
-    recoilToCharacter(enemy) {
+    recoilToCharacter(enemy, dmg) {
         if (!this.isHurt()) {
-            this.energy -= 20;
+            this.energy -= dmg;
             let intervalId = this.createInterval(() => this.activateRecoil(enemy, intervalId), 1000 / 60)
         };
     };
@@ -157,7 +157,7 @@ class MovableObject extends DrawableObject {
 
     resetDamageCooldown() {
         if (this.energy < 0) {
-            this.energy = 0
+            this.energy = 0;
         } else if (this.canTakeDamage) {
             this.lastHit = new Date().getTime();
         };

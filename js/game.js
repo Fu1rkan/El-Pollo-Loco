@@ -30,7 +30,7 @@ document.addEventListener('keydown', (event) => {
 });
 
 document.addEventListener('keyup', (event) => {
-     if (event.key === 'w' || event.key === 'W' || event.key === 'ArrowUp' || event.key === ' ') {
+    if (event.key === 'w' || event.key === 'W' || event.key === 'ArrowUp' || event.key === ' ') {
         keyboard.UP = false;
     } else if (event.key === 'a' || event.key === 'A' || event.key === 'ArrowLeft') {
         keyboard.LEFT = false;
@@ -54,11 +54,12 @@ function checkKeyPressed() {
 }
 
 function startGame() {
+    isRunning = true;
     document.getElementById('canvas').classList.remove('background-img');
     document.getElementById('start-button').innerHTML = 'Pause';
     document.getElementById('start-button').setAttribute('onclick', 'pauseGame()')
-
     document.getElementById('restart-button').disabled = false;
+    document.getElementById('home-button').disabled = false;
     init();
 }
 
@@ -68,9 +69,6 @@ function restartGame() {
     });
     DrawableObject.intervalArr = [];
     clearTimeout(timer);
-    level1.enemies = [];
-    level1.clouds = [];
-    level1.backgroundObjects = [];
     keyboard.KEY = true;
     document.getElementById('start-button').disabled = false;
     init();
@@ -86,6 +84,22 @@ function resumeGame() {
     isRunning = true;
     document.getElementById('start-button').innerHTML = 'pause';
     document.getElementById('start-button').setAttribute('onclick', 'pauseGame()')
+}
+
+function homeMenu() {
+    DrawableObject.intervalArr.forEach(i => {
+        clearInterval(i);
+    });
+    DrawableObject.intervalArr = [];
+    clearTimeout(timer);
+    keyboard.KEY = true;
+    cancelAnimationFrame(world.requestAnimation);
+    world.ctx.clearRect(0, 0, 720, 480)
+    document.getElementById('canvas').classList.add('background-img');
+    document.getElementById('start-button').innerHTML = 'Start';
+    document.getElementById('start-button').setAttribute('onclick', 'startGame()');
+    document.getElementById('restart-button').disabled = true;
+    document.getElementById('home-button').disabled = true;
 }
 
 function resetSleepingTimer() {

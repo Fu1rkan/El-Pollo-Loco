@@ -23,7 +23,8 @@
     <script src="./js/game.js"></script>
     <title>El Pollo Loco</title>
 </head>
-<body onload="startGame()">
+<!-- <body onload="startGame()"> -->
+<body>
     <h1>El Pollo Loco</h1>
 
     <canvas id="canvas" width="720" height="480" class="background-img"></canvas>
@@ -31,6 +32,9 @@
     <section class="btn">
         <button onclick="restartGame()" id="restart-button" disabled="true">
             Restart
+        </button>
+        <button onclick="homeMenu()" id="home-button" disabled="true">
+            Home
         </button>
         <button onclick="startGame()" id="start-button">
             Start
