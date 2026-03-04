@@ -64,6 +64,7 @@ function startGame() {
 }
 
 function restartGame() {
+    resumeGame();
     DrawableObject.intervalArr.forEach(i => {
         clearInterval(i);
     });
@@ -71,25 +72,26 @@ function restartGame() {
     clearTimeout(timer);
     keyboard.KEY = true;
     document.getElementById('start-button').disabled = false;
+    document.getElementById('pause-menu').classList.add('d_none');
+    cancelAnimationFrame(world.requestAnimation);
     init();
 }
 
 function pauseGame() {
     isRunning = false;
-    document.getElementById('start-button').innerHTML = 'resume';
-    document.getElementById('start-button').setAttribute('onclick', 'resumeGame()')
+    document.getElementById('pause-menu').classList.remove('d_none');
 }
 
 function resumeGame() {
     isRunning = true;
-    document.getElementById('start-button').innerHTML = 'pause';
-    document.getElementById('start-button').setAttribute('onclick', 'pauseGame()')
+    document.getElementById('pause-menu').classList.add('d_none');
 }
 
 function homeMenu() {
     DrawableObject.intervalArr.forEach(i => {
         clearInterval(i);
     });
+    document.getElementById('pause-menu').classList.add('d_none');
     DrawableObject.intervalArr = [];
     clearTimeout(timer);
     keyboard.KEY = true;

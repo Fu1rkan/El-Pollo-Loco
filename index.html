@@ -26,9 +26,15 @@
 <!-- <body onload="startGame()"> -->
 <body>
     <h1>El Pollo Loco</h1>
-    
-    <canvas id="canvas" width="720" height="480" class="background-img"></canvas>
-    <img src="./img/background_img/canvas_border.png" alt="" class="canvas-border">
+    <section class="section-canvas test">
+        <div id="pause-menu" class="pause-menu d_none">
+            <button onclick="resumeGame()">
+                resume
+            </button>
+        </div>
+        <canvas id="canvas" width="720" height="480" class="background-img"></canvas>
+        <img src="./img/background_img/canvas_border.png" alt="" class="canvas-border">
+    </section>
     <section class="btn">
         <button onclick="restartGame()" id="restart-button" disabled="true">
             Restart
