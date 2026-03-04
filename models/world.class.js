@@ -208,6 +208,7 @@ class World {
             this.character.hit(this.level.endboss[0], 40);
             this.updateStatusbarCharacter();
         };
+        this.checkCollisionBottleWithEnemy(enemy, 130, 100, 120, 60);
     };
 
     checkCollisionByJumpingOnEnemy(enemy, w, h, wx, hy, jh) {
