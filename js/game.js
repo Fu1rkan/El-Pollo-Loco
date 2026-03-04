@@ -9,7 +9,7 @@ function init() {
     world = new World(canvas, keyboard);
     startTimer();
     console.log('My Character is', world.character);
-}
+};
 
 document.addEventListener('keydown', (event) => {
     if (event.key === 'w' || event.key === 'W' || event.key === 'ArrowUp' || event.key === ' ') {
@@ -47,21 +47,20 @@ function startTimer() {
     timer = setTimeout(() => {
         keyboard.KEY = false
     }, 15000);
-}
+};
 
 function checkKeyPressed() {
     return keyboard.UP || keyboard.RIGHT || keyboard.LEFT || keyboard.SPACE || keyboard.E;
-}
+};
 
 function startGame() {
     isRunning = true;
     document.getElementById('canvas').classList.remove('background-img');
-    document.getElementById('start-button').innerHTML = 'Pause';
-    document.getElementById('start-button').setAttribute('onclick', 'pauseGame()')
+    document.getElementById('start-button').disabled = true;
+    document.getElementById('pause-button').disabled = false;
     document.getElementById('restart-button').disabled = false;
-    document.getElementById('home-button').disabled = false;
     init();
-}
+};
 
 function restartGame() {
     resumeGame();
@@ -71,38 +70,40 @@ function restartGame() {
     DrawableObject.intervalArr = [];
     clearTimeout(timer);
     keyboard.KEY = true;
-    document.getElementById('start-button').disabled = false;
     document.getElementById('pause-menu').classList.add('d_none');
+    document.getElementById('pause-buttons').classList.add('d_none');
     cancelAnimationFrame(world.requestAnimation);
     init();
-}
+};
 
 function pauseGame() {
     isRunning = false;
     document.getElementById('pause-menu').classList.remove('d_none');
-}
+    document.getElementById('pause-buttons').classList.remove('d_none');
+};
 
 function resumeGame() {
     isRunning = true;
     document.getElementById('pause-menu').classList.add('d_none');
-}
+    document.getElementById('pause-buttons').classList.add('d_none');
+};
 
 function homeMenu() {
     DrawableObject.intervalArr.forEach(i => {
         clearInterval(i);
     });
     document.getElementById('pause-menu').classList.add('d_none');
+    document.getElementById('pause-buttons').classList.add('d_none');
     DrawableObject.intervalArr = [];
     clearTimeout(timer);
     keyboard.KEY = true;
     cancelAnimationFrame(world.requestAnimation);
     world.ctx.clearRect(0, 0, 720, 480)
     document.getElementById('canvas').classList.add('background-img');
-    document.getElementById('start-button').innerHTML = 'Start';
-    document.getElementById('start-button').setAttribute('onclick', 'startGame()');
     document.getElementById('restart-button').disabled = true;
-    document.getElementById('home-button').disabled = true;
-}
+    document.getElementById('pause-button').disabled = true;
+    document.getElementById('start-button').disabled = false;
+};
 
 function resetSleepingTimer() {
     clearTimeout(timer);
@@ -110,4 +111,4 @@ function resetSleepingTimer() {
     timer = setTimeout(() => {
         keyboard.KEY = false
     }, 15000);
-}
+};

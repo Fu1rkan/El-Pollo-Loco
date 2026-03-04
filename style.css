@@ -62,11 +62,20 @@ canvas {
     z-index: 1;
 }
 
-.pause-menu button{
+.pause-buttons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    z-index: 5;
+}
+
+.resume-button:hover {
+    transform: translate(-50%, -50%) scale(1.05);
 }
 
 .background-img {
@@ -104,7 +113,7 @@ button:active {
     transform: scale(1);
 }
 
-.d_none{
+.d_none {
     display: none;
 }
 
