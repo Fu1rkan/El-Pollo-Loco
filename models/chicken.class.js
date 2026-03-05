@@ -41,8 +41,8 @@ class Chicken extends MovableObject {
             this.playLimitedAnimation(this.IMAGES_DEATH);
             clearInterval(this.moveInterval);
             clearInterval(this.animationInterval);
-            let index = world.level.enemies.indexOf(this);
             setTimeout(() => {
+                let index = world.level.enemies.indexOf(this);
                 world.level.enemies.splice(index, 1)
             }, 1000);
         };
