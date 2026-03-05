@@ -208,7 +208,7 @@ class World {
             this.character.hit(this.level.endboss[0], 40);
             this.updateStatusbarCharacter();
         };
-        this.checkCollisionBottleWithEnemy(enemy, 130, 100, 120, 60);
+        this.checkCollisionBottleWithEnemy(this.level.endboss[0], 70, 45, 60, 5);
     };
 
     checkCollisionByJumpingOnEnemy(enemy, w, h, wx, hy, jh) {
@@ -229,13 +229,16 @@ class World {
 
     checkCollisionBottleWithEnemy(enemy, h, w, hy, wx) {
         this.throwableObject.forEach(t => {
-            this.killEnemy(enemy, t, h, w, hy, wx);
-            if (this.character.isCollidingByItem(this.level.endboss[0], t, 70, 45, 60, 5) && this.bossCanTakeDmg) {
-                this.hurtEndboss();
-                this.updateStatusbarEndboss();
+            if (enemy == world.level.endboss[0]) {
+                if (this.character.isCollidingByItem(this.level.endboss[0], t, 70, 45, 60, 5) && this.bossCanTakeDmg) {   
+                    this.hurtEndboss();
+                    this.updateStatusbarEndboss();
+                }
+            }else{
+                this.killEnemy(enemy, t, h, w, hy, wx);
             };
         });
-    }
+    };
 
     hurtEndboss() {
         if (this.level.endboss[0].energy > 0) {
