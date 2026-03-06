@@ -47,21 +47,21 @@ class Endboss extends MovableObject {
 
     constructor() {
         super();
-        this.loadImg(this.IMAGES_STANDING[0]);
-        this.loadImages(this.IMAGES_STANDING);
-        this.loadImages(this.IMAGES_ALERT);
-        this.loadImages(this.IMAGES_WALK);
-        this.loadImages(this.IMAGES_ATTACK);
-        this.loadImages(this.IMAGES_HURT);
-        this.loadImages(this.IMAGES_DEAD);
         this.x = 4500;
         this.y = 140;
         this.width = 300;
         this.height = 300;
         this.energy = 100;
         this.speed = 2;
+        this.getImages();
         this.animate();
+        this.createInterval(this.bossIsWalking, 1000 / 60);
+        this.createInterval(this.checkCharacterApproachingEndboss, 50);
     };
+
+    animate() {
+        this.createInterval(this.playEndbossAnimation, 1000 / 60);
+    }
 
     characterTouchEndboss() {
         return world.character.x + world.character.width >= this.x + 5 && this.x + 5 + this.width - 45 >= world.character.x;
@@ -79,36 +79,60 @@ class Endboss extends MovableObject {
         return !world.bossCanTakeDmg;
     };
 
+    endbossIsAlerting(){
+        return world.level.endboss[0].endbossAlert;
+    }
+
+    endbossIsNotAlerting(){
+        return !world.level.endboss[0].endbossAlert;
+    }
+
+    endbossIsHurt(){
+        return world.bossCanTakeDmg;
+    }
+
+    checkAttacking(){
+        return world.level.endboss[0].characterDontTouchEndboss() && world.level.endboss[0].animationIsDone;
+    }
+
     bossIsWalking() {
         if (world.level.endboss[0].endbossIsAngry && world.level.endboss[0].x > 0) {
             world.level.endboss[0].moveLeft();
         };
     };
 
+    checkInteractions() {
+        return world.level.endboss[0].characterTouchEndboss() || world.level.endboss[0].endbossGetHurt() || world.level.endboss[0].endbossIsDeath()
+    }
+
     checkCharacterApproachingEndboss(id) {
         if (world.character.x >= world.level.endboss[0].x - 400) {
             world.level.endboss[0].endbossAlert = true;
             setTimeout(() => {
-                world.level.endboss[0].endbossAlert = false
-            }, 1500)
+                world.level.endboss[0].endbossAlert = false;
+                world.level.endboss[0].endbossIsAngry = true;
+            }, 1500);
             clearInterval(id);
-        }
-    }
-
-    animate() {
-        this.createInterval(this.playEndbossAnimation, 1000 / 60);
-        this.createInterval(this.bossIsWalking, 1000 / 60);
-        this.createInterval(this.checkCharacterApproachingEndboss, 50);
+        };
     };
 
+    getImages() {
+        this.loadImg(this.IMAGES_STANDING[0]);
+        this.loadImages(this.IMAGES_STANDING);
+        this.loadImages(this.IMAGES_ALERT);
+        this.loadImages(this.IMAGES_WALK);
+        this.loadImages(this.IMAGES_ATTACK);
+        this.loadImages(this.IMAGES_HURT);
+        this.loadImages(this.IMAGES_DEAD);
+    };
 
     playEndbossAnimation(id) {
         if (world.level.endboss[0].endbossIsAngry) {
             world.level.endboss[0].checkEndbossActivity(id);
         } else if (world.level.endboss[0].endbossAlert) {
-            world.level.endboss[0].animationEndboss(id, world.level.endboss[0].playAlertAnimation, 250);
+            world.level.endboss[0].animationEndboss(id, world.level.endboss[0].playAlertAnimation, 250, world.level.endboss[0].endbossIsNotAlerting);
         } else {
-            world.level.endboss[0].animationEndboss(id, world.level.endboss[0].playStandAnimation, 500);
+            world.level.endboss[0].animationEndboss(id, world.level.endboss[0].playStandAnimation, 500, world.level.endboss[0].endbossIsAlerting);
         };
     };
 
@@ -116,59 +140,50 @@ class Endboss extends MovableObject {
         if (world.level.endboss[0].endbossIsDeath()) {
             world.level.endboss[0].animationEndboss(id, world.level.endboss[0].playDeathAnimation, 150);
         } else if (world.level.endboss[0].endbossGetHurt()) {
-            world.level.endboss[0].animationEndboss(id, world.level.endboss[0].playHurtAnimation, 100);
+            world.level.endboss[0].animationEndboss(id, world.level.endboss[0].playHurtAnimation, 100, world.level.endboss[0].endbossIsHurt);
         } else if (world.level.endboss[0].characterTouchEndboss()) {
-            world.level.endboss[0].animationEndboss(id, world.level.endboss[0].playAttackAnimation, 150);
+            world.level.endboss[0].animationEndboss(id, world.level.endboss[0].playAttackAnimation, 150, world.level.endboss[0].checkAttacking);
         } else {
-            world.level.endboss[0].animationEndboss(id, world.level.endboss[0].playWalkAnimation, 150);
+            world.level.endboss[0].animationEndboss(id, world.level.endboss[0].playWalkAnimation, 150, world.level.endboss[0].checkInteractions);
         };
     };
 
-    animationEndboss(id, interaction, time) {
+    animationEndboss(id, interaction, time, func) {
         clearInterval(id);
         this.currentImage = 0;
-        this.createInterval(interaction, time);
+        let intervalId = this.createInterval(interaction, time);
+        let intervalId2 = this.createInterval(() => this.checkAnimationChance(intervalId, intervalId2, func), 1000 / 60);
     };
 
-    playHurtAnimation(id) {
-        world.level.endboss[0].playAnimation(world.level.endboss[0].IMAGES_HURT)
-        if (world.bossCanTakeDmg) {
-            clearInterval(id);
-            world.level.endboss[0].playEndbossAnimation();
+
+    checkAnimationChance(id, intervalId2, func) {
+        if (func) {
+            if (func()) {
+                clearInterval(id);
+                clearInterval(intervalId2);
+                world.level.endboss[0].animate();
+            };
         };
     };
 
-    playAttackAnimation(id) {
+    playHurtAnimation() {
+        world.level.endboss[0].playAnimation(world.level.endboss[0].IMAGES_HURT);
+    };
+
+    playAttackAnimation() {
         world.level.endboss[0].playAnimation(world.level.endboss[0].IMAGES_ATTACK);
-        if (world.level.endboss[0].characterDontTouchEndboss() && world.level.endboss[0].animationIsDone) {
-            clearInterval(id);
-            world.level.endboss[0].playEndbossAnimation();
-        };
     };
 
-    playWalkAnimation(id) {
+    playWalkAnimation() {
         world.level.endboss[0].playAnimation(world.level.endboss[0].IMAGES_WALK);
-        if (world.level.endboss[0].characterTouchEndboss() || world.level.endboss[0].endbossGetHurt() || world.level.endboss[0].endbossIsDeath()) {
-            clearInterval(id);
-            world.level.endboss[0].playEndbossAnimation();
-        };
     };
 
-    playStandAnimation(id) {
+    playStandAnimation() {
         world.level.endboss[0].playAnimation(world.level.endboss[0].IMAGES_STANDING);
-        if (world.level.endboss[0].endbossAlert) {
-            clearInterval(id);
-            world.level.endboss[0].playEndbossAnimation();
-        };
     };
 
-    playAlertAnimation(id) {
+    playAlertAnimation() {
         world.level.endboss[0].playLimitedAnimation(world.level.endboss[0].IMAGES_ALERT);
-        if (!world.level.endboss[0].endbossAlert) {
-            clearInterval(id);
-            world.level.endboss[0].endbossIsAngry = true;
-            world.level.endboss[0].playEndbossAnimation();
-        };
     };
 
     playDeathAnimation() {
