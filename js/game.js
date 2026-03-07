@@ -56,9 +56,12 @@ function checkKeyPressed() {
 function startGame() {
     isRunning = true;
     document.getElementById('canvas').classList.remove('background-img');
-    document.getElementById('start-button').disabled = true;
-    document.getElementById('pause-button').disabled = false;
-    document.getElementById('restart-button').disabled = false;
+    document.getElementById('start-button').setAttribute("onclick", "");
+    document.getElementById('start-button').classList.add('deactive_button');
+    document.getElementById('pause-button').setAttribute("onclick", "pauseGame()");
+    document.getElementById('pause-button').classList.remove('deactive_button');
+    document.getElementById('restart-button').setAttribute("onclick", "restartGame()");
+    document.getElementById('restart-button').classList.remove('deactive_button');
     init();
 };
 
@@ -80,12 +83,14 @@ function pauseGame() {
     isRunning = false;
     document.getElementById('pause-menu').classList.remove('d_none');
     document.getElementById('pause-buttons').classList.remove('d_none');
+    document.getElementById('pause-button').classList.add('deactive_button');
 };
 
 function resumeGame() {
     isRunning = true;
     document.getElementById('pause-menu').classList.add('d_none');
     document.getElementById('pause-buttons').classList.add('d_none');
+    document.getElementById('pause-button').classList.remove('deactive_button');
 };
 
 function homeMenu() {
@@ -100,9 +105,12 @@ function homeMenu() {
     cancelAnimationFrame(world.requestAnimation);
     world.ctx.clearRect(0, 0, 720, 480)
     document.getElementById('canvas').classList.add('background-img');
-    document.getElementById('restart-button').disabled = true;
-    document.getElementById('pause-button').disabled = true;
-    document.getElementById('start-button').disabled = false;
+    document.getElementById('start-button').setAttribute("onclick", "startGame()");
+    document.getElementById('start-button').classList.remove('deactive_button');
+    document.getElementById('pause-button').setAttribute("onclick", "");
+    document.getElementById('pause-button').classList.add('deactive_button');
+    document.getElementById('restart-button').setAttribute("onclick", "");
+    document.getElementById('restart-button').classList.add('deactive_button');
 };
 
 function resetSleepingTimer() {

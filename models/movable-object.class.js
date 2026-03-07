@@ -58,12 +58,10 @@ class MovableObject extends DrawableObject {
         let i = this.currentImage % images.length;
         let path = images[i];
         this.img = this.imageCache[path];
-
         // Da currentImage nicht gleichgroß sein kann wie die image.length, wird eine 1 dazuaddiert
         if (i + 1 !== images.length) {
             this.currentImage++;
         };
-
         if (id && i + 1 === images.length) {
             clearInterval(id);
         };
@@ -132,13 +130,13 @@ class MovableObject extends DrawableObject {
     //Wird von checkCollisions() ausgeführt
     hit(enemy, dmg) {
         this.recoilToCharacter(enemy, dmg);
-        this.resetDamageCooldown()
+        this.resetDamageCooldown();
     };
 
     recoilToCharacter(enemy, dmg) {
         if (!this.isHurt()) {
             this.energy -= dmg;
-            let intervalId = this.createInterval(() => this.activateRecoil(enemy, intervalId), 1000 / 60)
+            let intervalId = this.createInterval(() => this.activateRecoil(enemy, intervalId), 1000 / 60);
         };
     };
 
