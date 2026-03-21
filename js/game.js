@@ -5,16 +5,45 @@ let timer;
 let isRunning = true;
 
 function init() {
+    updateUI();
+
+    window.addEventListener('resize', updateUI);
+    window.addEventListener('orientationchange', updateUI);
+}
+
+function updateUI() {
     if (isInLandsCapeMode() && isTouchDevice() || isSmallScreen() && isInLandsCapeMode()) {
         document.getElementById('section-canvas').classList.remove('d_none');
         document.getElementById('section-buttons').classList.remove('d_none');
         document.getElementById('rotate-phone-screen').classList.add('d_none');
+        document.getElementById('restart-button').classList.add('d_none');
+        document.getElementById('pause-button').classList.add('d_none');
     } else if (isTouchDevice() || isSmallScreen()) {
         document.getElementById('section-canvas').classList.add('d_none');
         document.getElementById('section-buttons').classList.add('d_none');
         document.getElementById('rotate-phone-screen').classList.remove('d_none');
+    }else{
+        document.getElementById('section-canvas').classList.remove('d_none');
+        document.getElementById('section-buttons').classList.remove('d_none');
+        document.getElementById('rotate-phone-screen').classList.add('d_none');
+        document.getElementById('restart-button').classList.remove('d_none');
+        document.getElementById('pause-button').classList.remove('d_none');
     }
 }
+
+document.addEventListener(() => {
+    if (event.key === 'w' || event.key === 'W' || event.key === 'ArrowUp' || event.key === ' ') {
+        keyboard.UP = false;
+    } else if (event.key === 'a' || event.key === 'A' || event.key === 'ArrowLeft') {
+        keyboard.LEFT = false;
+    } else if (event.key === 's' || event.key === 'S' || event.key === 'ArrowDown') {
+        keyboard.DOWN = false;
+    } else if (event.key === 'd' || event.key === 'D' || event.key === 'ArrowRight') {
+        keyboard.RIGHT = false;
+    } else if (event.key === 'e') {
+        keyboard.E = false;
+    };
+});
 
 function renderGame() {
     canvas = document.getElementById('canvas');
