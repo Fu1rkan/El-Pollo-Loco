@@ -8,6 +8,7 @@
 
 body {
     height: 100vh;
+    height: 100dvh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -25,6 +26,11 @@ h1 {
     padding: 0 16px;
     text-shadow: 6px 6px 8px black;
     text-align: center;
+}
+
+h2 {
+    font-size: 40px;
+    text-shadow: 4px 4px 8px black;
 }
 
 .section-canvas {
@@ -61,7 +67,7 @@ canvas {
     z-index: 1;
 }
 
-.pause-buttons{
+.pause-buttons {
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -73,14 +79,14 @@ canvas {
     z-index: 5;
 }
 
-.resume-button{
+.resume-button {
     width: 200px;
     height: auto;
     transition: 250ms;
     cursor: pointer;
 }
 
-.home-button{
+.home-button {
     width: 200px;
     height: 160px;
     transition: 250ms;
@@ -117,29 +123,47 @@ canvas {
     transition: 250ms;
 }
 
-.btn img:hover{
+.btn img:hover {
     transform: scale(1.05);
 }
 
-.btn img:active{
+.btn img:active {
     transform: scale(1);
 }
 
 .d_none {
-    display: none;
+    display: none !important;
 }
 
 .deactive_button {
     opacity: 0.5;
 }
 
-.deactive_button:hover{
+.deactive_button:hover {
     transform: scale(1) !important;
+}
+
+.rotate-phone-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.rotate-phone-screen img {
+    width: 600px;
+    height: auto;
+    margin: 24px 0 16px 0;
 }
 
 @font-face {
     font-family: 'Bungee Spice';
     src: url(./fonts/Bungee_Spice/BungeeSpice-Regular.ttf);
+}
+
+@font-face {
+    font-family: 'Luckiest Guy';
+    src: url(./fonts/Luckiest_Guy/LuckiestGuy-Regular.ttf);
 }
 
 @media (max-width: 728px) {
@@ -149,5 +173,31 @@ canvas {
 
     h1 {
         font-size: 64px;
+    }
+
+    h2{
+        font-size: 32px;
+    }
+
+    .rotate-phone-screen img {
+        width: 400px;
+        margin: 20px 0 11px 0;
+    }
+}
+
+@media (max-width: 580px) {
+    h1 {
+        font-size: 36px;
+        margin: 0;
+        padding: 0;
+    }
+
+    h2{
+        font-size: 19px;
+    }
+
+    .rotate-phone-screen img {
+        width: 300px;
+        margin: 20px 0 11px 0;
     }
 }

@@ -26,9 +26,9 @@
 </head>
 <!-- <body onload="startGame()"> -->
 
-<body>
+<body onload="init()">
     <h1>El Pollo Loco</h1>
-    <section class="section-canvas">
+    <section class="section-canvas" id="section-canvas">
         <div id="pause-menu" class="pause-menu d_none"></div>
         <canvas id="canvas" width="720" height="480" class="background-img"></canvas>
         <img src="./img/background_img/canvas_border.png" alt="" class="canvas-border">
@@ -37,11 +37,15 @@
             <img src="./img/buttons/play_button.png" alt="resume" onclick="resumeGame()" class="resume-button" id="resume-button">
         </div>
     </section>
-    <section class="btn">
+    <section class="btn" id="section-buttons">
         <img src="./img/buttons/restart_button.png" id="restart-button" class="deactive_button">
         <img src="./img/buttons/start_button.png" onclick="startGame()" id="start-button">
         <img src="./img/buttons/pause_button.png" id="pause-button" class="deactive_button">
     </section>
+    <div class="rotate-phone-screen d_none" id="rotate-phone-screen">
+        <img src="./img/responsive/rotate_phone.png" alt="">
+        <h2>Please rotate your Device</h2>
+    </div>
 
 </body>
 

@@ -5,11 +5,37 @@ let timer;
 let isRunning = true;
 
 function init() {
+    if (isInLandsCapeMode() && isTouchDevice() || isSmallScreen() && isInLandsCapeMode()) {
+        document.getElementById('section-canvas').classList.remove('d_none');
+        document.getElementById('section-buttons').classList.remove('d_none');
+        document.getElementById('rotate-phone-screen').classList.add('d_none');
+    } else if (isTouchDevice() || isSmallScreen()) {
+        document.getElementById('section-canvas').classList.add('d_none');
+        document.getElementById('section-buttons').classList.add('d_none');
+        document.getElementById('rotate-phone-screen').classList.remove('d_none');
+    }
+}
+
+function renderGame() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
     startTimer();
     console.log('My Character is', world.character);
+    console.log(isTouchDevice());
 };
+
+
+function isTouchDevice() {
+    return window.matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 0;
+};
+
+function isSmallScreen() {
+    return window.innerWidth < 820;
+}
+
+function isInLandsCapeMode() {
+    return window.matchMedia("(orientation: landscape)").matches;
+}
 
 document.addEventListener('keydown', (event) => {
     if (event.key === 'w' || event.key === 'W' || event.key === 'ArrowUp' || event.key === ' ') {
@@ -62,7 +88,7 @@ function startGame() {
     document.getElementById('pause-button').classList.remove('deactive_button');
     document.getElementById('restart-button').setAttribute("onclick", "restartGame()");
     document.getElementById('restart-button').classList.remove('deactive_button');
-    init();
+    renderGame();
 };
 
 function restartGame() {
@@ -76,7 +102,7 @@ function restartGame() {
     document.getElementById('pause-menu').classList.add('d_none');
     document.getElementById('pause-buttons').classList.add('d_none');
     cancelAnimationFrame(world.requestAnimation);
-    init();
+    renderGame();
 };
 
 function pauseGame() {
