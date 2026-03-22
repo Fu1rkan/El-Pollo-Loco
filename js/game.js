@@ -16,21 +16,14 @@ function updateUI() {
         document.getElementById('section-canvas').classList.remove('d_none');
         document.getElementById('section-buttons').classList.remove('d_none');
         document.getElementById('rotate-phone-screen').classList.add('d_none');
-        document.getElementById('restart-button').classList.add('d_none');
-        document.getElementById('pause-button').classList.add('d_none');
     } else if (isTouchDevice() || isSmallScreen()) {
         document.getElementById('section-canvas').classList.add('d_none');
         document.getElementById('section-buttons').classList.add('d_none');
         document.getElementById('rotate-phone-screen').classList.remove('d_none');
-    } else {
+    }else{
         document.getElementById('section-canvas').classList.remove('d_none');
         document.getElementById('section-buttons').classList.remove('d_none');
         document.getElementById('rotate-phone-screen').classList.add('d_none');
-        document.getElementById('restart-button').classList.remove('d_none');
-        document.getElementById('pause-button').classList.remove('d_none');
-        document.getElementById('canvas').style.height = '100%';
-        document.getElementById('placefiller').classList.add('d_none');
-        document.getElementById('resp-buttons').classList.add('d_none');
     }
 }
 
@@ -99,7 +92,7 @@ function checkKeyPressed() {
 
 function startGame() {
     if (isInLandsCapeMode() && isTouchDevice() || isSmallScreen() && isInLandsCapeMode()) {
-        startFullScreen();
+        document.getElementById('canvas').requestFullscreen();
     }
     isRunning = true;
     document.getElementById('canvas').classList.remove('background-img');
@@ -112,21 +105,7 @@ function startGame() {
     renderGame();
 };
 
-function startFullScreen() {
-    document.getElementById('canvas').style.height = '90%';
-    document.getElementById('placefiller').classList.remove('d_none');
-    document.getElementById('resp-buttons').classList.remove('d_none');
-    document.getElementById('canvas-layout').requestFullscreen();
-}
-
-function quitFullScreen() {
-    document.getElementById('canvas').style.height = '100%';
-    document.getElementById('placefiller').classList.add('d_none');
-    document.getElementById('resp-buttons').classList.add('d_none');
-    document.exitFullscreen();
-}
-
-function restartGame(resp) {
+function restartGame() {
     resumeGame();
     DrawableObject.intervalArr.forEach(i => {
         clearInterval(i);
@@ -134,39 +113,27 @@ function restartGame(resp) {
     DrawableObject.intervalArr = [];
     clearTimeout(timer);
     keyboard.KEY = true;
-    if (resp) {
-        document.getElementById('resp-pause-menu').classList.add('d_none');
-    } else {
-        document.getElementById('pause-menu').classList.add('d_none');
-        document.getElementById('pause-buttons').classList.add('d_none');
-    }
+    document.getElementById('pause-menu').classList.add('d_none');
+    document.getElementById('pause-buttons').classList.add('d_none');
     cancelAnimationFrame(world.requestAnimation);
     renderGame();
 };
 
-function pauseGame(resp) {
+function pauseGame() {
     isRunning = false;
-    if (resp) {
-        document.getElementById('resp-pause-menu').classList.remove('d_none');
-    } else {
-        document.getElementById('pause-menu').classList.remove('d_none');
-        document.getElementById('pause-buttons').classList.remove('d_none');
-        document.getElementById('pause-button').classList.add('deactive_button');
-    };
+    document.getElementById('pause-menu').classList.remove('d_none');
+    document.getElementById('pause-buttons').classList.remove('d_none');
+    document.getElementById('pause-button').classList.add('deactive_button');
 };
 
-function resumeGame(resp) {
+function resumeGame() {
     isRunning = true;
-    if (resp) {
-        document.getElementById('resp-pause-menu').classList.add('d_none');
-    } else {
-        document.getElementById('pause-menu').classList.add('d_none');
-        document.getElementById('pause-buttons').classList.add('d_none');
-        document.getElementById('pause-button').classList.remove('deactive_button');
-    };
+    document.getElementById('pause-menu').classList.add('d_none');
+    document.getElementById('pause-buttons').classList.add('d_none');
+    document.getElementById('pause-button').classList.remove('deactive_button');
 };
 
-function homeMenu(resp) {
+function homeMenu() {
     DrawableObject.intervalArr.forEach(i => {
         clearInterval(i);
     });
@@ -180,16 +147,10 @@ function homeMenu(resp) {
     document.getElementById('canvas').classList.add('background-img');
     document.getElementById('start-button').setAttribute("onclick", "startGame()");
     document.getElementById('start-button').classList.remove('deactive_button');
-    document.getElementById('start-button').setAttribute("onclick", "startGame()");
-    document.getElementById('start-button').classList.remove('deactive_button');
     document.getElementById('pause-button').setAttribute("onclick", "");
     document.getElementById('pause-button').classList.add('deactive_button');
     document.getElementById('restart-button').setAttribute("onclick", "");
     document.getElementById('restart-button').classList.add('deactive_button');
-    if (resp) {
-        document.getElementById('resp-pause-menu').classList.add('d_none');
-        quitFullScreen();
-    }
 };
 
 function resetSleepingTimer() {
