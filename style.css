@@ -39,11 +39,46 @@ h2 {
     margin: 80px 0;
 }
 
+.canvas-layout {
+    width: 720px;
+    height: 480px;
+}
+
+.resp-buttons {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 20%;
+    z-index: 3;
+    display: flex;
+    justify-content: space-between;
+}
+
+.right-side {
+    display: flex;
+    align-items: flex-end;
+}
+
+.left-side {
+    display: flex;
+    align-items: flex-end;
+}
+
+.placefiller {
+    height: 10%;
+    width: 100%;
+    background-color: #994409;
+    position: absolute;
+    bottom: 0;
+}
+
 canvas {
     position: absolute;
     background-color: black;
     cursor: pointer;
     z-index: 0;
+    width: 100%;
+    height: 90%;
 }
 
 .canvas-border {
@@ -178,7 +213,7 @@ canvas {
         margin: 20px 0 11px 0;
     }
 
-    canvas {
+    .canvas-layout {
         width: 500px;
         height: 300px;
     }
@@ -258,7 +293,7 @@ canvas {
 } */
 
 @media (max-height: 850px) {
-    canvas {
+    .canvas-layout {
         width: 500px;
         height: 300px;
     }
@@ -288,7 +323,7 @@ canvas {
 }
 
 @media (max-height: 600px) {
-    canvas {
+    .canvas-layout {
         width: 400px;
         height: 230px;
     }
@@ -327,7 +362,7 @@ canvas {
 }
 
 @media (max-height: 440px) {
-    canvas {
+    .canvas-layout {
         width: 300px;
         height: 180px;
     }

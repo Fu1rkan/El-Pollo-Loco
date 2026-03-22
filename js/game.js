@@ -31,20 +31,6 @@ function updateUI() {
     }
 }
 
-document.addEventListener(() => {
-    if (event.key === 'w' || event.key === 'W' || event.key === 'ArrowUp' || event.key === ' ') {
-        keyboard.UP = false;
-    } else if (event.key === 'a' || event.key === 'A' || event.key === 'ArrowLeft') {
-        keyboard.LEFT = false;
-    } else if (event.key === 's' || event.key === 'S' || event.key === 'ArrowDown') {
-        keyboard.DOWN = false;
-    } else if (event.key === 'd' || event.key === 'D' || event.key === 'ArrowRight') {
-        keyboard.RIGHT = false;
-    } else if (event.key === 'e') {
-        keyboard.E = false;
-    };
-});
-
 function renderGame() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
@@ -109,6 +95,9 @@ function checkKeyPressed() {
 };
 
 function startGame() {
+    if (isInLandsCapeMode() && isTouchDevice() || isSmallScreen() && isInLandsCapeMode()) {
+        document.getElementById('canvas-layout').requestFullscreen();
+    }
     isRunning = true;
     document.getElementById('canvas').classList.remove('background-img');
     document.getElementById('start-button').setAttribute("onclick", "");
