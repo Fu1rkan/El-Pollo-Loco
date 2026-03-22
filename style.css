@@ -74,11 +74,10 @@ h2 {
 
 canvas {
     position: absolute;
-    background-color: black;
     cursor: pointer;
     z-index: 0;
     width: 100%;
-    height: 90%;
+    height: 100%;
 }
 
 .canvas-border {
@@ -110,6 +109,35 @@ canvas {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 5;
+}
+
+.resp-pause-menu{
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 80px;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.489);
+    z-index: 4;
+}
+
+.resp-home-button{
+    padding-bottom: 60px;
+    width: 200px;
+    height: 160px;
+}
+
+.resp-restart-button{
+    width: 200px;
+    height: 110px;
+}
+
+.resp-resume-button{
+    width: 200px;
+    height: auto;
 }
 
 .resume-button {
