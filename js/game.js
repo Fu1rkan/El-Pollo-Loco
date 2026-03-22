@@ -16,14 +16,26 @@ function updateUI() {
         document.getElementById('section-canvas').classList.remove('d_none');
         document.getElementById('section-buttons').classList.remove('d_none');
         document.getElementById('rotate-phone-screen').classList.add('d_none');
+        document.getElementById('resp-buttons').classList.remove('d_none');
+        document.getElementById('resp-restart-button').classList.remove('d_none');
+        document.getElementById('resp-pause-button').classList.remove('d_none');
+        document.getElementById('header').style.justifyContent = '';
+        document.getElementById('header').style.justifyContent = 'space-between';
     } else if (isTouchDevice() || isSmallScreen()) {
         document.getElementById('section-canvas').classList.add('d_none');
         document.getElementById('section-buttons').classList.add('d_none');
         document.getElementById('rotate-phone-screen').classList.remove('d_none');
-    }else{
+        document.getElementById('resp-buttons').classList.add('d_none');
+        document.getElementById('resp-restart-button').classList.add('d_none');
+        document.getElementById('resp-pause-button').classList.add('d_none');
+        document.getElementById('header').style.justifyContent = '';
+        document.getElementById('header').style.justifyContent = 'center';
+    } else {
         document.getElementById('section-canvas').classList.remove('d_none');
         document.getElementById('section-buttons').classList.remove('d_none');
         document.getElementById('rotate-phone-screen').classList.add('d_none');
+        document.getElementById('header').style.justifyContent = '';
+        document.getElementById('header').style.justifyContent = 'center';
     }
 }
 
@@ -46,6 +58,35 @@ function isSmallScreen() {
 
 function isInLandsCapeMode() {
     return window.matchMedia("(orientation: landscape)").matches;
+}
+
+function bindButton(id, keyName) {
+    const btn = document.getElementById(id);
+
+    // drücken
+    btn.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        keyboard[keyName] = true;
+
+        if (checkKeyPressed()) {
+            resetSleepingTimer();
+        }
+    });
+
+    // loslassen
+    btn.addEventListener('pointerup', (e) => {
+        e.preventDefault();
+        keyboard[keyName] = false;
+    });
+
+    // falls finger abrutscht / abgebrochen wird
+    btn.addEventListener('pointercancel', () => {
+        keyboard[keyName] = false;
+    });
+
+    btn.addEventListener('pointerleave', () => {
+        keyboard[keyName] = false;
+    });
 }
 
 document.addEventListener('keydown', (event) => {
@@ -91,9 +132,6 @@ function checkKeyPressed() {
 };
 
 function startGame() {
-    if (isInLandsCapeMode() && isTouchDevice() || isSmallScreen() && isInLandsCapeMode()) {
-        document.getElementById('canvas').requestFullscreen();
-    }
     isRunning = true;
     document.getElementById('canvas').classList.remove('background-img');
     document.getElementById('start-button').setAttribute("onclick", "");
@@ -102,6 +140,12 @@ function startGame() {
     document.getElementById('pause-button').classList.remove('deactive_button');
     document.getElementById('restart-button').setAttribute("onclick", "restartGame()");
     document.getElementById('restart-button').classList.remove('deactive_button');
+    document.getElementById('resp-start-button').setAttribute("onclick", "");
+    document.getElementById('resp-start-button').classList.add('deactive_button');
+    document.getElementById('resp-pause-button').setAttribute("onclick", "pauseGame()");
+    document.getElementById('resp-pause-button').classList.remove('deactive_button');
+    document.getElementById('resp-restart-button').setAttribute("onclick", "restartGame()");
+    document.getElementById('resp-restart-button').classList.remove('deactive_button');
     renderGame();
 };
 
@@ -151,6 +195,12 @@ function homeMenu() {
     document.getElementById('pause-button').classList.add('deactive_button');
     document.getElementById('restart-button').setAttribute("onclick", "");
     document.getElementById('restart-button').classList.add('deactive_button');
+    document.getElementById('resp-start-button').setAttribute("onclick", "startGame()");
+    document.getElementById('resp-start-button').classList.remove('deactive_button');
+    document.getElementById('resp-pause-button').setAttribute("onclick", "");
+    document.getElementById('resp-pause-button').classList.add('deactive_button');
+    document.getElementById('resp-restart-button').setAttribute("onclick", "");
+    document.getElementById('resp-restart-button').classList.add('deactive_button');
 };
 
 function resetSleepingTimer() {
@@ -160,3 +210,10 @@ function resetSleepingTimer() {
         keyboard.KEY = false
     }, 15000);
 };
+
+setTimeout(() => {
+    bindButton('left-button', 'LEFT');
+    bindButton('right-button', 'RIGHT');
+    bindButton('up-button', 'UP');
+    bindButton('salsa-button', 'E');
+}, 50);

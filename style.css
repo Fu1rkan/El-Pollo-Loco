@@ -4,6 +4,11 @@
     text-decoration: none;
     scroll-behavior: smooth;
     box-sizing: content-box;
+    touch-action: manipulation;
+}
+
+img {
+    pointer-events: none;
 }
 
 body {
@@ -245,13 +250,17 @@ canvas {
 
 @media (max-width: 580px) {
     h1 {
-        font-size: 36px;
+        font-size: 32px;
         margin: 0;
         padding: 0;
     }
 
     h2 {
         font-size: 19px;
+    }
+
+    header {
+        padding: 0;
     }
 
     .rotate-phone-screen img {
@@ -299,6 +308,15 @@ canvas {
         width: 150px;
     }
 
+    .resume-button {
+        width: 150px;
+    }
+
+    .home-button {
+        width: 150px;
+        height: 120px;
+    }
+
     .resp-buttons {
         display: flex;
     }
@@ -308,7 +326,7 @@ canvas {
     }
 
     h1 {
-        font-size: 40px;
+        font-size: 36px;
         margin: 0;
         padding: 0;
     }
@@ -317,7 +335,7 @@ canvas {
 @media (max-height: 600px) {
     .section-canvas {
         width: 70%;
-        max-width: 600px;
+        max-width: 500px;
         height: 50%;
     }
 
@@ -338,6 +356,15 @@ canvas {
 
     .resp-restart-button {
         width: 120px;
+    }
+
+    .resume-button {
+        width: 120px;
+    }
+
+    .home-button {
+        width: 120px;
+        height: 100px;
     }
 
     h1 {
@@ -385,11 +412,20 @@ canvas {
     }
 
     .resp-restart-button {
-        width: 70px;
+        width: 90px;
+    }
+
+    .resume-button {
+        width: 100px;
+    }
+
+    .home-button {
+        width: 100px;
+        height: 80px;
     }
 
     h1 {
-        font-size: 36px;
+        font-size: 32px;
         margin: 0;
         padding: 0;
     }
