@@ -44,7 +44,6 @@ function renderGame() {
     world = new World(canvas, keyboard);
     startTimer();
     console.log('My Character is', world.character);
-    console.log(isTouchDevice());
 };
 
 

@@ -28,25 +28,37 @@
 
 <body onload="init()">
     <header id="header">
-        <img src="./img/buttons/restart_button.png" id="resp-restart-button" class="deactive_button">
+        <button id="resp-restart-button" class="deactive_button">
+            <img src="./img/buttons/restart_button.png">
+        </button>
         <h1>El Pollo Loco</h1>
-        <img src="./img/buttons/pause_button.png" id="resp-pause-button" class="deactive_button">
+        <button id="resp-pause-button" class="deactive_button">
+            <img src="./img/buttons/pause_button.png">
+        </button>
     </header>
     <section class="section-canvas" id="section-canvas">
         <div id="pause-menu" class="pause-menu d_none"></div>
         <canvas id="canvas" width="720" height="480" class="background-img"></canvas>
         <img src="./img/background_img/canvas_border.png" alt="" class="canvas-border">
         <div class="pause-buttons d_none" id="pause-buttons">
-            <img src="./img/buttons/home_button.png" alt="home" onclick="homeMenu()" class="home-button"
-            id="home-button">
-            <img src="./img/buttons/play_button.png" alt="resume" onclick="resumeGame()" class="resume-button"
-            id="resume-button">
+            <button onclick="homeMenu()" class="home-button" id="home-button">
+                <img src="./img/buttons/home_button.png" alt="home">
+            </button>
+            <button onclick="resumeGame()" class="resume-button" id="resume-button">
+                <img src="./img/buttons/play_button.png" alt="resume">
+            </button>
         </div>
     </section>
     <section class="btn" id="section-buttons">
-        <img src="./img/buttons/restart_button.png" id="restart-button" class="deactive_button">
-        <img src="./img/buttons/start_button.png" onclick="startGame()" id="start-button">
-        <img src="./img/buttons/pause_button.png" id="pause-button" class="deactive_button">
+        <button id="restart-button" class="deactive_button">
+            <img src="./img/buttons/restart_button.png">
+        </button>
+        <button onclick="startGame()" id="start-button">
+            <img src="./img/buttons/start_button.png">
+        </button>
+        <button id="pause-button" class="deactive_button">
+            <img src="./img/buttons/pause_button.png">
+        </button>
     </section>
     <div class="rotate-phone-screen d_none" id="rotate-phone-screen">
         <img src="./img/responsive/rotate_phone.png" alt="">
@@ -54,13 +66,23 @@
     </div>
     <section class="resp-buttons" id="resp-buttons">
         <div class="left-side">
-            <img src="./img/buttons/left_button.png" alt="" id="left-button">
-            <img src="./img/buttons/right_button.png" alt="" id="right-button">
+            <button id="left-button">
+                <img src="./img/buttons/left_button.png" alt="">
+            </button>
+            <button id="right-button">
+                <img src="./img/buttons/right_button.png" alt="">
+            </button>
         </div>
-        <img src="./img/buttons/start_button.png" onclick="startGame()" id="resp-start-button" class="resp-restart-button">
+        <button onclick="startGame()" id="resp-start-button">
+            <img src="./img/buttons/start_button.png" class="resp-start-button">
+        </button>
         <div class="right-side">
-            <img src="./img/buttons/salsa_button.png" alt="" id="salsa-button">
-            <img src="./img/buttons/up_button.png" alt="" id="up-button">
+            <button id="salsa-button">
+                <img src="./img/buttons/salsa_button.png" alt="">
+            </button>
+            <button id="up-button">
+                <img src="./img/buttons/up_button.png" alt="">
+            </button>
         </div>
     </section>
 

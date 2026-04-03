@@ -9,6 +9,9 @@
 
 img {
     pointer-events: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -webkit-touch-callout: none;
 }
 
 body {
@@ -34,6 +37,18 @@ header {
     width: 100%;
     box-sizing: border-box;
     padding: 0 24px;
+}
+
+button {
+    height: auto;
+    width: auto;
+    cursor: pointer;
+    transition: 250ms;
+    background-color: transparent;
+    border: none;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 header img {
@@ -107,25 +122,25 @@ canvas {
     z-index: 5;
 }
 
-.resume-button {
+.resume-button img{
     width: 200px;
     height: auto;
     transition: 250ms;
     cursor: pointer;
 }
 
-.home-button {
+.home-button img{
     width: 200px;
     height: 160px;
     transition: 250ms;
     cursor: pointer;
 }
 
-.resume-button:hover {
+.resume-button img:hover {
     transform: scale(1.05);
 }
 
-.home-button:hover {
+.home-button img:hover {
     transform: scale(1.05);
 }
 
@@ -185,15 +200,23 @@ canvas {
     gap: 24px;
 }
 
-.left-side img {
+.left-side button {
     height: 100%;
 }
 
-.right-side img {
+.left-side button img{
     height: 100%;
 }
 
-.resp-restart-button {
+.right-side button {
+    height: 100%;
+}
+
+.right-side button img{
+    height: 100%;
+}
+
+.resp-start-button {
     height: auto;
     width: 200px;
 }
@@ -321,7 +344,7 @@ canvas {
         display: flex;
     }
 
-    .resp-restart-button {
+    .resp-start-button {
         width: 150px;
     }
 
@@ -354,7 +377,7 @@ canvas {
         width: 120px;
     }
 
-    .resp-restart-button {
+    .resp-start-button {
         width: 120px;
     }
 
@@ -411,7 +434,7 @@ canvas {
         width: 70px;
     }
 
-    .resp-restart-button {
+    .resp-start-button {
         width: 90px;
     }
 
