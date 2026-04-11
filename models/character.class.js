@@ -6,6 +6,8 @@ class Character extends MovableObject {
     y = 229.5;
     width = 100;
     height = 200;
+    timers = [];
+    audioIntervals = [];
 
     //Images vom Character beim laufen
     IMAGES_WALKING = [
@@ -74,8 +76,11 @@ class Character extends MovableObject {
         'img/2_character_pepe/1_idle/long_idle/I-20.png'
     ];
 
+    AUDIOS;
+
     constructor() {
         super();
+        this.getAudios();
         this.loadImg('img/2_character_pepe/2_walk/W-21.png');
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_JUMPING);
@@ -87,6 +92,24 @@ class Character extends MovableObject {
         this.moveCamera();
         this.animate();
     };
+
+    getAudios() {
+        this.character_hurt = new Audio('audio/character_hurt.mp3');
+        this.character_death = new Audio('audio/character_death.mp3');
+        this.character_jump = new Audio('audio/character_jump.mp3');
+        this.character_sleep = new Audio('audio/character_sleeping.mp3');
+        this.character_whistle = new Audio('audio/character_whistle.mp3');
+        this.character_walk = new Audio('audio/character_footsteps.mp3');
+
+        this.AUDIOS = [
+            this.character_hurt,
+            this.character_death,
+            this.character_jump,
+            this.character_sleep,
+            this.character_whistle,
+            this.character_walk
+        ];
+    }
 
     isWalking() {
         if (this.world.keyboard.RIGHT == true || this.world.keyboard.LEFT == true) {
@@ -109,20 +132,61 @@ class Character extends MovableObject {
     };
 
     characterActivities(id) {
+        world.character.timers.forEach(element => {
+            clearTimeout(element)
+        });
+        world.character.audioIntervals.forEach(element => {
+            clearInterval(element)
+        });
+        world.character.AUDIOS.forEach(element => {
+            element.pause();
+            element.currentTime = 0;
+        });
         if (world.character.isDead()) {
+            world.character.AUDIOS[1].play();
             world.character.animationCharacter(id, world.character.playDeathAnimation, 100);
         } else if (world.character.isHurt()) {
+            world.character.AUDIOS[0].play();
             world.character.animationCharacter(id, world.character.playHurtAnimation, 100, world.character.isNotHurtAnymore);
         } else if (world.character.isAboutGround()) {
+            world.character.AUDIOS[2].play();
             world.character.animationCharacter(id, world.character.playJumpAnimation, 150, world.character.isNotJumpingAnymore);
         } else if (world.character.isWalking() && world.character.isNotTouchingTheBorder()) {
+            world.character.walkSound();
             world.character.animationCharacter(id, world.character.playWalkAnimation, 100, world.character.isNotWalkingAnymore)
         } else if (world.character.isSleeping()) {
+            world.character.sleepSound();
             world.character.animationCharacter(id, world.character.playSleepingAnimation, 250, world.character.isNotSleepingAnymore);
         } else {
+            world.character.whistleSound();
             world.character.animationCharacter(id, world.character.playStandAnimation, 250, world.character.isNotStandingAnymore);
         };
     };
+    
+    whistleSound() {
+        let timer = setTimeout(() => {
+            world.character.AUDIOS[4].play();
+        }, 5000);
+        
+        world.character.timers.push(timer);
+    }
+    
+    sleepSound() {
+        let audio = setInterval(() => {
+            world.character.AUDIOS[3].play();
+        }, 1000)
+    
+        world.character.audioIntervals.push(audio);
+    }
+    
+    walkSound() {
+        let audio = setInterval(() => {
+            world.character.AUDIOS[5].play();
+        }, 10)
+    
+        world.character.audioIntervals.push(audio);
+
+    }
 
     animationCharacter(id, interaction, time, func) {
         clearInterval(id);

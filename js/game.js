@@ -44,6 +44,7 @@ function renderGame() {
     world = new World(canvas, keyboard);
     startTimer();
     console.log('My Character is', world.character);
+    let music = new Audio()
 };
 
 
