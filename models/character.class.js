@@ -109,7 +109,7 @@ class Character extends MovableObject {
             this.character_whistle,
             this.character_walk
         ];
-    }
+    };
 
     isWalking() {
         if (this.world.keyboard.RIGHT == true || this.world.keyboard.LEFT == true) {
@@ -166,7 +166,7 @@ class Character extends MovableObject {
     whistleSound() {
         let timer = setTimeout(() => {
             world.character.AUDIOS[4].play();
-        }, 5000);
+        }, 8000);
         
         world.character.timers.push(timer);
     }

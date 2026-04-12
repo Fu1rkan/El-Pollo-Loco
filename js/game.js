@@ -44,7 +44,13 @@ function renderGame() {
     world = new World(canvas, keyboard);
     startTimer();
     console.log('My Character is', world.character);
-    let music = new Audio()
+    // let wind = new Audio('audio/Wind, Gust, Designed, Polar, Snow Storm 05.mp3');
+    // wind.play();
+    // setTimeout(() => {
+    //     let music = new Audio('audio/ES_Desert Storm - Northside.mp3');
+    //     music.play();
+    // }, 17000)
+    
 };
 
 
