@@ -39,11 +39,15 @@ class World {
         this.allCoinsCollected = new Audio('audio/coin_all_collected.mp3');
         this.coinCollected = new Audio('audio/coin_collected.mp3');
         this.salsaCollected = new Audio('audio/bottle_collected.mp3');
+        this.gameWonSound = new Audio('audio/game_win.mp3');
+        this.gameLostSound = new Audio('audio/game_over.mp3');
 
         this.AUDIOS = [
             this.allCoinsCollected,
             this.coinCollected,
-            this.salsaCollected
+            this.salsaCollected,
+            this.gameWonSound,
+            this.gameLostSound
         ];
     }
 
@@ -285,11 +289,11 @@ class World {
         this.updateStatusbarCoin();
         if (this.level.coins == 0) {
             this.AUDIOS[0].play();
-        }else {
+        } else {
             this.AUDIOS[1].play();
         }
     };
-    
+
     collectBottle(bottle) {
         let index = this.level.salsas.indexOf(bottle)
         this.level.salsas.splice(index, 1);
@@ -309,8 +313,10 @@ class World {
     endGame(int) {
         if (int == 0) {
             this.gameLost = true;
+            this.AUDIOS[4].play();
         } else {
             this.gameWon = true;
+            this.AUDIOS[3].play();
         };
         DrawableObject.intervalArr.forEach(i => {
             clearInterval(i);
