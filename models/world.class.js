@@ -20,8 +20,7 @@ class World {
     collectedBottles = 0;
     throwCooldown = false;
 
-
-
+    AUDIOS = []
 
     constructor(canvas, keyboard) {
         //speichert 2d Context Objekte in einer Klasse ab 
@@ -33,13 +32,26 @@ class World {
         this.draw();
         this.setWorld();
         this.run();
+        this.getAudios()
     };
+
+    getAudios() {
+        this.allCoinsCollected = new Audio('audio/coin_all_collected.mp3');
+        this.coinCollected = new Audio('audio/coin_collected.mp3');
+        this.salsaCollected = new Audio('audio/bottle_collected.mp3');
+
+        this.AUDIOS = [
+            this.allCoinsCollected,
+            this.coinCollected,
+            this.salsaCollected
+        ];
+    }
 
     canThrowBottles() {
         return this.keyboard.E && this.collectedBottles > 0 && !this.throwCooldown;
     };
 
-    draw() {        
+    draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.ctx.translate(this.cameraX, 0);
@@ -106,7 +118,7 @@ class World {
             setTimeout(() => {
                 this.throwableObject.splice(bottle, 1);
             }, 900);
-            clearInterval(intervalId); 
+            clearInterval(intervalId);
         }
     }
 
@@ -216,6 +228,7 @@ class World {
             this.character.jump(jh);
             this.jumpedOnEnemy = true;
             enemy.energy = 0;
+            enemy.AUDIOS.DEATH[0].play();
         };
     };
 
@@ -230,11 +243,11 @@ class World {
     checkCollisionBottleWithEnemy(enemy, h, w, hy, wx) {
         this.throwableObject.forEach(t => {
             if (enemy == world.level.endboss[0]) {
-                if (this.character.isCollidingByItem(this.level.endboss[0], t, 70, 45, 60, 5) && this.bossCanTakeDmg) {   
+                if (this.character.isCollidingByItem(this.level.endboss[0], t, 70, 45, 60, 5) && this.bossCanTakeDmg) {
                     this.hurtEndboss();
                     this.updateStatusbarEndboss();
                 }
-            }else{
+            } else {
                 this.killEnemy(enemy, t, h, w, hy, wx);
             };
         });
@@ -253,6 +266,7 @@ class World {
     killEnemy(enemy, t, h, w, hy, wx) {
         if (this.character.isCollidingByItem(enemy, t, h, w, hy, wx)) {
             enemy.energy = 0;
+            enemy.AUDIOS.DEATH[0].play();
         };
     };
 
@@ -269,13 +283,19 @@ class World {
         this.level.coins.splice(index, 1);
         this.collectedCoins += 1;
         this.updateStatusbarCoin();
+        if (this.level.coins == 0) {
+            this.AUDIOS[0].play();
+        }else {
+            this.AUDIOS[1].play();
+        }
     };
-
+    
     collectBottle(bottle) {
         let index = this.level.salsas.indexOf(bottle)
         this.level.salsas.splice(index, 1);
         this.collectedBottles += 1;
         this.updateStatusbarbottle();
+        this.AUDIOS[2].play();
     };
 
     checkCollectBottles() {

@@ -9,7 +9,10 @@ class Chicken extends MovableObject {
         'img/3_enemies_chicken/chicken_normal/2_dead/dead.png'
     ];
 
-    AUDIOS = [];
+    AUDIOS = {
+        ENEMY: [],
+        DEATH: []
+    };
 
     constructor() {
         super();
@@ -40,11 +43,14 @@ class Chicken extends MovableObject {
         this.chicken_sound_4 = new Audio('audio/normal_chicken_4.mp3');
         this.chicken_sound_death = new Audio('audio/normal_chicken_death.mp3');
 
-        this.AUDIOS = [
+        this.AUDIOS.ENEMY = [
             this.chicken_sound,
             this.chicken_sound_2,
             this.chicken_sound_3,
             this.chicken_sound_4,
+        ];
+
+        this.AUDIOS.DEATH = [
             this.chicken_sound_death,
         ];
     }
@@ -65,7 +71,7 @@ class Chicken extends MovableObject {
         }
         let distance = Math.abs(world.character.x - chicken.x);
         let maxDistance = 1500;
-        let audio = chicken.AUDIOS[this.getRandomNumber()];
+        let audio = chicken.AUDIOS.ENEMY[this.getRandomNumber()];
         if (distance >= maxDistance) {
             return;
         }
@@ -105,7 +111,11 @@ class BabyChicken extends MovableObject {
         'img/3_enemies_chicken/chicken_small/2_dead/dead.png'
     ];
 
-    AUDIOS = [];
+
+    AUDIOS = {
+        ENEMY : [],
+        DEATH : []
+    };
 
     constructor() {
         super();
@@ -133,10 +143,13 @@ class BabyChicken extends MovableObject {
         this.baby_chicken_sound_2 = new Audio('audio/baby_chicken_2.mp3');
         this.baby_chicken_sound_death = new Audio('audio/baby_chicken_death.mp3');
 
-        this.AUDIOS = [
+        this.AUDIOS.ENEMY = [
             this.baby_chicken_sound,
-            this.baby_chicken_sound_2,
-            this.baby_chicken_sound_death,
+            this.baby_chicken_sound_2
+        ];
+
+        this.AUDIOS.DEATH = [
+            this.baby_chicken_sound_death
         ];
     }
 
@@ -157,7 +170,7 @@ class BabyChicken extends MovableObject {
         }
         let distance = Math.abs(world.character.x - chicken.x);
         let maxDistance = 1500;
-        let audio = chicken.AUDIOS[this.getRandomNumber()];
+        let audio = chicken.AUDIOS.ENEMY[this.getRandomNumber()];
         if (distance >= maxDistance) {
             return;
         }
@@ -168,7 +181,7 @@ class BabyChicken extends MovableObject {
     }
 
     getRandomNumber() {
-        return Math.floor(Math.random() * 3);
+        return Math.floor(Math.random() * 2);
     }
 
     checkInteraction() {
