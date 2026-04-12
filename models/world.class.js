@@ -31,8 +31,8 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
-        this.run();
         this.getAudios()
+        this.run();
     };
 
     getAudios() {
@@ -41,13 +41,17 @@ class World {
         this.salsaCollected = new Audio('audio/bottle_collected.mp3');
         this.gameWonSound = new Audio('audio/game_win.mp3');
         this.gameLostSound = new Audio('audio/game_over.mp3');
+        this.windAudio = new Audio('audio/wind.mp3')
+        this.backgroundMusic = new Audio('audio/desert_storm_northside.mp3')
 
         this.AUDIOS = [
             this.allCoinsCollected,
             this.coinCollected,
             this.salsaCollected,
             this.gameWonSound,
-            this.gameLostSound
+            this.gameLostSound,
+            this.windAudio,
+            this.backgroundMusic
         ];
     }
 
@@ -108,6 +112,10 @@ class World {
         this.character.createInterval(() => world.checkThrowObjects(), 180);
         this.character.createInterval(() => world.checkCollectCoins(), 180);
         this.character.createInterval(() => world.checkCollectBottles(), 180);
+        this.AUDIOS[5].play();
+        setTimeout(() => {
+            this.AUDIOS[6].play();
+        }, 15000)
     };
 
     generateBottle() {
