@@ -298,7 +298,8 @@ class World {
         if (this.level.coins == 0) {
             this.AUDIOS[0].play();
         } else {
-            this.AUDIOS[1].play();
+            let sound = this.AUDIOS[1].cloneNode(true);
+            sound.play();
         }
     };
 

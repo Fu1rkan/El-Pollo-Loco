@@ -162,28 +162,31 @@ class Character extends MovableObject {
             world.character.animationCharacter(id, world.character.playStandAnimation, 250, world.character.isNotStandingAnymore);
         };
     };
-    
+
     whistleSound() {
         let timer = setTimeout(() => {
             world.character.AUDIOS[4].play();
         }, 8000);
-        
+
         world.character.timers.push(timer);
     }
-    
+
     sleepSound() {
+        world.character.AUDIOS[3].play();
         let audio = setInterval(() => {
             world.character.AUDIOS[3].play();
         }, 1000)
-    
+
         world.character.audioIntervals.push(audio);
     }
-    
+
     walkSound() {
+        world.character.AUDIOS[5].play()
         let audio = setInterval(() => {
-            world.character.AUDIOS[5].play();
-        }, 10)
-    
+            let sound = world.character.AUDIOS[5].cloneNode(true);
+            sound.play();
+        }, 600)
+
         world.character.audioIntervals.push(audio);
 
     }

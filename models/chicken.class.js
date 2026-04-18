@@ -70,7 +70,7 @@ class Chicken extends MovableObject {
             return;
         }
         let distance = Math.abs(world.character.x - chicken.x);
-        let maxDistance = 1500;
+        let maxDistance = 720;
         let audio = chicken.AUDIOS.ENEMY[this.getRandomNumber()];
         if (distance >= maxDistance) {
             return;
@@ -169,7 +169,7 @@ class BabyChicken extends MovableObject {
             return;
         }
         let distance = Math.abs(world.character.x - chicken.x);
-        let maxDistance = 1500;
+        let maxDistance = 720;
         let audio = chicken.AUDIOS.ENEMY[this.getRandomNumber()];
         if (distance >= maxDistance) {
             return;
