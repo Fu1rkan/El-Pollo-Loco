@@ -109,6 +109,14 @@ class Character extends MovableObject {
             this.character_whistle,
             this.character_walk
         ];
+
+        this.AUDIOS.forEach((audio) => {
+            audio.muted = isMuted;
+        });
+
+        this.AUDIOS.forEach((audio) => {
+            allAudios.push(audio);
+        });
     };
 
     isWalking() {
@@ -164,31 +172,34 @@ class Character extends MovableObject {
     };
 
     whistleSound() {
-        let timer = setTimeout(() => {
-            world.character.AUDIOS[4].play();
-        }, 8000);
+        let id = this.createTimeout(world.character.playWhistleSound, 8000)
+        world.character.timers.push(id);
+    };
 
-        world.character.timers.push(timer);
+    playWhistleSound() {
+        world.character.AUDIOS[4].play();
     }
 
     sleepSound() {
         world.character.AUDIOS[3].play();
-        let audio = setInterval(() => {
-            world.character.AUDIOS[3].play();
-        }, 1000)
+        let audioId = this.createInterval(world.character.playSleepSound, 1000)
+        world.character.audioIntervals.push(audioId);
+    };
 
-        world.character.audioIntervals.push(audio);
+    playSleepSound() {
+        world.character.AUDIOS[3].play()
     }
 
     walkSound() {
-        world.character.AUDIOS[5].play()
-        let audio = setInterval(() => {
-            let sound = world.character.AUDIOS[5].cloneNode(true);
-            sound.play();
-        }, 600)
+        world.character.AUDIOS[5].play();
+        let audioId = this.createInterval(world.character.playWalkSound, 600)
+        world.character.audioIntervals.push(audioId);
+    };
 
-        world.character.audioIntervals.push(audio);
-
+    playWalkSound() {
+        let sound = world.character.AUDIOS[5].cloneNode(true);
+        sound.muted = isMuted;
+        sound.play();
     }
 
     animationCharacter(id, interaction, time, func) {

@@ -20,7 +20,8 @@ class World {
     collectedBottles = 0;
     throwCooldown = false;
 
-    AUDIOS = []
+
+    AUDIOS = [];
 
     constructor(canvas, keyboard) {
         //speichert 2d Context Objekte in einer Klasse ab 
@@ -53,7 +54,15 @@ class World {
             this.windAudio,
             this.backgroundMusic
         ];
-    }
+
+        this.AUDIOS.forEach((audio) => {
+            audio.muted = isMuted;
+        });
+
+        this.AUDIOS.forEach((audio) => {
+            allAudios.push(audio);
+        });
+    };
 
     canThrowBottles() {
         return this.keyboard.E && this.collectedBottles > 0 && !this.throwCooldown;
@@ -113,10 +122,12 @@ class World {
         this.character.createInterval(() => world.checkCollectCoins(), 180);
         this.character.createInterval(() => world.checkCollectBottles(), 180);
         this.AUDIOS[5].play();
-        setTimeout(() => {
-            this.AUDIOS[6].play();
-        }, 15000)
+        this.character.createTimeout(this.playBackgorundMusic, 15000)
     };
+    
+    playBackgorundMusic() {
+        world.AUDIOS[6].play();
+    }
 
     generateBottle() {
         let bottle = new ThrowableObject(this.character.x, this.character.y, this);
@@ -276,7 +287,7 @@ class World {
     };
 
     killEnemy(enemy, t, h, w, hy, wx) {
-        if (this.character.isCollidingByItem(enemy, t, h, w, hy, wx)) {
+        if (this.character.isCollidingByItem(enemy, t, h, w, hy, wx) && enemy.energy > 0) {
             enemy.energy = 0;
             enemy.AUDIOS.DEATH[0].play();
         };
@@ -299,6 +310,7 @@ class World {
             this.AUDIOS[0].play();
         } else {
             let sound = this.AUDIOS[1].cloneNode(true);
+            sound.muted = isMuted;
             sound.play();
         }
     };

@@ -45,7 +45,18 @@ class DrawableObject {
 
         this.constructor.intervalArr.push(id);
         return id;
-    }
+    };
+    
+    createTimeout(func, time) {
+        let id = setTimeout(() => {
+            if (isRunning) {
+                func(id);
+            }
+        }, time);
+        
+        this.constructor.timeoutArr.push(id);
+        return id;
+    };
 
     //übernimmt die Prozente vom Status
     setPercentage(percentage, statusItem) {

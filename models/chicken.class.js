@@ -53,7 +53,19 @@ class Chicken extends MovableObject {
         this.AUDIOS.DEATH = [
             this.chicken_sound_death,
         ];
-    }
+
+        this.AUDIOS.ENEMY.forEach((audio) => {
+            audio.muted = isMuted;
+        });
+
+        this.AUDIOS.DEATH[0].muted = isMuted;
+
+        this.AUDIOS.ENEMY.forEach((audio) => {
+            allAudios.push(audio);
+        });
+
+        allAudios.push(this.AUDIOS.DEATH[0]);
+    };
 
     animate() {
         this.moveInterval = this.createInterval(() => this.moveLeft(), 1000 / 60);
@@ -78,6 +90,7 @@ class Chicken extends MovableObject {
         let volume = 1 - (distance / maxDistance);
         let sound = audio.cloneNode();
         sound.volume = volume;
+        sound.muted = isMuted;
         sound.play();
     }
 
@@ -113,8 +126,8 @@ class BabyChicken extends MovableObject {
 
 
     AUDIOS = {
-        ENEMY : [],
-        DEATH : []
+        ENEMY: [],
+        DEATH: []
     };
 
     constructor() {
@@ -151,7 +164,19 @@ class BabyChicken extends MovableObject {
         this.AUDIOS.DEATH = [
             this.baby_chicken_sound_death
         ];
-    }
+
+        this.AUDIOS.ENEMY.forEach((audio) => {
+            audio.muted = isMuted;
+        });
+
+        this.AUDIOS.DEATH[0].muted = isMuted;
+
+        this.AUDIOS.ENEMY.forEach((audio) => {
+            allAudios.push(audio);
+        });
+
+        allAudios.push(this.AUDIOS.DEATH[0]);
+    };
 
     animate() {
         this.moveInterval = this.createInterval(() => this.moveLeft(), 1000 / 60);
@@ -177,6 +202,7 @@ class BabyChicken extends MovableObject {
         let volume = 1 - (distance / maxDistance);
         let sound = audio.cloneNode();
         sound.volume = volume;
+        sound.muted = isMuted;
         sound.play();
     }
 

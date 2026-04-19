@@ -76,7 +76,15 @@ class Endboss extends MovableObject {
             this.endbossDeathSound,
             this.endbossAttackSound
         ];
-    }
+
+        this.AUDIOS.forEach((audio) => {
+            audio.muted = isMuted;
+        });
+
+        this.AUDIOS.forEach((audio) => {
+            allAudios.push(audio);
+        });
+    };
 
     animate() {
         this.createInterval(this.playEndbossAnimation, 1000 / 60);
@@ -145,76 +153,103 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_DEAD);
     };
 
-playEndbossAnimation(id) {
-    if (world.level.endboss[0].endbossIsAngry) {
-        world.level.endboss[0].checkEndbossActivity(id);
-    } else if (world.level.endboss[0].endbossAlert) {
-        world.level.endboss[0].animationEndboss(id, 1, world.level.endboss[0].playAlertAnimation, 250, world.level.endboss[0].endbossIsNotAlerting);
-    } else {
-        world.level.endboss[0].animationEndboss(id, 0, world.level.endboss[0].playStandAnimation, 500, world.level.endboss[0].endbossIsAlerting);
-    };
-};
-
-checkEndbossActivity(id) {
-    if (world.level.endboss[0].endbossIsDeath()) {
-        world.level.endboss[0].animationEndboss(id, 3, world.level.endboss[0].playDeathAnimation, 150);
-    } else if (world.level.endboss[0].endbossGetHurt()) {
-        world.level.endboss[0].animationEndboss(id, 2, world.level.endboss[0].playHurtAnimation, 100, world.level.endboss[0].endbossIsHurt);
-    } else if (world.level.endboss[0].characterTouchEndboss()) {
-        world.level.endboss[0].animationEndboss(id, 4, world.level.endboss[0].playAttackAnimation, 150, world.level.endboss[0].checkAttacking);
-    } else {
-        world.level.endboss[0].animationEndboss(id, -1, world.level.endboss[0].playWalkAnimation, 150, world.level.endboss[0].checkInteractions);
-    };
-};
-
-animationEndboss(id, audio, interaction, time, func) {
-    clearInterval(id);
-    this.currentImage = 0;
-    this.playEndbossAudio(audio);
-    let intervalId = this.createInterval(interaction, time);
-    let intervalId2 = this.createInterval(() => this.checkAnimationChance(intervalId, intervalId2, func), 1000 / 60);
-};
-
-playEndbossAudio(i) {
-    if (i >= 0) {
-        this.AUDIOS[i].play();
-    }
-}
-
-checkAnimationChance(id, intervalId2, func) {
-    if (func) {
-        if (func()) {
-            clearInterval(id);
-            clearInterval(intervalId2);
-            world.level.endboss[0].animate();
+    playEndbossAnimation(id) {
+        if (world.level.endboss[0].endbossIsAngry) {
+            world.level.endboss[0].checkEndbossActivity(id);
+        } else if (world.level.endboss[0].endbossAlert) {
+            world.level.endboss[0].animationEndboss(id, 1, world.level.endboss[0].playAlertAnimation, 250, world.level.endboss[0].endbossIsNotAlerting);
+        } else {
+            world.level.endboss[0].animationEndboss(id, -1, world.level.endboss[0].playStandAnimation, 500, world.level.endboss[0].endbossIsAlerting);
+            world.character.createInterval(world.level.endboss[0].playBossSound, 2000);
         };
     };
-};
 
-playHurtAnimation() {
-    world.level.endboss[0].playAnimation(world.level.endboss[0].IMAGES_HURT);
-};
+    checkEndbossActivity(id) {
+        if (world.level.endboss[0].endbossIsDeath()) {
+            world.level.endboss[0].animationEndboss(id, 3, world.level.endboss[0].playDeathAnimation, 150);
+        } else if (world.level.endboss[0].endbossGetHurt()) {
+            world.level.endboss[0].animationEndboss(id, 2, world.level.endboss[0].playHurtAnimation, 100, world.level.endboss[0].endbossIsHurt);
+        } else if (world.level.endboss[0].characterTouchEndboss()) {
+            world.level.endboss[0].animationEndboss(id, 4, world.level.endboss[0].playAttackAnimation, 150, world.level.endboss[0].checkAttacking);
+        } else {
+            world.level.endboss[0].animationEndboss(id, -1, world.level.endboss[0].playWalkAnimation, 150, world.level.endboss[0].checkInteractions);
+        };
+    };
 
-playAttackAnimation() {
-    world.level.endboss[0].playAnimation(world.level.endboss[0].IMAGES_ATTACK);
-};
+    animationEndboss(id, audio, interaction, time, func) {
+        clearInterval(id);
+        this.currentImage = 0;
+        this.playEndbossAudio(audio);
+        let intervalId = this.createInterval(interaction, time);
+        let intervalId2 = this.createInterval(() => this.checkAnimationChance(intervalId, intervalId2, func), 1000 / 60);
+    };
 
-playWalkAnimation() {
-    world.level.endboss[0].playAnimation(world.level.endboss[0].IMAGES_WALK);
-};
+    playEndbossAudio(i) {
+        if (i == 4) {
+            world.character.createInterval(this.playAlertSound, 1000 / 60);
+        };
+        if (i >= 0) {
+            this.AUDIOS[i].play();
+        };
+    };
 
-playStandAnimation() {
-    world.level.endboss[0].playAnimation(world.level.endboss[0].IMAGES_STANDING);
-};
+    playAlertSound(intervalId) {
+        world.level.endboss[0].AUDIOS[4].play();
+        if (world.level.endboss[0].checkAttacking()) {
+            clearInterval(intervalId);
+        };
+    };
 
-playAlertAnimation() {
-    world.level.endboss[0].playLimitedAnimation(world.level.endboss[0].IMAGES_ALERT);
-};
+    playBossSound(intervalId) {
+        let distance = Math.abs(world.character.x - world.level.endboss[0].x);
+        let maxDistance = 720;
+        let audio = world.level.endboss[0].AUDIOS[0];
+        if (distance <= maxDistance) {
+            let volume = 1 - (distance / maxDistance);
+            audio.volume = volume;
+            audio.play();
+            if (world.level.endboss[0].endbossIsAlerting()) {
+                clearInterval(intervalId);
+                world.level.endboss[0].AUDIOS[0].pause();
+            };
+        };
+    };
 
-playDeathAnimation() {
-    world.level.endboss[0].playLimitedAnimation(world.level.endboss[0].IMAGES_DEAD);
-    setTimeout(() => {
-        world.endGame(1);
-    }, 600);
-};
+
+    checkAnimationChance(id, intervalId2, func) {
+        if (func) {
+            if (func()) {
+                clearInterval(id);
+                clearInterval(intervalId2);
+                world.level.endboss[0].animate();
+            };
+        };
+    };
+
+    playHurtAnimation() {
+        world.level.endboss[0].playAnimation(world.level.endboss[0].IMAGES_HURT);
+    };
+
+    playAttackAnimation() {
+        world.level.endboss[0].playAnimation(world.level.endboss[0].IMAGES_ATTACK);
+    };
+
+    playWalkAnimation() {
+        world.level.endboss[0].playAnimation(world.level.endboss[0].IMAGES_WALK);
+    };
+
+    playStandAnimation() {
+        world.level.endboss[0].playAnimation(world.level.endboss[0].IMAGES_STANDING);
+    };
+
+    playAlertAnimation() {
+        world.level.endboss[0].playLimitedAnimation(world.level.endboss[0].IMAGES_ALERT);
+    };
+
+    playDeathAnimation() {
+        world.level.endboss[0].playLimitedAnimation(world.level.endboss[0].IMAGES_DEAD);
+        setTimeout(() => {
+            world.endGame(1);
+        }, 600);
+    };
 };

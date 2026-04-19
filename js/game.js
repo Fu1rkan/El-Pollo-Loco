@@ -3,6 +3,8 @@ let keyboard = new Keyboard();
 let world;
 let timer;
 let isRunning = true;
+let allAudios = [];
+let isMuted = false;
 
 function init() {
     updateUI();
@@ -43,14 +45,6 @@ function renderGame() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
     startTimer();
-    console.log('My Character is', world.character);
-    // let wind = new Audio('audio/Wind, Gust, Designed, Polar, Snow Storm 05.mp3');
-    // wind.play();
-    // setTimeout(() => {
-    //     let music = new Audio('audio/ES_Desert Storm - Northside.mp3');
-    //     music.play();
-    // }, 17000)
-    
 };
 
 
@@ -161,6 +155,14 @@ function restartGame() {
         clearInterval(i);
     });
     DrawableObject.intervalArr = [];
+    DrawableObject.timeoutArr.forEach(i => {
+        clearTimeout(i);
+    });
+    DrawableObject.timeoutArr = [];
+    allAudios.forEach((audio) => {
+        audio.pause();
+        audio.currentTime = 0;
+    });
     clearTimeout(timer);
     keyboard.KEY = true;
     document.getElementById('pause-menu').classList.add('d_none');
@@ -174,6 +176,10 @@ function pauseGame() {
     document.getElementById('pause-menu').classList.remove('d_none');
     document.getElementById('pause-buttons').classList.remove('d_none');
     document.getElementById('pause-button').classList.add('deactive_button');
+    isMuted = true;
+    allAudios.forEach((audio) => {
+        audio.pause();
+    });
 };
 
 function resumeGame() {
@@ -181,19 +187,29 @@ function resumeGame() {
     document.getElementById('pause-menu').classList.add('d_none');
     document.getElementById('pause-buttons').classList.add('d_none');
     document.getElementById('pause-button').classList.remove('deactive_button');
+    isMuted = false;
+    allAudios.forEach((audio) => {
+        if (audio.currentTime > 0 && !audio.ended) {
+            audio.play();
+        }
+    });
 };
 
 function homeMenu() {
     DrawableObject.intervalArr.forEach(i => {
         clearInterval(i);
     });
-    document.getElementById('pause-menu').classList.add('d_none');
-    document.getElementById('pause-buttons').classList.add('d_none');
     DrawableObject.intervalArr = [];
+    DrawableObject.timeoutArr.forEach(i => {
+        clearTimeout(i);
+    });
+    DrawableObject.timeoutArr = [];
     clearTimeout(timer);
     keyboard.KEY = true;
     cancelAnimationFrame(world.requestAnimation);
     world.ctx.clearRect(0, 0, 720, 480)
+    document.getElementById('pause-menu').classList.add('d_none');
+    document.getElementById('pause-buttons').classList.add('d_none');
     document.getElementById('canvas').classList.add('background-img');
     document.getElementById('start-button').setAttribute("onclick", "startGame()");
     document.getElementById('start-button').classList.remove('deactive_button');
@@ -207,6 +223,11 @@ function homeMenu() {
     document.getElementById('resp-pause-button').classList.add('deactive_button');
     document.getElementById('resp-restart-button').setAttribute("onclick", "");
     document.getElementById('resp-restart-button').classList.add('deactive_button');
+
+    isMuted = false;
+    allAudios.forEach((audio) => {
+        audio.currentTime = 0;
+    });
 };
 
 function resetSleepingTimer() {

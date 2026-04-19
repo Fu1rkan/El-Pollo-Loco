@@ -16,7 +16,7 @@ class ThrowableObject extends MovableObject {
         'img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png'
     ];
 
-    AUDIOS = []
+    AUDIOS = [];
 
     isSplashed = false;
 
@@ -42,11 +42,19 @@ class ThrowableObject extends MovableObject {
             this.salsaThrowed,
             this.salsaSplashed
         ];
-    }
+
+        this.AUDIOS.forEach((audio) => {
+            audio.muted = isMuted;
+        });
+
+        this.AUDIOS.forEach((audio) => {
+            allAudios.push(audio);
+        });
+    };
 
     bottleGetSplashed(enemy, h, w, hy, wx) {
         return this.y >= 340 || this.isCollidingByItem(enemy, this, h, w, hy, wx);
-    }
+    };
 
     trow() {
         setTimeout(() => {
@@ -64,9 +72,7 @@ class ThrowableObject extends MovableObject {
             this.speedY -= this.acceleration;
         } else {
             clearInterval(id);
-            this.AUDIOS[0].pause();
-            this.AUDIOS[0].currentTime = 0;
-            this.AUDIOS[1].play();
+            this.playBottleSplashAudio();
         };
     };
 
@@ -99,6 +105,13 @@ class ThrowableObject extends MovableObject {
             clearInterval(id);
             this.currentImage = 0;
             let intervalId = world.character.createInterval(() => this.animateSplashedBottle(intervalId), 105);
+            this.playBottleSplashAudio();
         };
-    }
+    };
+
+    playBottleSplashAudio() {
+        this.AUDIOS[0].pause();
+        this.AUDIOS[0].currentTime = 0;
+        this.AUDIOS[1].play();
+    };
 };
