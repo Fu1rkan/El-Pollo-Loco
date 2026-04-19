@@ -122,16 +122,23 @@ canvas {
     z-index: 5;
 }
 
-.resume-button img{
+.resume-button img {
     width: 200px;
     height: auto;
     transition: 250ms;
     cursor: pointer;
 }
 
-.home-button img{
+.home-button img {
     width: 200px;
     height: 160px;
+    transition: 250ms;
+    cursor: pointer;
+}
+
+.mute-button img {
+    width: 200px;
+    height: 105px;
     transition: 250ms;
     cursor: pointer;
 }
@@ -204,7 +211,7 @@ canvas {
     height: 100%;
 }
 
-.left-side button img{
+.left-side button img {
     height: 100%;
 }
 
@@ -212,7 +219,7 @@ canvas {
     height: 100%;
 }
 
-.right-side button img{
+.right-side button img {
     height: 100%;
 }
 
@@ -353,6 +360,20 @@ canvas {
         margin: 0;
         padding: 0;
     }
+
+    .resume-button img {
+        width: 150px;
+    }
+
+    .home-button img {
+        width: 150px;
+        height: 120px;
+    }
+
+    .mute-button img {
+        width: 150px;
+        height: 80px;
+    }
 }
 
 @media (max-height: 600px) {
@@ -410,6 +431,20 @@ canvas {
         width: 300px;
         margin: 20px 0 11px 0;
     }
+
+    .resume-button img {
+        width: 120px;
+    }
+
+    .home-button img {
+        width: 120px;
+        height: 95px;
+    }
+
+    .mute-button img {
+        width: 120px;
+        height: 63px;
+    }
 }
 
 @media (max-height: 440px) {
@@ -457,12 +492,22 @@ canvas {
         font-size: 19px;
     }
 
-    .resp-buttons {
-        height: 40px;
-    }
-
     .rotate-phone-screen img {
         width: 300px;
         margin: 20px 0 11px 0;
+    }
+
+    .resume-button img {
+        width: 100px;
+    }
+
+    .home-button img {
+        width: 100px;
+        height: 78px;
+    }
+
+    .mute-button img {
+        width: 100px;
+        height: 53px;
     }
 }
