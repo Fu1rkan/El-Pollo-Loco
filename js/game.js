@@ -5,12 +5,24 @@ let timer;
 let isRunning = true;
 let allAudios = [];
 let isMuted = false;
+let muteSwitch = false;
 
 function init() {
     updateUI();
 
     window.addEventListener('resize', updateUI);
     window.addEventListener('orientationchange', updateUI);
+    getDataFromLocalStorage()
+}
+
+function getDataFromLocalStorage() {
+    let value = localStorage.getItem('audios');
+    isMuted = JSON.parse(value);
+    muteSwitch = JSON.parse(value);
+    if (isMuted) {
+        document.getElementById('mute-button').classList.add('d_none');
+        document.getElementById('unmute-button').classList.remove('d_none');
+    };
 }
 
 function updateUI() {
@@ -187,12 +199,14 @@ function resumeGame() {
     document.getElementById('pause-menu').classList.add('d_none');
     document.getElementById('pause-buttons').classList.add('d_none');
     document.getElementById('pause-button').classList.remove('deactive_button');
-    isMuted = false;
-    allAudios.forEach((audio) => {
-        if (audio.currentTime > 0 && !audio.ended) {
-            audio.play();
-        }
-    });
+    if (!muteSwitch) {
+        isMuted = false;
+        allAudios.forEach((audio) => {
+            if (audio.currentTime > 0 && !audio.ended) {
+                audio.play();
+            }
+        });
+    }
 };
 
 function homeMenu() {
@@ -229,6 +243,28 @@ function homeMenu() {
         audio.currentTime = 0;
     });
 };
+
+function mute() {
+    isMuted = true;
+    muteSwitch = true;
+    allAudios.forEach((audio) => {
+        audio.muted = isMuted;
+    });
+    document.getElementById('mute-button').classList.add('d_none');
+    document.getElementById('unmute-button').classList.remove('d_none');
+    localStorage.setItem('audios', JSON.stringify(isMuted));
+};
+
+function unmute() {
+    isMuted = false;
+    muteSwitch = false;
+    allAudios.forEach((audio) => {
+        audio.muted = isMuted;
+    });
+    document.getElementById('unmute-button').classList.add('d_none');
+    document.getElementById('mute-button').classList.remove('d_none');
+    localStorage.setItem('audios', JSON.stringify(isMuted));
+}
 
 function resetSleepingTimer() {
     clearTimeout(timer);

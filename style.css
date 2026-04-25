@@ -49,6 +49,7 @@ button {
     touch-action: manipulation;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
+    position: relative;
 }
 
 header img {

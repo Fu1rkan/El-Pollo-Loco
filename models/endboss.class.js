@@ -2,10 +2,10 @@ class Endboss extends MovableObject {
     endbossAlert = false;
     endbossIsAngry = false;
     IMAGES_WALK = [
-        'img/4_enemie_boss_chicken/1_WALK/G1.png',
-        'img/4_enemie_boss_chicken/1_WALK/G2.png',
-        'img/4_enemie_boss_chicken/1_WALK/G3.png',
-        'img/4_enemie_boss_chicken/1_WALK/G4.png'
+        'img/4_enemie_boss_chicken/1_walk/G1.png',
+        'img/4_enemie_boss_chicken/1_walk/G2.png',
+        'img/4_enemie_boss_chicken/1_walk/G3.png',
+        'img/4_enemie_boss_chicken/1_walk/G4.png'
     ];
 
     IMAGES_STANDING = [

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <link rel="stylesheet" href="./style.css">
+    <link rel="shortcut icon" href="./img/8_coin/coin_1.png" type="image/x-icon">
     <script src="./models/drawable_object.class.js"></script>
     <script src="./models/statusbar.class.js"></script>
     <script src="./models/movable-object.class.js"></script>
@@ -47,10 +48,10 @@
             <button onclick="resumeGame()" class="resume-button" id="resume-button">
                 <img src="./img/buttons/play_button.png" alt="resume">
             </button>
-            <button class="mute-button">
+            <button onclick="mute()" class="mute-button" id="mute-button">
                 <img src="./img/buttons/unmute_button.png" alt="">
             </button>
-            <button class="mute-button d_none">
+            <button onclick="unmute()" class="mute-button d_none" id="unmute-button">
                 <img src="./img/buttons/mute_button.png" alt="">
             </button>
         </div>
@@ -73,7 +74,7 @@
     <section class="resp-buttons" id="resp-buttons">
         <div class="left-side">
             <button id="left-button">
-                <img src="./img/buttons/left_button.png" alt="">
+                <img src="./img/buttons/left_button.png" alt="" oncontextmenu="event.preventDefault()">
             </button>
             <button id="right-button">
                 <img src="./img/buttons/right_button.png" alt="">
