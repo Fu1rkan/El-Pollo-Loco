@@ -186,7 +186,7 @@ function restartGame() {
 function pauseGame() {
     isRunning = false;
     document.getElementById('pause-menu').classList.remove('d_none');
-    document.getElementById('pause-buttons').classList.remove('d_none');
+    // document.getElementById('pause-buttons').classList.remove('d_none');
     document.getElementById('pause-button').classList.add('deactive_button');
     isMuted = true;
     allAudios.forEach((audio) => {

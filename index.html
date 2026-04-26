@@ -25,6 +25,7 @@
     <script src="./js/game.js"></script>
     <title>El Pollo Loco</title>
 </head>
+
 <body onload="init()">
     <header id="header">
         <button id="resp-restart-button" class="deactive_button">
@@ -36,10 +37,10 @@
         </button>
     </header>
     <section class="section-canvas" id="section-canvas">
-        <div id="pause-menu" class="pause-menu d_none"></div>
+        <div id="pause-menu" class="pause-menu"></div> <!--d_none -->
         <canvas id="canvas" width="720" height="480" class="background-img"></canvas>
         <img src="./img/background_img/canvas_border.png" alt="" class="canvas-border">
-        <div class="pause-buttons d_none" id="pause-buttons">
+        <div class="pause-buttons" id="pause-buttons"><!--d_none -->
             <button onclick="homeMenu()" class="home-button" id="home-button">
                 <img src="./img/buttons/home_button.png" alt="home">
             </button>
@@ -52,9 +53,33 @@
             <button onclick="unmute()" class="mute-button d_none" id="unmute-button">
                 <img src="./img/buttons/mute_button.png" alt="">
             </button>
+            <button onclick="openSettings()" class="settings-button" id="settings-button">
+                <img src="./img/buttons/settings_button.png" alt="">
+            </button>
             <a href="./impressum.html" target="_blank">Impressum</a>
         </div>
-
+        <table class="button-settings d_none" id="button-settings">
+            <tr>
+                <td>Left</td>
+                <td>&larr; | A</td>
+            </tr>
+            <tr>
+                <td>Right</td>
+                <td>&rarr; | D</td>
+            </tr>
+            <tr>
+                <td>Jump</td>
+                <td>&uarr; | W | _</td>
+            </tr>
+            <tr>
+                <td>Throw Item</td>
+                <td>E</td>
+            </tr>
+            <tr>
+                <td>Pause</td>
+                <td>Esc</td>
+            </tr>
+        </table>
     </section>
     <section class="btn" id="section-buttons">
         <button id="restart-button" class="deactive_button">
@@ -74,10 +99,10 @@
     <section class="resp-buttons" id="resp-buttons">
         <div class="left-side">
             <button id="left-button">
-                <img src="./img/buttons/left_button.png" alt="" oncontextmenu="event.preventDefault()">
+                <img src="./img/buttons/left_button.png" alt="" draggable="false">
             </button>
             <button id="right-button">
-                <img src="./img/buttons/right_button.png" alt="">
+                <img src="./img/buttons/right_button.png" alt="" draggable="false">
             </button>
         </div>
         <button onclick="startGame()" id="resp-start-button">
@@ -85,10 +110,10 @@
         </button>
         <div class="right-side">
             <button id="salsa-button">
-                <img src="./img/buttons/salsa_button.png" alt="">
+                <img src="./img/buttons/salsa_button.png" alt="" draggable="false">
             </button>
             <button id="up-button">
-                <img src="./img/buttons/up_button.png" alt="">
+                <img src="./img/buttons/up_button.png" alt="" draggable="false">
             </button>
         </div>
     </section>
