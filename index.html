@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./style/responsive.css">
     <link rel="shortcut icon" href="./img/6_salsa_bottle/salsa_bottle.png" type="image/x-icon">
     <script src="./models/drawable_object.class.js"></script>
     <script src="./models/statusbar.class.js"></script>
@@ -37,15 +38,15 @@
         </button>
     </header>
     <section class="section-canvas" id="section-canvas">
-        <div id="pause-menu" class="pause-menu"></div> <!--d_none -->
         <canvas id="canvas" width="720" height="480" class="background-img"></canvas>
         <img src="./img/background_img/canvas_border.png" alt="" class="canvas-border">
-        <div class="pause-buttons" id="pause-buttons"><!--d_none -->
-            <button onclick="homeMenu()" class="home-button" id="home-button">
-                <img src="./img/buttons/home_button.png" alt="home">
-            </button>
+        <div id="pause-menu" class="pause-menu d_none"></div>
+        <div class="pause-buttons d_none" id="pause-buttons">
             <button onclick="resumeGame()" class="resume-button" id="resume-button">
                 <img src="./img/buttons/play_button.png" alt="resume">
+            </button>
+            <button onclick="homeMenu()" class="home-button" id="home-button">
+                <img src="./img/buttons/home_button.png" alt="home">
             </button>
             <button onclick="mute()" class="mute-button" id="mute-button">
                 <img src="./img/buttons/unmute_button.png" alt="">
@@ -80,8 +81,11 @@
                 <td>Esc</td>
             </tr>
         </table>
+        <button class="close-settings-button d_none" id="close-settings-button" onclick="closeSettings()">
+            <img src="./img/buttons/close_button.png" alt="">
+        </button>
     </section>
-    <section class="btn" id="section-buttons">
+    <section class="section-buttons" id="section-buttons">
         <button id="restart-button" class="deactive_button">
             <img src="./img/buttons/restart_button.png">
         </button>

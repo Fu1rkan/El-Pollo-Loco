@@ -1,3 +1,6 @@
+/*                 Standart                         */
+
+
 * {
     margin: 0;
     padding: 0;
@@ -5,16 +8,6 @@
     scroll-behavior: smooth;
     box-sizing: content-box;
     touch-action: manipulation;
-    -webkit-user-select: none;
-    user-select: none;
-}
-
-img {
-    pointer-events: none;
-    -webkit-user-drag: none;
-    user-select: none;
-    -webkit-touch-callout: none;
-    touch-action: none;
     -webkit-user-select: none;
     user-select: none;
 }
@@ -33,15 +26,11 @@ body {
     font-family: 'Bungee Spice', sans-serif;
 }
 
-header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 16px;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 0 24px;
+img {
+    pointer-events: none;
+    -webkit-user-drag: none;
+    -webkit-touch-callout: none;
+    touch-action: none;
 }
 
 button {
@@ -55,6 +44,25 @@ button {
     user-select: none;
     -webkit-tap-highlight-color: transparent;
     position: relative;
+}
+
+.d_none {
+    display: none !important;
+}
+
+
+/*               Header Section                      */
+
+
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 24px;
 }
 
 header img {
@@ -79,10 +87,17 @@ h1 {
     text-shadow: 6px 6px 8px black;
 }
 
-h2 {
-    font-size: 40px;
-    text-shadow: 4px 4px 8px black;
+.deactive_button {
+    opacity: 0.5;
 }
+
+.deactive_button:hover {
+    transform: scale(1) !important;
+}
+
+
+/*               Canvas Section                   */
+
 
 .section-canvas {
     position: relative;
@@ -95,6 +110,13 @@ canvas {
     position: absolute;
     cursor: pointer;
     z-index: 0;
+}
+
+.background-img {
+    background-image: url(./img/9_intro_outro_screens/start/startscreen_1.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 100% 100%;
 }
 
 .canvas-border {
@@ -133,26 +155,6 @@ canvas {
 .pause-buttons a {
     position: absolute;
     bottom: -160px;
-}
-
-.button-settings {
-    background-color: black;
-    border: 4px solid rgb(255, 128, 0);
-    border-radius: 16px;
-    padding: 8px 16px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-}
-
-.button-settings td:first-child {
-    padding-right: 32px;
-}
-
-.button-settings td {
-    padding: 8px;
 }
 
 .resume-button {
@@ -217,14 +219,53 @@ canvas {
     transform: scale(1.05);
 }
 
-.background-img {
-    background-image: url(./img/9_intro_outro_screens/start/startscreen_1.png);
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: 100% 100%;
+.button-settings {
+    background-color: black;
+    border: 4px solid rgb(255, 128, 0);
+    border-radius: 16px;
+    padding: 8px 16px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
 }
 
-.btn {
+.button-settings td {
+    padding: 8px;
+}
+
+.button-settings td:first-child {
+    padding-right: 32px;
+}
+
+.close-settings-button {
+    position: absolute;
+    left: 72%;
+    top: 15%;
+    width: 50px;
+    height: auto;
+    z-index: 1;
+}
+
+.close-settings-button:hover {
+    transform: scale(1.1);
+}
+
+.close-settings-button:active {
+    transform: scale(1);
+}
+
+.close-settings-button img {
+    width: 100%;
+    height: 100%;
+}
+
+
+/*              Button Section               */
+
+
+.section-buttons {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -232,20 +273,46 @@ canvas {
     gap: 40px;
 }
 
-.btn img {
+.section-buttons img {
     width: 200px;
     height: auto;
     cursor: pointer;
     transition: 250ms;
 }
 
-.btn img:hover {
+.section-buttons img:hover {
     transform: scale(1.05);
 }
 
-.btn img:active {
+.section-buttons img:active {
     transform: scale(1);
 }
+
+
+/*                  Resp Overlay                 */
+
+
+.rotate-phone-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.rotate-phone-screen img {
+    width: 600px;
+    height: auto;
+    margin: 24px 0 16px 0;
+}
+
+h2 {
+    font-size: 40px;
+    text-shadow: 4px 4px 8px black;
+}
+
+
+/*              Resp Buttons Section                */
+
 
 .resp-buttons {
     display: none;
@@ -266,13 +333,6 @@ canvas {
     gap: 24px;
 }
 
-.right-side {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    gap: 24px;
-}
-
 .left-side button {
     height: 100%;
     position: relative;
@@ -280,6 +340,18 @@ canvas {
 
 .left-side button img {
     height: 100%;
+}
+
+.resp-start-button {
+    height: auto;
+    width: 200px;
+}
+
+.right-side {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: 24px;
 }
 
 .right-side button {
@@ -290,35 +362,9 @@ canvas {
     height: 100%;
 }
 
-.resp-start-button {
-    height: auto;
-    width: 200px;
-}
 
-.d_none {
-    display: none !important;
-}
+/*                  Fonts                    */
 
-.deactive_button {
-    opacity: 0.5;
-}
-
-.deactive_button:hover {
-    transform: scale(1) !important;
-}
-
-.rotate-phone-screen {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-
-.rotate-phone-screen img {
-    width: 600px;
-    height: auto;
-    margin: 24px 0 16px 0;
-}
 
 @font-face {
     font-family: 'Bungee Spice';
@@ -328,265 +374,4 @@ canvas {
 @font-face {
     font-family: 'Luckiest Guy';
     src: url(./fonts/Luckiest_Guy/LuckiestGuy-Regular.ttf);
-}
-
-@media (max-width: 820px) {
-    h1 {
-        font-size: 64px;
-    }
-
-    h2 {
-        font-size: 32px;
-    }
-
-    .rotate-phone-screen img {
-        width: 400px;
-        margin: 20px 0 11px 0;
-    }
-}
-
-@media (max-width: 580px) {
-    h1 {
-        font-size: 32px;
-        margin: 0;
-        padding: 0;
-    }
-
-    h2 {
-        font-size: 19px;
-    }
-
-    header {
-        padding: 0;
-    }
-
-    .rotate-phone-screen img {
-        width: 300px;
-        margin: 20px 0 11px 0;
-    }
-}
-
-@media (max-height: 850px) {
-    header {
-        justify-content: space-between;
-    }
-
-    header img {
-        display: block;
-    }
-
-    canvas {
-        width: 100%;
-        height: 100%;
-    }
-
-    .section-canvas {
-        width: 600px;
-        height: 350px;
-        margin: 0;
-    }
-
-    .canvas-border {
-        top: -43px;
-        left: -39px;
-        height: calc(100% + 75px);
-        width: calc(100% + 79px);
-    }
-
-    .btn {
-        display: none;
-    }
-
-    .btn img {
-        width: 150px;
-    }
-
-    header img {
-        width: 150px;
-    }
-
-    .pause-buttons {
-        width: 400px;
-    }
-
-    .resume-button {
-        width: 150px;
-        height: 78px;
-    }
-
-    .home-button {
-        width: 150px;
-        height: 120px;
-    }
-
-    .mute-button {
-        width: 150px;
-        height: 80px;
-    }
-
-    .settings-button {
-        width: 150px;
-        height: 78px;
-    }
-
-    .resp-buttons {
-        display: flex;
-    }
-
-    .resp-start-button {
-        width: 150px;
-    }
-
-    h1 {
-        font-size: 36px;
-        margin: 0;
-        padding: 0;
-    }
-
-    .pause-buttons a {
-        bottom: -100px;
-    }
-}
-
-@media (max-height: 600px) {
-    .section-canvas {
-        width: 70%;
-        max-width: 500px;
-        height: 50%;
-    }
-
-    .canvas-border {
-        top: -28px;
-        left: -26px;
-        height: calc(100% + 50px);
-        width: calc(100% + 52px);
-    }
-
-    .btn img {
-        width: 120px;
-    }
-
-    header img {
-        width: 120px;
-    }
-
-    .resp-start-button {
-        width: 120px;
-    }
-
-    .resume-button {
-        width: 120px;
-        height: 66px;
-    }
-
-    .home-button {
-        width: 120px;
-        height: 100px;
-    }
-
-    .mute-button {
-        width: 120px;
-        height: 63px;
-    }
-
-    .settings-button {
-        width: 120px;
-        height: 62px;
-    }
-
-    h1 {
-        font-size: 36px;
-        margin: 0;
-        padding: 0;
-    }
-
-    h2 {
-        font-size: 19px;
-    }
-
-    .resp-buttons {
-        bottom: 12px;
-        height: 64px;
-        padding: 0 24px;
-    }
-
-    .rotate-phone-screen img {
-        width: 300px;
-        margin: 20px 0 11px 0;
-    }
-
-    .pause-buttons a {
-        top: -40px;
-        height: min-content;
-    }
-}
-
-@media (max-height: 440px) {
-    .section-canvas {
-        width: 70%;
-        max-width: 400px;
-        height: 50%;
-    }
-
-    .canvas-border {
-        top: -22px;
-        left: -20px;
-        height: calc(100% + 40px);
-        width: calc(100% + 40px);
-    }
-
-    .btn img {
-        width: 70px;
-    }
-
-    header img {
-        width: 70px;
-    }
-
-    .resp-start-button {
-        width: 90px;
-    }
-
-    h1 {
-        font-size: 32px;
-        margin: 0;
-        padding: 0;
-    }
-
-    h2 {
-        font-size: 19px;
-    }
-
-    .rotate-phone-screen img {
-        width: 300px;
-        margin: 20px 0 11px 0;
-    }
-
-    .pause-buttons {
-        width: 300px;
-    }
-
-    .resume-button {
-        width: 100px;
-        height: 54px;
-    }
-
-    .home-button {
-        width: 100px;
-        height: 82px;
-    }
-
-    .mute-button {
-        width: 100px;
-        height: 53px;
-    }
-
-    .settings-button {
-        width: 100px;
-        height: 52px;
-    }
-
-    .pause-buttons a {
-        top: -30px;
-    }
 }

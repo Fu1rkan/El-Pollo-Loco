@@ -179,6 +179,8 @@ function restartGame() {
     keyboard.KEY = true;
     document.getElementById('pause-menu').classList.add('d_none');
     document.getElementById('pause-buttons').classList.add('d_none');
+    document.getElementById('close-settings-button').classList.add('d_none');
+    document.getElementById('button-settings').classList.add('d_none');
     cancelAnimationFrame(world.requestAnimation);
     renderGame();
 };
@@ -186,12 +188,24 @@ function restartGame() {
 function pauseGame() {
     isRunning = false;
     document.getElementById('pause-menu').classList.remove('d_none');
-    // document.getElementById('pause-buttons').classList.remove('d_none');
+    document.getElementById('pause-buttons').classList.remove('d_none');
     document.getElementById('pause-button').classList.add('deactive_button');
     isMuted = true;
     allAudios.forEach((audio) => {
         audio.pause();
     });
+};
+
+function openSettings() {
+    document.getElementById('pause-buttons').classList.add('d_none');
+    document.getElementById('button-settings').classList.remove('d_none');
+    document.getElementById('close-settings-button').classList.remove('d_none');
+};
+
+function closeSettings() {
+    document.getElementById('pause-buttons').classList.remove('d_none');
+    document.getElementById('close-settings-button').classList.add('d_none');
+    document.getElementById('button-settings').classList.add('d_none');
 };
 
 function resumeGame() {
@@ -204,9 +218,9 @@ function resumeGame() {
         allAudios.forEach((audio) => {
             if (audio.currentTime > 0 && !audio.ended) {
                 audio.play();
-            }
+            };
         });
-    }
+    };
 };
 
 function homeMenu() {
