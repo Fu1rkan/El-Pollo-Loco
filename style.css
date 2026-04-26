@@ -39,15 +39,6 @@ header {
     padding: 0 24px;
 }
 
-footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    bottom: 16px;
-    width: 100%;
-}
-
 button {
     height: auto;
     width: auto;
@@ -130,6 +121,11 @@ canvas {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 5;
+}
+
+.pause-buttons a {
+    position: absolute;
+    bottom: -160px;
 }
 
 .resume-button img {
@@ -384,6 +380,10 @@ canvas {
         width: 150px;
         height: 80px;
     }
+
+    .pause-buttons a {
+        bottom: -100px;
+    }
 }
 
 @media (max-height: 600px) {
@@ -455,6 +455,11 @@ canvas {
         width: 120px;
         height: 63px;
     }
+
+    .pause-buttons a {
+        top: -40px;
+        height: min-content;
+    }
 }
 
 @media (max-height: 440px) {
@@ -519,5 +524,9 @@ canvas {
     .mute-button img {
         width: 100px;
         height: 53px;
+    }
+
+    .pause-buttons a {
+        top: -30px;
     }
 }
