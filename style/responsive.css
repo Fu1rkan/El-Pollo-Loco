@@ -101,7 +101,7 @@
     }
 
     .pause-buttons a {
-        bottom: -100px;
+        font-size: 14px;
     }
 
     .resume-button {
@@ -192,8 +192,8 @@
     }
 
     .pause-buttons a {
-        top: -40px;
-        height: min-content;
+        top: -10px;
+        font-size: 12px;
     }
 
     .resume-button {
@@ -297,6 +297,11 @@
     .pause-buttons {
         width: 300px;
         gap: 16px;
+    }
+
+    .pause-buttons a {
+        top: auto;
+        bottom: -20px;
     }
 
     .resume-button {

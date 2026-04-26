@@ -154,7 +154,7 @@ canvas {
 
 .pause-buttons a {
     position: absolute;
-    bottom: -160px;
+    top: -30px;
 }
 
 .resume-button {
