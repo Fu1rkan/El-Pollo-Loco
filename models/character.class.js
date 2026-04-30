@@ -128,7 +128,7 @@ class Character extends MovableObject {
     };
 
     isSleeping() {
-        if (this.world.keyboard.KEY == false) {
+        if (this.world.keyboard.ACTIVE == false) {
             return true;
         } else {
             return false;
