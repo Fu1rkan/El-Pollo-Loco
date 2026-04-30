@@ -2,10 +2,11 @@ let canvas;
 let keyboard = new Keyboard();
 let world;
 let timer;
-let isRunning = true;
+let isRunning = false;
 let allAudios = [];
 let isMuted = false;
 let muteSwitch = false;
+let gameStarted = false;
 
 function init() {
     updateUI();
@@ -82,7 +83,7 @@ function bindButton(id, keyName) {
 
         if (checkKeyPressed()) {
             resetSleepingTimer();
-        }
+        };
     });
 
     // loslassen
@@ -110,8 +111,10 @@ document.addEventListener('keydown', (event) => {
         keyboard.DOWN = true;
     } else if (event.key === 'd' || event.key === 'D' || event.key === 'ArrowRight') {
         keyboard.RIGHT = true;
-    } else if (event.key === 'e') {
+    } else if (event.key === 'e' || event.key === 'E') {
         keyboard.E = true;
+    } else if (event.key === 'Escape') {
+        pauseGame();
     };
 
     if (checkKeyPressed() == true) {
@@ -128,7 +131,7 @@ document.addEventListener('keyup', (event) => {
         keyboard.DOWN = false;
     } else if (event.key === 'd' || event.key === 'D' || event.key === 'ArrowRight') {
         keyboard.RIGHT = false;
-    } else if (event.key === 'e') {
+    } else if (event.key === 'e' || event.key === 'E') {
         keyboard.E = false;
     };
 });
@@ -145,6 +148,7 @@ function checkKeyPressed() {
 
 function startGame() {
     isRunning = true;
+    gameStarted = true;
     document.getElementById('canvas').classList.remove('background-img');
     document.getElementById('start-button').setAttribute("onclick", "");
     document.getElementById('start-button').classList.add('deactive_button');
@@ -186,14 +190,23 @@ function restartGame() {
 };
 
 function pauseGame() {
+    if (!isRunning) {
+        if (!gameStarted) {
+            return
+        }
+        resumeGame();
+        return
+    }
     isRunning = false;
     document.getElementById('pause-menu').classList.remove('d_none');
     document.getElementById('pause-buttons').classList.remove('d_none');
     document.getElementById('pause-button').classList.add('deactive_button');
-    isMuted = true;
-    allAudios.forEach((audio) => {
-        audio.pause();
-    });
+    if (!muteSwitch) {
+        isMuted = true;
+        allAudios.forEach((audio) => {
+            audio.pause();
+        });
+    };
 };
 
 function openSettings() {
@@ -224,6 +237,7 @@ function resumeGame() {
 };
 
 function homeMenu() {
+    gameStarted = false;
     DrawableObject.intervalArr.forEach(i => {
         clearInterval(i);
     });
@@ -251,8 +265,9 @@ function homeMenu() {
     document.getElementById('resp-pause-button').classList.add('deactive_button');
     document.getElementById('resp-restart-button').setAttribute("onclick", "");
     document.getElementById('resp-restart-button').classList.add('deactive_button');
-
-    isMuted = false;
+    if (!muteSwitch) {
+        isMuted = false;
+    }
     allAudios.forEach((audio) => {
         audio.currentTime = 0;
     });

@@ -6,7 +6,7 @@
 body {
     margin: 0;
     font-family: 'Luckiest Guy', cursive;
-    background-image: url(./img/background_img/background.png);
+    background-image: url(/img/background_img/background.png);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -99,5 +99,5 @@ a {
 
 @font-face {
     font-family: 'Bungee Spice';
-    src: url(./fonts/Bungee_Spice/BungeeSpice-Regular.ttf);
+    src: url(/fonts/Bungee_Spice/BungeeSpice-Regular.ttf);
 }
