@@ -6,7 +6,7 @@ function init() {
     updateUI();
     window.addEventListener('resize', updateUI);
     window.addEventListener('orientationchange', updateUI);
-    getDataFromLocalStorage()
+    getDataFromLocalStorage();
 };
 
 /**
@@ -139,6 +139,9 @@ function clearAudios() {
     if (!muteSwitch) {
         isMuted = false;
     };
+    allAudios.forEach((element) => {
+        element.pause();
+    })
     allAudios = [];
 };
 
