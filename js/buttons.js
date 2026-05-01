@@ -108,6 +108,7 @@ function activateButtons(action) {
         restartbutton.setAttribute("onclick", "restartGame()");
         restartbutton.classList.remove('deactive_button');
     } else if (action == 'finish') {
+        startButton.disabled = false;
         startButton.setAttribute("onclick", "startGame()");
         startButton.classList.remove('deactive_button');
     };
@@ -140,6 +141,7 @@ function activateRespButtons(action) {
         respRestartButton.setAttribute("onclick", "restartGame()");
         respRestartButton.classList.remove('deactive_button');
     } else if (action == 'finish') {
+        respStartButton.disabled = false;
         respStartButton.setAttribute("onclick", "startGame()");
         respStartButton.classList.remove('deactive_button');
     };
