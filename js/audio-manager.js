@@ -5,6 +5,12 @@
 let audioPools = {};
 
 /**
+ * Stores last playback time by audio cooldown group
+ * @type {Object.<string, number>}
+ */
+let audioCooldowns = {};
+
+/**
  * Creates an audio element with shared defaults
  * @param {string} path - Audio file path
  * @returns {HTMLAudioElement} - Prepared audio element
@@ -80,6 +86,52 @@ function playPooledAudio(path, volume = 1, poolSize = 2) {
 };
 
 /**
+ * Plays an enemy ambient sound with mobile throttling
+ * @param {string} path - Audio file path
+ * @param {number} volume - Playback volume
+ */
+function playEnemyAmbientSound(path, volume) {
+    if (!isMobileAudioMode()) {
+        playPooledAudio(path, volume, 2);
+        return;
+    };
+    playThrottledPooledAudio(path, volume, 1, 'enemyAmbient', 2600);
+};
+
+/**
+ * Plays pooled audio only when the cooldown group is ready
+ * @param {string} path - Audio file path
+ * @param {number} volume - Playback volume
+ * @param {number} poolSize - Maximum simultaneous sounds
+ * @param {string} group - Cooldown group
+ * @param {number} cooldown - Cooldown in milliseconds
+ */
+function playThrottledPooledAudio(path, volume, poolSize, group, cooldown) {
+    if (!canUseAudioCooldown(group, cooldown)) return;
+    rememberAudioCooldown(group);
+    playPooledAudio(path, volume, poolSize);
+};
+
+/**
+ * Checks whether a cooldown group can play
+ * @param {string} group - Cooldown group
+ * @param {number} cooldown - Cooldown in milliseconds
+ * @returns {boolean} - true = can play, false = still cooling down
+ */
+function canUseAudioCooldown(group, cooldown) {
+    let lastPlayed = audioCooldowns[group] || 0;
+    return Date.now() - lastPlayed >= cooldown;
+};
+
+/**
+ * Stores the current playback time for a cooldown group
+ * @param {string} group - Cooldown group
+ */
+function rememberAudioCooldown(group) {
+    audioCooldowns[group] = Date.now();
+};
+
+/**
  * Stops every active audio element in a pool
  * @param {string} path - Audio file path
  */
@@ -135,13 +187,30 @@ function addAudioToPool(path, pool) {
  * @returns {number} - Effective pool size
  */
 function getMobilePoolSize(poolSize) {
-    if (navigator.maxTouchPoints > 0) {
+    if (isMobileAudioMode()) {
         return Math.min(poolSize, 2);
     };
     return poolSize;
 };
 
+/**
+ * Checks whether mobile audio limits should be active
+ * @returns {boolean} - true = mobile audio mode, false = desktop audio mode
+ */
+function isMobileAudioMode() {
+    return navigator.maxTouchPoints > 0 || window.innerWidth < 820;
+};
+
+/**
+ * Gets the maximum distance for enemy ambient sounds
+ * @returns {number} - Maximum playback distance
+ */
+function getEnemySoundDistance() {
+    return isMobileAudioMode() ? 520 : 720;
+};
+
 /** Clears all reusable audio pools */
 function resetAudioPools() {
     audioPools = {};
+    audioCooldowns = {};
 };

@@ -161,7 +161,7 @@ class Chicken extends MovableObject {
      * @returns {boolean} - true = too far away, false = close enough
      */
     chickenIsTooFarAway(distance) {
-        return distance >= 720;
+        return distance >= getEnemySoundDistance();
     }
 
     /**
@@ -171,7 +171,7 @@ class Chicken extends MovableObject {
      */
     playChickenSoundByDistance(chicken, distance) {
         let path = chicken.AUDIOS.ENEMY[this.getRandomNumber()];
-        playPooledAudio(path, 1 - (distance / 720), 2);
+        playEnemyAmbientSound(path, 1 - (distance / 720));
     }
 
     /**
