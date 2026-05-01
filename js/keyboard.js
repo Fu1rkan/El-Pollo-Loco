@@ -159,6 +159,14 @@ function getKeyboardKey(event) {
 };
 
 /**
+ * Checks if any movement or action key is pressed
+ * @returns {boolean} - true = key pressed, false = no key pressed
+ */
+function isAnyKeyPressed() {
+    return keyboard.UP || keyboard.RIGHT || keyboard.LEFT || keyboard.SPACE || keyboard.E;
+};
+
+/**
  * Binds mobile control buttons after a short delay
  * Ensures the button elements are available before pointer events are attached
  */
