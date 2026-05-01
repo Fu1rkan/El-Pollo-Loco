@@ -11,6 +11,15 @@ let audioPools = {};
 let audioCooldowns = {};
 
 /**
+ * Default volume values for game sounds
+ * @type {number}
+ */
+const DEFAULT_AUDIO_VOLUME = 0.65;
+const BACKGROUND_MUSIC_VOLUME = 0.35;
+const WIN_BACKGROUND_MUSIC_VOLUME = 0.16;
+const WIND_AUDIO_VOLUME = 0.35;
+
+/**
  * Creates an audio element with shared defaults
  * @param {string} path - Audio file path
  * @returns {HTMLAudioElement} - Prepared audio element
@@ -19,6 +28,7 @@ function createManagedAudio(path) {
     let audio = new Audio(path);
     audio.preload = 'auto';
     audio.muted = isMuted;
+    setAudioVolume(audio, DEFAULT_AUDIO_VOLUME);
     return audio;
 };
 
@@ -71,6 +81,25 @@ function stopAudio(audio) {
 };
 
 /**
+ * Sets an audio volume between 0 and 1
+ * @param {HTMLAudioElement} audio - Audio element to update
+ * @param {number} volume - Desired audio volume
+ */
+function setAudioVolume(audio, volume) {
+    if (!audio) return;
+    audio.volume = getLimitedAudioVolume(volume);
+};
+
+/**
+ * Limits a volume value to the playable range
+ * @param {number} volume - Desired audio volume
+ * @returns {number} - Limited audio volume
+ */
+function getLimitedAudioVolume(volume) {
+    return Math.max(0, Math.min(volume, 1));
+};
+
+/**
  * Plays a short effect through a reusable audio pool
  * @param {string} path - Audio file path
  * @param {number} volume - Playback volume
@@ -80,7 +109,7 @@ function playPooledAudio(path, volume = 1, poolSize = 2) {
     if (isMuted || !isRunning) return;
     let audio = getAvailablePoolAudio(path, poolSize);
     if (!audio) return;
-    audio.volume = volume;
+    setAudioVolume(audio, volume * DEFAULT_AUDIO_VOLUME);
     audio.currentTime = 0;
     playAudio(audio);
 };

@@ -68,15 +68,67 @@ World.prototype.canThrowBottles = function () {
  * @param {number} int - 0 = game lost, any other value = game won
  */
 World.prototype.endGame = function (int) {
-    if (int == 0) {
-        this.gameLost = true;
-        playAudio(this.AUDIOS[4]);
-    } else {
-        this.gameWon = true;
-        playAudio(this.AUDIOS[3]);
+    if (this.gameEnded) return;
+    this.gameEnded = true;
+    this.setEndscreenState(int);
+    this.playEndscreenAudio(int);
+    this.clearEndGameTimers();
+    document.getElementById('start-button').disabled = true;
+};
+
+/**
+ * Sets the final game result
+ * @param {number} result - 0 = game lost, any other value = game won
+ */
+World.prototype.setEndscreenState = function (result) {
+    this.gameLost = result == 0;
+    this.gameWon = result != 0;
+};
+
+/**
+ * Plays the matching endscreen audio
+ * @param {number} result - 0 = game lost, any other value = game won
+ */
+World.prototype.playEndscreenAudio = function (result) {
+    if (result == 0) {
+        this.playLoseAudio();
+        return;
     };
+    this.playWinAudio();
+};
+
+/** Plays lose sound and stops all background sounds */
+World.prototype.playLoseAudio = function () {
+    this.stopBackgroundSounds();
+    playAudio(this.AUDIOS[4]);
+};
+
+/** Plays win sound and lowers the background music */
+World.prototype.playWinAudio = function () {
+    this.lowerBackgroundMusicForWin();
+    playAudio(this.AUDIOS[3]);
+};
+
+/** Keeps background music audible but softer after winning */
+World.prototype.lowerBackgroundMusicForWin = function () {
+    setAudioVolume(this.backgroundMusic, WIN_BACKGROUND_MUSIC_VOLUME);
+    playAudio(this.backgroundMusic);
+};
+
+/** Stops looping background sounds */
+World.prototype.stopBackgroundSounds = function () {
+    stopAudio(this.windAudio);
+    stopAudio(this.backgroundMusic);
+};
+
+/** Clears active game intervals and timeouts after game end */
+World.prototype.clearEndGameTimers = function () {
     DrawableObject.intervalArr.forEach(i => {
         clearInterval(i);
     });
-    document.getElementById('start-button').disabled = true;
+    DrawableObject.timeoutArr.forEach(i => {
+        clearTimeout(i);
+    });
+    DrawableObject.intervalArr = [];
+    DrawableObject.timeoutArr = [];
 };

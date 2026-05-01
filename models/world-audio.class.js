@@ -15,6 +15,13 @@ World.prototype.createAudios = function () {
     this.gameLostSound = createManagedAudio('audio/game_over.mp3');
     this.windAudio = createManagedAudio('audio/wind.mp3');
     this.backgroundMusic = createManagedAudio('audio/desert_storm_northside.mp3');
+    this.setBackgroundAudioVolumes();
+};
+
+/** Sets lower default volumes for looping background sounds */
+World.prototype.setBackgroundAudioVolumes = function () {
+    setAudioVolume(this.windAudio, WIND_AUDIO_VOLUME);
+    setAudioVolume(this.backgroundMusic, BACKGROUND_MUSIC_VOLUME);
 };
 
 /**

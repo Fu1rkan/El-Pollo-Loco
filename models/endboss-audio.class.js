@@ -90,7 +90,7 @@ Endboss.prototype.playBossSound = function (intervalId) {
  */
 Endboss.prototype.playPassiveBossSound = function (distance, maxDistance, audio) {
     if (distance > maxDistance) return;
-    audio.volume = 1 - (distance / maxDistance);
+    setAudioVolume(audio, (1 - (distance / maxDistance)) * DEFAULT_AUDIO_VOLUME);
     playAudio(audio);
 };
 

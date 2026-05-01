@@ -39,8 +39,7 @@ World.prototype.drawFixedObjects = function () {
 World.prototype.drawEndscreen = function () {
     if (this.gameLost) {
         this.addObjectsToMap(this.level.loseScreen);
-    };
-    if (this.gameWon) {
+    } else if (this.gameWon) {
         this.addObjectsToMap(this.level.winScreen);
     };
 };

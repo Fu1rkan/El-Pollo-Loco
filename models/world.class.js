@@ -45,6 +45,9 @@ class World {
     /** @type {boolean} Indicates whether the game is won */
     gameWon = false;
 
+    /** @type {boolean} Indicates whether the game has already ended */
+    gameEnded = false;
+
     /** @type {number} Amount of collected coins */
     collectedCoins = 0;
 
