@@ -1,9 +1,9 @@
 /** Starts the recurring game checks and background sounds */
 World.prototype.run = function () {
     this.character.createInterval(() => world.checkCollisions(), 1000 / 60);
-    this.character.createInterval(() => world.checkThrowObjects(), 180);
     this.character.createInterval(() => world.checkCollectCoins(), 180);
     this.character.createInterval(() => world.checkCollectBottles(), 180);
+    this.character.createInterval(() => world.checkThrowObjects(), 180);
     this.AUDIOS[5].play();
     this.character.createTimeout(this.playBackgorundMusic, 15000)
 };
@@ -40,12 +40,19 @@ World.prototype.setCoolDown = function () {
 
 /** Checks whether the character can throw a bottle */
 World.prototype.checkThrowObjects = function () {
+    if (!this.keyboard.THROW) return;
     if (this.canThrowBottles()) {
-        this.collectedBottles -= 1;
-        this.setCoolDown();
-        this.updateInventory();
-        this.generateBottle();
+        this.throwBottle();
     };
+    this.keyboard.THROW = false;
+};
+
+/** Throws one bottle and updates inventory and cooldown */
+World.prototype.throwBottle = function () {
+    this.collectedBottles -= 1;
+    this.setCoolDown();
+    this.updateInventory();
+    this.generateBottle();
 };
 
 /**
@@ -53,7 +60,7 @@ World.prototype.checkThrowObjects = function () {
  * @returns {boolean} - true = character can throw, false = character cannot throw
  */
 World.prototype.canThrowBottles = function () {
-    return this.keyboard.E && this.collectedBottles > 0 && !this.throwCooldown;
+    return this.collectedBottles > 0 && !this.throwCooldown;
 };
 
 /**

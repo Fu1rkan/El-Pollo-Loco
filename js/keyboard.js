@@ -73,7 +73,7 @@ function bindButton(id, keyName) {
 function handlePointerDown(keyName, btn) {
     btn.addEventListener('pointerdown', (e) => {
         e.preventDefault();
-        keyboard[keyName] = true;
+        setKeyboardKeyActive(keyName);
         if (isAnyKeyPressed()) {
             resetSleepingTimer();
         };
@@ -122,7 +122,7 @@ document.addEventListener('keydown', (event) => {
     const key = getKeyboardKey(event);
 
     if (key) {
-        keyboard[key] = true;
+        setKeyboardKeyActive(key);
     } else if (isKeyboardEscape(event)) {
         pauseGame();
     };
@@ -156,6 +156,17 @@ function getKeyboardKey(event) {
     if (isKeyboardRight(event)) return 'RIGHT';
     if (isKeyboardAction(event)) return 'E';
     return null;
+};
+
+/**
+ * Activates a keyboard state and stores one throw request for the action key
+ * @param {string} key - Keyboard property to activate
+ */
+function setKeyboardKeyActive(key) {
+    if (key === 'E' && !keyboard.E) {
+        keyboard.THROW = true;
+    };
+    keyboard[key] = true;
 };
 
 /**

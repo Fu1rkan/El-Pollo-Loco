@@ -39,6 +39,12 @@ class Keyboard {
     E = false;
 
     /**
+     * Stores one requested throw action
+     * @type {boolean}
+     */
+    THROW = false;
+
+    /**
      * Indicates whether keyboard input is enabled
      * @type {boolean}
      */
