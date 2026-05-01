@@ -98,51 +98,6 @@ class Endboss extends MovableObject {
         this.createInterval(this.checkCharacterApproachingEndboss, 50);
     };
 
-    /** Initializes all endboss audios */
-    getAudios() {
-        this.createAudios();
-        this.AUDIOS = this.getAudioArray();
-        this.muteAudios();
-        this.addAudiosToGlobalArray();
-    };
-
-    /** Creates all audio objects used by the endboss */
-    createAudios() {
-        this.endbossSound = new Audio('audio/boss.mp3');
-        this.endbossAlertSound = new Audio('audio/boss_alert.mp3');
-        this.endbossHurtSound = new Audio('audio/boss_hurt.mp3');
-        this.endbossDeathSound = new Audio('audio/boss_death.mp3');
-        this.endbossAttackSound = new Audio('audio/boss_attack.mp3');
-    };
-
-    /**
-     * Gets all endboss audios in their playback order
-     * @returns {HTMLAudioElement[]} - Endboss audio elements
-     */
-    getAudioArray() {
-        return [
-            this.endbossSound,
-            this.endbossAlertSound,
-            this.endbossHurtSound,
-            this.endbossDeathSound,
-            this.endbossAttackSound
-        ];
-    };
-
-    /** Applies the current mute status to all endboss audios */
-    muteAudios() {
-        this.AUDIOS.forEach((audio) => {
-            audio.muted = isMuted;
-        });
-    };
-
-    /** Adds all endboss audios to the global audio collection */
-    addAudiosToGlobalArray() {
-        this.AUDIOS.forEach((audio) => {
-            allAudios.push(audio);
-        });
-    };
-
     /** Starts the endboss animation loop */
     animate() {
         this.createInterval(this.playEndbossAnimation, 1000 / 60);
@@ -299,50 +254,6 @@ class Endboss extends MovableObject {
         let intervalId = this.createInterval(interaction, time);
         let intervalId2 = this.createInterval(() => this.checkAnimationChance(intervalId, intervalId2, func), 1000 / 60);
     };
-
-    /**
-     * Plays an endboss audio by index
-     * @param {number} i - Audio index
-     */
-    playEndbossAudio(i) {
-        if (i == 4) {
-            world.character.createInterval(this.playAlertSound, 1000 / 60);
-        };
-        if (i >= 0) {
-            this.AUDIOS[i].play();
-        };
-    };
-
-    /**
-     * Plays the alert sound during attack state
-     * @param {number} intervalId - Alert sound interval id
-     */
-    playAlertSound(intervalId) {
-        world.level.endboss[0].AUDIOS[4].play();
-        if (world.level.endboss[0].checkAttacking()) {
-            clearInterval(intervalId);
-        };
-    };
-
-    /**
-     * Plays the boss sound based on distance to the character
-     * @param {number} intervalId - Boss sound interval id
-     */
-    playBossSound(intervalId) {
-        let distance = Math.abs(world.character.x - world.level.endboss[0].x);
-        let maxDistance = 720;
-        let audio = world.level.endboss[0].AUDIOS[0];
-        if (distance <= maxDistance) {
-            let volume = 1 - (distance / maxDistance);
-            audio.volume = volume;
-            audio.play();
-            if (world.level.endboss[0].endbossIsAlerting()) {
-                clearInterval(intervalId);
-                world.level.endboss[0].AUDIOS[0].pause();
-            };
-        };
-    };
-
 
     /**
      * Checks whether the current endboss animation should stop
