@@ -1,6 +1,4 @@
-/**
- * Represents the endboss enemy and controls its states, animations and sounds
- */
+/** Represents the endboss enemy and controls its states, animations and sounds */
 class Endboss extends MovableObject {
     /**
      * Indicates whether the endboss alert animation is active
@@ -84,9 +82,7 @@ class Endboss extends MovableObject {
      */
     AUDIOS = [];
 
-    /**
-     * Creates the endboss and starts its behavior loops
-     */
+    /** Creates the endboss and starts its behavior loops */
     constructor() {
         super();
         this.x = 4500;
@@ -102,9 +98,7 @@ class Endboss extends MovableObject {
         this.createInterval(this.checkCharacterApproachingEndboss, 50);
     };
 
-    /**
-     * Initializes all endboss audios
-     */
+    /** Initializes all endboss audios */
     getAudios() {
         this.createAudios();
         this.AUDIOS = this.getAudioArray();
@@ -112,9 +106,7 @@ class Endboss extends MovableObject {
         this.addAudiosToGlobalArray();
     };
 
-    /**
-     * Creates all audio objects used by the endboss
-     */
+    /** Creates all audio objects used by the endboss */
     createAudios() {
         this.endbossSound = new Audio('audio/boss.mp3');
         this.endbossAlertSound = new Audio('audio/boss_alert.mp3');
@@ -137,27 +129,21 @@ class Endboss extends MovableObject {
         ];
     };
 
-    /**
-     * Applies the current mute status to all endboss audios
-     */
+    /** Applies the current mute status to all endboss audios */
     muteAudios() {
         this.AUDIOS.forEach((audio) => {
             audio.muted = isMuted;
         });
     };
 
-    /**
-     * Adds all endboss audios to the global audio collection
-     */
+    /** Adds all endboss audios to the global audio collection */
     addAudiosToGlobalArray() {
         this.AUDIOS.forEach((audio) => {
             allAudios.push(audio);
         });
     };
 
-    /**
-     * Starts the endboss animation loop
-     */
+    /** Starts the endboss animation loop */
     animate() {
         this.createInterval(this.playEndbossAnimation, 1000 / 60);
     }
@@ -226,9 +212,7 @@ class Endboss extends MovableObject {
         return world.level.endboss[0].characterDontTouchEndboss() && world.level.endboss[0].animationIsDone;
     }
 
-    /**
-     * Moves the endboss left when it is angry
-     */
+    /** Moves the endboss left when it is angry */
     bossIsWalking() {
         if (world.level.endboss[0].endbossIsAngry && world.level.endboss[0].x > 0) {
             world.level.endboss[0].moveLeft();
@@ -258,9 +242,7 @@ class Endboss extends MovableObject {
         };
     };
 
-    /**
-     * Loads all endboss images
-     */
+    /** Loads all endboss images */
     getImages() {
         this.loadImg(this.IMAGES_STANDING[0]);
         this.loadImages(this.IMAGES_STANDING);
@@ -378,37 +360,27 @@ class Endboss extends MovableObject {
         };
     };
 
-    /**
-     * Plays the hurt animation
-     */
+    /** Plays the hurt animation */
     playHurtAnimation() {
         world.level.endboss[0].playAnimation(world.level.endboss[0].IMAGES_HURT);
     };
 
-    /**
-     * Plays the attack animation
-     */
+    /** Plays the attack animation */
     playAttackAnimation() {
         world.level.endboss[0].playAnimation(world.level.endboss[0].IMAGES_ATTACK);
     };
 
-    /**
-     * Plays the walking animation
-     */
+    /** Plays the walking animation */
     playWalkAnimation() {
         world.level.endboss[0].playAnimation(world.level.endboss[0].IMAGES_WALK);
     };
 
-    /**
-     * Plays the standing animation
-     */
+    /** Plays the standing animation */
     playStandAnimation() {
         world.level.endboss[0].playAnimation(world.level.endboss[0].IMAGES_STANDING);
     };
 
-    /**
-     * Plays the alert animation
-     */
+    /** Plays the alert animation */
     playAlertAnimation() {
         world.level.endboss[0].playLimitedAnimation(world.level.endboss[0].IMAGES_ALERT);
     };
