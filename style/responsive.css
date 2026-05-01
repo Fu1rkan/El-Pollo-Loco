@@ -150,7 +150,7 @@
     /*              Resp Buttons Section                */
 
 
-    .resp-buttons {
+    body.mobile-controls .resp-buttons {
         display: flex;
     }
 

@@ -30,6 +30,7 @@ function updateUI() {
 
 /** Activates mobile landscape mode */
 function activateMobileMode() {
+    setMobileControlsMode(true);
     CanvasSection.classList.remove('d_none');
     buttonSection.classList.remove('d_none');
     respButtons.classList.remove('d_none');
@@ -41,6 +42,7 @@ function activateMobileMode() {
 
 /** Shows rotate screen for mobile portrait mode */
 function activateRotateScreen() {
+    setMobileControlsMode(false);
     CanvasSection.classList.add('d_none');
     buttonSection.classList.add('d_none');
     respButtons.classList.add('d_none');
@@ -52,10 +54,19 @@ function activateRotateScreen() {
 
 /** Activates desktop mode */
 function activateDesktopMode() {
+    setMobileControlsMode(false);
     CanvasSection.classList.remove('d_none');
     buttonSection.classList.remove('d_none');
     rotatePhoneScreen.classList.add('d_none');
     setHeaderAlignment('center');
+};
+
+/**
+ * Toggles touch control layout
+ * @param {boolean} isActive - true = show touch controls, false = hide touch controls
+ */
+function setMobileControlsMode(isActive) {
+    document.body.classList.toggle('mobile-controls', isActive);
 };
 
 /**

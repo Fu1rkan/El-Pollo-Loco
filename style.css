@@ -351,6 +351,18 @@ h2 {
     box-sizing: border-box;
 }
 
+body.mobile-controls .section-buttons {
+    display: none;
+}
+
+body.mobile-controls .resp-buttons {
+    display: flex;
+}
+
+body.mobile-controls header img {
+    display: block;
+}
+
 .left-side {
     display: flex;
     align-items: center;
