@@ -49,11 +49,9 @@ World.prototype.collectCoin = function (coin) {
     this.collectedCoins += 1;
     this.updateStatusbarCoin();
     if (this.level.coins == 0) {
-        this.AUDIOS[0].play();
+        playAudio(this.AUDIOS[0]);
     } else {
-        let sound = this.AUDIOS[1].cloneNode(true);
-        sound.muted = isMuted;
-        sound.play();
+        playPooledAudio('audio/coin_collected.mp3', 1, 3);
     }
 };
 
@@ -66,7 +64,7 @@ World.prototype.collectBottle = function (bottle) {
     this.level.salsas.splice(index, 1);
     this.collectedBottles += 1;
     this.updateInventory();
-    this.AUDIOS[2].play();
+    playAudio(this.AUDIOS[2]);
 };
 
 /** Checks whether the character collects a bottle */

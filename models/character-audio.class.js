@@ -8,12 +8,12 @@ Character.prototype.getAudios = function () {
 
 /** Creates all audio objects used by the character */
 Character.prototype.createAudios = function () {
-    this.character_hurt = new Audio('audio/character_hurt.mp3');
-    this.character_death = new Audio('audio/character_death.mp3');
-    this.character_jump = new Audio('audio/character_jump.mp3');
-    this.character_sleep = new Audio('audio/character_sleeping.mp3');
-    this.character_whistle = new Audio('audio/character_whistle.mp3');
-    this.character_walk = new Audio('audio/character_footsteps.mp3');
+    this.character_hurt = createManagedAudio('audio/character_hurt.mp3');
+    this.character_death = createManagedAudio('audio/character_death.mp3');
+    this.character_jump = createManagedAudio('audio/character_jump.mp3');
+    this.character_sleep = createManagedAudio('audio/character_sleeping.mp3');
+    this.character_whistle = createManagedAudio('audio/character_whistle.mp3');
+    this.character_walk = createManagedAudio('audio/character_footsteps.mp3');
 };
 
 /**
@@ -53,31 +53,29 @@ Character.prototype.whistleSound = function () {
 
 /** Plays the whistle sound */
 Character.prototype.playWhistleSound = function () {
-    world.character.AUDIOS[4].play();
+    playAudio(world.character.AUDIOS[4]);
 };
 
 /** Starts the sleep sound loop */
 Character.prototype.sleepSound = function () {
-    world.character.AUDIOS[3].play();
+    playAudio(world.character.AUDIOS[3]);
     let audioId = this.createInterval(world.character.playSleepSound, 1000)
     world.character.audioIntervals.push(audioId);
 };
 
 /** Plays the sleep sound */
 Character.prototype.playSleepSound = function () {
-    world.character.AUDIOS[3].play()
+    playAudio(world.character.AUDIOS[3]);
 };
 
 /** Starts the walking sound loop */
 Character.prototype.walkSound = function () {
-    world.character.AUDIOS[5].play();
+    playPooledAudio('audio/character_footsteps.mp3', 1, 2);
     let audioId = this.createInterval(world.character.playWalkSound, 600)
     world.character.audioIntervals.push(audioId);
 };
 
 /** Plays one walking step sound */
 Character.prototype.playWalkSound = function () {
-    let sound = world.character.AUDIOS[5].cloneNode(true);
-    sound.muted = isMuted;
-    sound.play();
+    playPooledAudio('audio/character_footsteps.mp3', 1, 2);
 };

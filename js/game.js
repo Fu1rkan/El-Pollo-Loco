@@ -114,7 +114,7 @@ function pauseAudios() {
     if (!muteSwitch) {
         isMuted = true;
         allAudios.forEach((audio) => {
-            audio.pause();
+            pauseAudio(audio);
         });
     };
 };
@@ -134,8 +134,9 @@ function resumeAudios() {
  * @param {HTMLAudioElement} audio - Audio element to resume
  */
 function resumeAudio(audio) {
+    if (audio.isPooledSound) return;
     if (audio.currentTime > 0 && !audio.ended) {
-        audio.play();
+        playAudio(audio);
     };
 };
 
@@ -145,9 +146,10 @@ function clearAudios() {
         isMuted = false;
     };
     allAudios.forEach((element) => {
-        element.pause();
+        stopAudio(element);
     });
     allAudios = [];
+    resetAudioPools();
 };
 
 /** Applies the current mute status to all audios */

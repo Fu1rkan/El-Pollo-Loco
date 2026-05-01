@@ -41,8 +41,7 @@ Character.prototype.clearCharacterAudioIntervals = function () {
 /** Stops all currently active character audios */
 Character.prototype.stopCharacterAudios = function () {
     world.character.AUDIOS.forEach(element => {
-        element.pause();
-        element.currentTime = 0;
+        stopAudio(element);
     });
 };
 
@@ -53,7 +52,7 @@ Character.prototype.stopCharacterAudios = function () {
  */
 Character.prototype.handleDeathActivity = function (id) {
     if (!world.character.isDead()) return false;
-    world.character.AUDIOS[1].play();
+    playAudio(world.character.AUDIOS[1]);
     world.character.animationCharacter(id, world.character.playDeathAnimation, 100);
     return true;
 };
@@ -65,7 +64,7 @@ Character.prototype.handleDeathActivity = function (id) {
  */
 Character.prototype.handleHurtActivity = function (id) {
     if (!world.character.isHurt()) return false;
-    world.character.AUDIOS[0].play();
+    playAudio(world.character.AUDIOS[0]);
     world.character.animationCharacter(id, world.character.playHurtAnimation, 100, world.character.isNotHurtAnymore);
     return true;
 };
@@ -77,7 +76,7 @@ Character.prototype.handleHurtActivity = function (id) {
  */
 Character.prototype.handleJumpActivity = function (id) {
     if (!world.character.isAboutGround()) return false;
-    world.character.AUDIOS[2].play();
+    playAudio(world.character.AUDIOS[2]);
     world.character.animationCharacter(id, world.character.playJumpAnimation, 150, world.character.isNotJumpingAnymore);
     return true;
 };

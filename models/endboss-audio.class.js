@@ -8,11 +8,11 @@ Endboss.prototype.getAudios = function () {
 
 /** Creates all audio objects used by the endboss */
 Endboss.prototype.createAudios = function () {
-    this.endbossSound = new Audio('audio/boss.mp3');
-    this.endbossAlertSound = new Audio('audio/boss_alert.mp3');
-    this.endbossHurtSound = new Audio('audio/boss_hurt.mp3');
-    this.endbossDeathSound = new Audio('audio/boss_death.mp3');
-    this.endbossAttackSound = new Audio('audio/boss_attack.mp3');
+    this.endbossSound = createManagedAudio('audio/boss.mp3');
+    this.endbossAlertSound = createManagedAudio('audio/boss_alert.mp3');
+    this.endbossHurtSound = createManagedAudio('audio/boss_hurt.mp3');
+    this.endbossDeathSound = createManagedAudio('audio/boss_death.mp3');
+    this.endbossAttackSound = createManagedAudio('audio/boss_attack.mp3');
 };
 
 /**
@@ -52,7 +52,7 @@ Endboss.prototype.playEndbossAudio = function (i) {
         world.character.createInterval(this.playAlertSound, 1000 / 60);
     };
     if (i >= 0) {
-        this.AUDIOS[i].play();
+        playAudio(this.AUDIOS[i]);
     };
 };
 
@@ -61,7 +61,7 @@ Endboss.prototype.playEndbossAudio = function (i) {
  * @param {number} intervalId - Alert sound interval id
  */
 Endboss.prototype.playAlertSound = function (intervalId) {
-    world.level.endboss[0].AUDIOS[4].play();
+    playAudio(world.level.endboss[0].AUDIOS[4]);
     if (world.level.endboss[0].checkAttacking()) {
         clearInterval(intervalId);
     };
@@ -91,7 +91,7 @@ Endboss.prototype.playBossSound = function (intervalId) {
 Endboss.prototype.playPassiveBossSound = function (distance, maxDistance, audio) {
     if (distance > maxDistance) return;
     audio.volume = 1 - (distance / maxDistance);
-    audio.play();
+    playAudio(audio);
 };
 
 /**
@@ -109,6 +109,5 @@ Endboss.prototype.bossSoundShouldStop = function () {
  */
 Endboss.prototype.stopBossSound = function (intervalId, audio) {
     clearInterval(intervalId);
-    audio.pause();
-    audio.currentTime = 0;
+    stopAudio(audio);
 };

@@ -21,8 +21,8 @@ class Chicken extends MovableObject {
     ];
 
     /**
-     * Enemy and death audio groups
-     * @type {{ENEMY: HTMLAudioElement[], DEATH: HTMLAudioElement[]}}
+     * Enemy and death sound paths
+     * @type {{ENEMY: string[], DEATH: string[]}}
      */
     AUDIOS = {
         ENEMY: [],
@@ -92,67 +92,31 @@ class Chicken extends MovableObject {
      * Initializes all chicken audios
      */
     getAudios() {
-        this.createAudios();
         this.AUDIOS.ENEMY = this.getEnemyAudioArray();
         this.AUDIOS.DEATH = this.getDeathAudioArray();
-        this.muteAudios();
-        this.addAudiosToGlobalArray();
     };
 
     /**
-     * Creates all audio objects used by the chicken
-     */
-    createAudios() {
-        this.chicken_sound = new Audio('audio/normal_chicken.mp3');
-        this.chicken_sound_2 = new Audio('audio/normal_chicken_2.mp3');
-        this.chicken_sound_3 = new Audio('audio/normal_chicken_3.mp3');
-        this.chicken_sound_4 = new Audio('audio/normal_chicken_4.mp3');
-        this.chicken_sound_death = new Audio('audio/normal_chicken_death.mp3');
-    };
-
-    /**
-     * Gets all chicken sound audios
-     * @returns {HTMLAudioElement[]} - Chicken sound audios
+     * Gets all chicken sound paths
+     * @returns {string[]} - Chicken sound paths
      */
     getEnemyAudioArray() {
         return [
-            this.chicken_sound,
-            this.chicken_sound_2,
-            this.chicken_sound_3,
-            this.chicken_sound_4,
+            'audio/normal_chicken.mp3',
+            'audio/normal_chicken_2.mp3',
+            'audio/normal_chicken_3.mp3',
+            'audio/normal_chicken_4.mp3',
         ];
     };
 
     /**
-     * Gets the chicken death audio
-     * @returns {HTMLAudioElement[]} - Chicken death audio
+     * Gets the chicken death audio path
+     * @returns {string[]} - Chicken death audio path
      */
     getDeathAudioArray() {
         return [
-            this.chicken_sound_death,
+            'audio/normal_chicken_death.mp3',
         ];
-    };
-
-    /**
-     * Applies the current mute status to all chicken audios
-     */
-    muteAudios() {
-        this.AUDIOS.ENEMY.forEach((audio) => {
-            audio.muted = isMuted;
-        });
-
-        this.AUDIOS.DEATH[0].muted = isMuted;
-    };
-
-    /**
-     * Adds all chicken audios to the global audio collection
-     */
-    addAudiosToGlobalArray() {
-        this.AUDIOS.ENEMY.forEach((audio) => {
-            allAudios.push(audio);
-        });
-
-        allAudios.push(this.AUDIOS.DEATH[0]);
     };
 
     /**
@@ -201,15 +165,13 @@ class Chicken extends MovableObject {
     }
 
     /**
-     * Plays a cloned chicken sound with distance based volume
+     * Plays a pooled chicken sound with distance based volume
      * @param {Chicken} chicken - Chicken that should play a sound
      * @param {number} distance - Distance to the character
      */
     playChickenSoundByDistance(chicken, distance) {
-        let sound = chicken.AUDIOS.ENEMY[this.getRandomNumber()].cloneNode();
-        sound.volume = 1 - (distance / 720);
-        sound.muted = isMuted;
-        sound.play();
+        let path = chicken.AUDIOS.ENEMY[this.getRandomNumber()];
+        playPooledAudio(path, 1 - (distance / 720), 2);
     }
 
     /**

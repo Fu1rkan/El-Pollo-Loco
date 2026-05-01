@@ -8,13 +8,13 @@ World.prototype.getAudios = function () {
 
 /** Creates all audio objects used by the world */
 World.prototype.createAudios = function () {
-    this.allCoinsCollected = new Audio('audio/coin_all_collected.mp3');
-    this.coinCollected = new Audio('audio/coin_collected.mp3');
-    this.salsaCollected = new Audio('audio/bottle_collected.mp3');
-    this.gameWonSound = new Audio('audio/game_win.mp3');
-    this.gameLostSound = new Audio('audio/game_over.mp3');
-    this.windAudio = new Audio('audio/wind.mp3');
-    this.backgroundMusic = new Audio('audio/desert_storm_northside.mp3');
+    this.allCoinsCollected = createManagedAudio('audio/coin_all_collected.mp3');
+    this.coinCollected = createManagedAudio('audio/coin_collected.mp3');
+    this.salsaCollected = createManagedAudio('audio/bottle_collected.mp3');
+    this.gameWonSound = createManagedAudio('audio/game_win.mp3');
+    this.gameLostSound = createManagedAudio('audio/game_over.mp3');
+    this.windAudio = createManagedAudio('audio/wind.mp3');
+    this.backgroundMusic = createManagedAudio('audio/desert_storm_northside.mp3');
 };
 
 /**
@@ -49,5 +49,5 @@ World.prototype.addAudiosToGlobalArray = function () {
 
 /** Plays the background music */
 World.prototype.playBackgorundMusic = function () {
-    world.AUDIOS[6].play();
+    playAudio(world.AUDIOS[6]);
 };

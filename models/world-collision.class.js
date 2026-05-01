@@ -50,7 +50,7 @@ World.prototype.checkCollisionByJumpingOnEnemy = function (enemy, w, h, wx, hy, 
         this.character.jump(jh);
         this.jumpedOnEnemy = true;
         enemy.energy = 0;
-        enemy.AUDIOS.DEATH[0].play();
+        playPooledAudio(enemy.AUDIOS.DEATH[0], 1, 2);
     };
 };
 
@@ -110,6 +110,6 @@ World.prototype.hurtEndboss = function () {
 World.prototype.killEnemy = function (enemy, t, h, w, hy, wx) {
     if (this.character.isCollidingByItem(enemy, t, h, w, hy, wx) && enemy.energy > 0) {
         enemy.energy = 0;
-        enemy.AUDIOS.DEATH[0].play();
+        playPooledAudio(enemy.AUDIOS.DEATH[0], 1, 2);
     };
 };

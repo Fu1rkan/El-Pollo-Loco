@@ -4,7 +4,7 @@ World.prototype.run = function () {
     this.character.createInterval(() => world.checkCollectCoins(), 180);
     this.character.createInterval(() => world.checkCollectBottles(), 180);
     this.character.createInterval(() => world.checkThrowObjects(), 180);
-    this.AUDIOS[5].play();
+    playAudio(this.AUDIOS[5]);
     this.character.createTimeout(this.playBackgorundMusic, 15000)
 };
 
@@ -70,10 +70,10 @@ World.prototype.canThrowBottles = function () {
 World.prototype.endGame = function (int) {
     if (int == 0) {
         this.gameLost = true;
-        this.AUDIOS[4].play();
+        playAudio(this.AUDIOS[4]);
     } else {
         this.gameWon = true;
-        this.AUDIOS[3].play();
+        playAudio(this.AUDIOS[3]);
     };
     DrawableObject.intervalArr.forEach(i => {
         clearInterval(i);

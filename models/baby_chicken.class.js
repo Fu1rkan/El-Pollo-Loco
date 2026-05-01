@@ -23,8 +23,8 @@ class BabyChicken extends MovableObject {
 
 
     /**
-     * Enemy and death audio groups
-     * @type {{ENEMY: HTMLAudioElement[], DEATH: HTMLAudioElement[]}}
+     * Enemy and death sound paths
+     * @type {{ENEMY: string[], DEATH: string[]}}
      */
     AUDIOS = {
         ENEMY: [],
@@ -94,63 +94,29 @@ class BabyChicken extends MovableObject {
      * Initializes all small chicken audios
      */
     getAudios() {
-        this.createAudios();
         this.AUDIOS.ENEMY = this.getEnemyAudioArray();
         this.AUDIOS.DEATH = this.getDeathAudioArray();
-        this.muteAudios();
-        this.addAudiosToGlobalArray();
     };
 
     /**
-     * Creates all audio objects used by the small chicken
-     */
-    createAudios() {
-        this.baby_chicken_sound = new Audio('audio/baby_chicken.mp3');
-        this.baby_chicken_sound_2 = new Audio('audio/baby_chicken_2.mp3');
-        this.baby_chicken_sound_death = new Audio('audio/baby_chicken_death.mp3');
-    };
-
-    /**
-     * Gets all small chicken sound audios
-     * @returns {HTMLAudioElement[]} - Small chicken sound audios
+     * Gets all small chicken sound paths
+     * @returns {string[]} - Small chicken sound paths
      */
     getEnemyAudioArray() {
         return [
-            this.baby_chicken_sound,
-            this.baby_chicken_sound_2
+            'audio/baby_chicken.mp3',
+            'audio/baby_chicken_2.mp3'
         ];
     };
 
     /**
-     * Gets the small chicken death audio
-     * @returns {HTMLAudioElement[]} - Small chicken death audio
+     * Gets the small chicken death audio path
+     * @returns {string[]} - Small chicken death audio path
      */
     getDeathAudioArray() {
         return [
-            this.baby_chicken_sound_death
+            'audio/baby_chicken_death.mp3'
         ];
-    };
-
-    /**
-     * Applies the current mute status to all small chicken audios
-     */
-    muteAudios() {
-        this.AUDIOS.ENEMY.forEach((audio) => {
-            audio.muted = isMuted;
-        });
-
-        this.AUDIOS.DEATH[0].muted = isMuted;
-    };
-
-    /**
-     * Adds all small chicken audios to the global audio collection
-     */
-    addAudiosToGlobalArray() {
-        this.AUDIOS.ENEMY.forEach((audio) => {
-            allAudios.push(audio);
-        });
-
-        allAudios.push(this.AUDIOS.DEATH[0]);
     };
 
     /**
@@ -200,15 +166,13 @@ class BabyChicken extends MovableObject {
     }
 
     /**
-     * Plays a cloned small chicken sound with distance based volume
+     * Plays a pooled small chicken sound with distance based volume
      * @param {BabyChicken} chicken - Small chicken that should play a sound
      * @param {number} distance - Distance to the character
      */
     playChickenSoundByDistance(chicken, distance) {
-        let sound = chicken.AUDIOS.ENEMY[this.getRandomNumber()].cloneNode();
-        sound.volume = 1 - (distance / 720);
-        sound.muted = isMuted;
-        sound.play();
+        let path = chicken.AUDIOS.ENEMY[this.getRandomNumber()];
+        playPooledAudio(path, 1 - (distance / 720), 2);
     }
 
     /**

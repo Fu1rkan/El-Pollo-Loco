@@ -28,8 +28,8 @@ class ThrowableObject extends MovableObject {
     ];
 
     /**
-     * Bottle audio elements
-     * @type {HTMLAudioElement[]}
+     * Bottle audio paths
+     * @type {string[]}
      */
     AUDIOS = [];
 
@@ -38,6 +38,12 @@ class ThrowableObject extends MovableObject {
      * @type {boolean}
      */
     isSplashed = false;
+
+    /**
+     * Throw animation interval id
+     * @type {number}
+     */
+    throwAnimationInterval;
 
     /**
      * Creates a throwable bottle
@@ -65,45 +71,25 @@ class ThrowableObject extends MovableObject {
     getAudios() {
         this.createAudios();
         this.AUDIOS = this.getAudioArray();
-        this.muteAudios();
-        this.addAudiosToGlobalArray();
     };
 
     /**
-     * Creates all audio objects used by the bottle
+     * Creates all audio paths used by the bottle
      */
     createAudios() {
-        this.salsaThrowed = new Audio('audio/bottle_throw.mp3');
-        this.salsaSplashed = new Audio('audio/bottle_splash_2.mp3');
+        this.salsaThrowed = 'audio/bottle_throw.mp3';
+        this.salsaSplashed = 'audio/bottle_splash_2.mp3';
     };
 
     /**
-     * Gets all bottle audios in their playback order
-     * @returns {HTMLAudioElement[]} - Bottle audio elements
+     * Gets all bottle audio paths in their playback order
+     * @returns {string[]} - Bottle audio paths
      */
     getAudioArray() {
         return [
             this.salsaThrowed,
             this.salsaSplashed
         ];
-    };
-
-    /**
-     * Applies the current mute status to all bottle audios
-     */
-    muteAudios() {
-        this.AUDIOS.forEach((audio) => {
-            audio.muted = isMuted;
-        });
-    };
-
-    /**
-     * Adds all bottle audios to the global audio collection
-     */
-    addAudiosToGlobalArray() {
-        this.AUDIOS.forEach((audio) => {
-            allAudios.push(audio);
-        });
     };
 
     /**
@@ -128,7 +114,8 @@ class ThrowableObject extends MovableObject {
             let intervalId = this.createInterval(() => this.applyGravityBottle(intervalId), 1000 / 25);
             let intervalId2 = this.createInterval(() => this.animate(intervalId2), 75);
             let intervalId3 = this.createInterval(() => this.animateThrowingBottle(intervalId3), 25);
-            this.AUDIOS[0].play();
+            this.throwAnimationInterval = intervalId2;
+            playPooledAudio(this.AUDIOS[0], 1, 2);
         }, 10);
     };
 
@@ -142,7 +129,7 @@ class ThrowableObject extends MovableObject {
             this.speedY -= this.acceleration;
         } else {
             clearInterval(id);
-            this.playBottleSplashAudio();
+            this.startBottleSplash(this.throwAnimationInterval);
         };
     };
 
@@ -191,21 +178,30 @@ class ThrowableObject extends MovableObject {
      * @param {number} wx - X offset
      */
     checkSplashByHittingEnemy(enemy, id, h, w, hy, wx) {
+        if (this.isSplashed) return;
         if (this.bottleGetSplashed(enemy, h, w, hy, wx)) {
-            this.isSplashed = true;
-            clearInterval(id);
-            this.currentImage = 0;
-            let intervalId = world.character.createInterval(() => this.animateSplashedBottle(intervalId), 105);
-            this.playBottleSplashAudio();
+            this.startBottleSplash(id);
         };
+    };
+
+    /**
+     * Starts the bottle splash state and animation
+     * @param {number} id - Throw animation interval id
+     */
+    startBottleSplash(id) {
+        if (this.isSplashed) return;
+        this.isSplashed = true;
+        clearInterval(id);
+        this.currentImage = 0;
+        let intervalId = world.character.createInterval(() => this.animateSplashedBottle(intervalId), 105);
+        this.playBottleSplashAudio();
     };
 
     /**
      * Stops the throw sound and plays the splash sound
      */
     playBottleSplashAudio() {
-        this.AUDIOS[0].pause();
-        this.AUDIOS[0].currentTime = 0;
-        this.AUDIOS[1].play();
+        stopPooledAudio(this.AUDIOS[0]);
+        playPooledAudio(this.AUDIOS[1], 1, 2);
     };
 };
