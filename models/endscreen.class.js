@@ -1,5 +1,16 @@
+/**
+ * Represents the win endscreen
+ */
 class Win extends MovableObject {
 
+    /**
+     * Creates a win screen object
+     * @param {string} url - Image path
+     * @param {number} w - Object width
+     * @param {number} h - Object height
+     * @param {number} x - X position
+     * @param {number} y - Y position
+     */
     constructor(url, w, h, x, y) {
         super();
         this.loadImg(url);
@@ -11,8 +22,19 @@ class Win extends MovableObject {
 
 }
 
+/**
+ * Represents the lose endscreen
+ */
 class Lose extends MovableObject {
 
+    /**
+     * Creates a lose screen object
+     * @param {string} url - Image path
+     * @param {number} w - Object width
+     * @param {number} h - Object height
+     * @param {number} x - X position
+     * @param {number} y - Y position
+     */
     constructor(url, w, h, x, y) {
         super();
         this.loadImg(url);

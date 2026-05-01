@@ -1,15 +1,16 @@
+
 /**
- * Represents a normal chicken enemy
+ * Represents a small chicken enemy
  */
-class Chicken extends MovableObject {
+class BabyChicken extends MovableObject {
     /**
      * Walking animation images
      * @type {string[]}
      */
     IMAGES_WALKING = [
-        'img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
-        'img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
-        'img/3_enemies_chicken/chicken_normal/1_walk/3_w.png'
+        'img/3_enemies_chicken/chicken_small/1_walk/1_w.png',
+        'img/3_enemies_chicken/chicken_small/1_walk/2_w.png',
+        'img/3_enemies_chicken/chicken_small/1_walk/3_w.png'
     ];
 
     /**
@@ -17,8 +18,9 @@ class Chicken extends MovableObject {
      * @type {string[]}
      */
     IMAGES_DEATH = [
-        'img/3_enemies_chicken/chicken_normal/2_dead/dead.png'
+        'img/3_enemies_chicken/chicken_small/2_dead/dead.png'
     ];
+
 
     /**
      * Enemy and death audio groups
@@ -30,7 +32,7 @@ class Chicken extends MovableObject {
     };
 
     /**
-     * Creates a normal chicken
+     * Creates a small chicken
      */
     constructor() {
         super();
@@ -41,28 +43,28 @@ class Chicken extends MovableObject {
     };
 
     /**
-     * Loads all chicken images
+     * Loads all small chicken images
      */
     getImages() {
-        this.loadImg('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
+        this.loadImg('img/3_enemies_chicken/chicken_small/1_walk/1_w.png');
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_DEATH);
     };
 
     /**
-     * Sets the initial chicken values
+     * Sets the initial small chicken values
      */
     setChickenProperties() {
         this.x = 760 + Math.random() * 4000;
-        this.y = 347;
-        this.width = 80;
-        this.height = 80;
+        this.y = 367;
+        this.width = 60;
+        this.height = 60;
         this.energy = 100;
-        this.speed = 0.4 + Math.random() * 0.25;
+        this.speed = 0.2 + Math.random() * 0.25;
     };
 
     /**
-     * Starts the chicken animation after a short delay
+     * Starts the small chicken animation after a short delay
      */
     startDelayedAnimation() {
         setTimeout(() => {
@@ -71,7 +73,7 @@ class Chicken extends MovableObject {
     };
 
     /**
-     * Indicates whether the chicken is facing left
+     * Indicates whether the small chicken is facing left
      * @type {boolean}
      */
     otherDirection = false;
@@ -89,7 +91,7 @@ class Chicken extends MovableObject {
     animationInterval;
 
     /**
-     * Initializes all chicken audios
+     * Initializes all small chicken audios
      */
     getAudios() {
         this.createAudios();
@@ -100,41 +102,37 @@ class Chicken extends MovableObject {
     };
 
     /**
-     * Creates all audio objects used by the chicken
+     * Creates all audio objects used by the small chicken
      */
     createAudios() {
-        this.chicken_sound = new Audio('audio/normal_chicken.mp3');
-        this.chicken_sound_2 = new Audio('audio/normal_chicken_2.mp3');
-        this.chicken_sound_3 = new Audio('audio/normal_chicken_3.mp3');
-        this.chicken_sound_4 = new Audio('audio/normal_chicken_4.mp3');
-        this.chicken_sound_death = new Audio('audio/normal_chicken_death.mp3');
+        this.baby_chicken_sound = new Audio('audio/baby_chicken.mp3');
+        this.baby_chicken_sound_2 = new Audio('audio/baby_chicken_2.mp3');
+        this.baby_chicken_sound_death = new Audio('audio/baby_chicken_death.mp3');
     };
 
     /**
-     * Gets all chicken sound audios
-     * @returns {HTMLAudioElement[]} - Chicken sound audios
+     * Gets all small chicken sound audios
+     * @returns {HTMLAudioElement[]} - Small chicken sound audios
      */
     getEnemyAudioArray() {
         return [
-            this.chicken_sound,
-            this.chicken_sound_2,
-            this.chicken_sound_3,
-            this.chicken_sound_4,
+            this.baby_chicken_sound,
+            this.baby_chicken_sound_2
         ];
     };
 
     /**
-     * Gets the chicken death audio
-     * @returns {HTMLAudioElement[]} - Chicken death audio
+     * Gets the small chicken death audio
+     * @returns {HTMLAudioElement[]} - Small chicken death audio
      */
     getDeathAudioArray() {
         return [
-            this.chicken_sound_death,
+            this.baby_chicken_sound_death
         ];
     };
 
     /**
-     * Applies the current mute status to all chicken audios
+     * Applies the current mute status to all small chicken audios
      */
     muteAudios() {
         this.AUDIOS.ENEMY.forEach((audio) => {
@@ -145,7 +143,7 @@ class Chicken extends MovableObject {
     };
 
     /**
-     * Adds all chicken audios to the global audio collection
+     * Adds all small chicken audios to the global audio collection
      */
     addAudiosToGlobalArray() {
         this.AUDIOS.ENEMY.forEach((audio) => {
@@ -160,16 +158,17 @@ class Chicken extends MovableObject {
      */
     animate() {
         this.moveInterval = this.createInterval(() => this.moveLeft(), 1000 / 60);
-        this.animationInterval = this.createInterval(() => this.checkInteraction(), 700 - (this.speed * 1000));
+        this.animationInterval = this.createInterval(() => this.checkInteraction(), 500 - (this.speed * 1000));
 
         setTimeout(() => {
             let intervalId = world.character.createInterval(() => this.playChickenSound(this, intervalId), 4000)
-        }, Math.random() * 3000)
+        }, Math.random() * 2000)
     };
 
+
     /**
-     * Plays a chicken sound based on distance to the character
-     * @param {Chicken} chicken - Chicken that should play a sound
+     * Plays a small chicken sound based on distance to the character
+     * @param {BabyChicken} chicken - Small chicken that should play a sound
      * @param {number} intervalId - Sound interval id
      */
     playChickenSound(chicken, intervalId) {
@@ -180,10 +179,10 @@ class Chicken extends MovableObject {
     }
 
     /**
-     * Checks whether the chicken is dead and clears its sound interval
-     * @param {Chicken} chicken - Chicken to check
+     * Checks whether the small chicken is dead and clears its sound interval
+     * @param {BabyChicken} chicken - Small chicken to check
      * @param {number} intervalId - Sound interval id
-     * @returns {boolean} - true = chicken is dead, false = chicken is alive
+     * @returns {boolean} - true = small chicken is dead, false = small chicken is alive
      */
     chickenIsDead(chicken, intervalId) {
         if (chicken.energy > 0) return false;
@@ -192,7 +191,7 @@ class Chicken extends MovableObject {
     }
 
     /**
-     * Checks whether the chicken is too far away for sound playback
+     * Checks whether the small chicken is too far away for sound playback
      * @param {number} distance - Distance to the character
      * @returns {boolean} - true = too far away, false = close enough
      */
@@ -201,8 +200,8 @@ class Chicken extends MovableObject {
     }
 
     /**
-     * Plays a cloned chicken sound with distance based volume
-     * @param {Chicken} chicken - Chicken that should play a sound
+     * Plays a cloned small chicken sound with distance based volume
+     * @param {BabyChicken} chicken - Small chicken that should play a sound
      * @param {number} distance - Distance to the character
      */
     playChickenSoundByDistance(chicken, distance) {
@@ -213,15 +212,15 @@ class Chicken extends MovableObject {
     }
 
     /**
-     * Gets a random chicken sound index
-     * @returns {number} - Random index between 0 and 3
+     * Gets a random small chicken sound index
+     * @returns {number} - Random index between 0 and 1
      */
     getRandomNumber() {
-        return Math.floor(Math.random() * 4);
+        return Math.floor(Math.random() * 2);
     }
 
     /**
-     * Checks whether the chicken should walk or die
+     * Checks whether the small chicken should walk or die
      */
     checkInteraction() {
         if (this.energy > 0) {
@@ -230,9 +229,9 @@ class Chicken extends MovableObject {
             this.playLimitedAnimation(this.IMAGES_DEATH);
             clearInterval(this.moveInterval);
             clearInterval(this.animationInterval);
+            let index = world.level.babyChicken.indexOf(this);
             setTimeout(() => {
-                let index = world.level.enemies.indexOf(this);
-                world.level.enemies.splice(index, 1)
+                world.level.babyChicken.splice(index, 1)
             }, 1000);
         };
     };

@@ -73,7 +73,6 @@ function getButtonIds() {
  * Creates a new world and starts the sleeping timer
  */
 function renderGame() {
-    let canvas;
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
     startTimer();

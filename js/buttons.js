@@ -45,7 +45,7 @@ function restartGame() {
 
 /**
  * Toggles the pause state of the game
- * If game is not started → does nothing | If paused → resumes | If running → pauses
+ * If game is not started -> does nothing | If paused -> resumes | If running -> pauses
  */
 function pauseGame() {
     if (!isRunning) {

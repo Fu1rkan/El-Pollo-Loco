@@ -1,26 +1,97 @@
+/**
+ * Represents an object that can move, jump, collide, take damage and play animations
+ */
 class MovableObject extends DrawableObject {
+    /**
+     * Horizontal movement speed
+     * @type {number}
+     */
     speed;
+
+    /**
+     * Indicates whether the object is facing left
+     * @type {boolean}
+     */
     otherDirection = false;
+
+    /**
+     * Vertical movement speed
+     * @type {number}
+     */
     speedY = 0;
+
+    /**
+     * Gravity acceleration value
+     * @type {number}
+     */
     acceleration = 1.5;
+
+    /**
+     * Current health energy
+     * @type {number}
+     */
     energy = 100;
+
+    /**
+     * Timestamp of the last hit
+     * @type {number}
+     */
     lastHit = 0;
+
+    /**
+     * Indicates whether the object can currently take damage
+     * @type {boolean}
+     */
     canTakeDamage = true;
+
+    /**
+     * Indicates whether the object can currently kill enemies
+     * @type {boolean}
+     */
     canKillEnemys = true;
+
+    /**
+     * Indicates whether the object can currently hit enemies
+     * @type {boolean}
+     */
     canHitEnemys = true;
+
+    /**
+     * Indicates whether the current animation reached its last image
+     * @type {boolean}
+     */
     animationIsDone = false;
+
+    /**
+     * Indicates whether the object can currently walk
+     * @type {boolean}
+     */
     canWalk = true;
+
+    /**
+     * Counter used for recoil movement
+     * @type {number}
+     */
     recoilIndex = 0;
 
 
+    /**
+     * Creates a movable object
+     */
     constructor() {
         super();
     };
 
+    /**
+     * Starts applying gravity to the object
+     */
     applyGravity() {
         this.createInterval(() => this.checkGravity(), 1000 / 25)
     };
 
+    /**
+     * Updates the vertical position based on gravity
+     */
     checkGravity() {
         if (this.isAboutGround() || this.speedY > 1.5) {
             this.y -= this.speedY;
@@ -28,19 +99,30 @@ class MovableObject extends DrawableObject {
         };
     };
 
+    /**
+     * Checks whether the object is above its ground limit
+     * @returns {boolean} - true = object is above ground limit, false = object is below it
+     */
     isAboutGround() {
-        // checkt ob das von throwable object kommt
         if (this instanceof ThrowableObject) {
             return this.y <= 340;
-        } else { //kommt vom character
+        } else {
             return this.y <= 228;
         };
     };
 
+    /**
+     * Checks whether the object is standing on the ground
+     * @returns {boolean} - true = object is on ground, false = object is in the air
+     */
     isOnGround() {
         return this.y >= 228;
     };
 
+    /**
+     * Plays an endless animation from an image list
+     * @param {string[]} images - Image paths used for the animation
+     */
     playAnimation(images) {
         let i = this.currentImage % images.length;
         let path = images[i];
@@ -54,11 +136,15 @@ class MovableObject extends DrawableObject {
         };
     };
 
+    /**
+     * Plays an animation until the last image is reached
+     * @param {string[]} images - Image paths used for the animation
+     * @param {number} [id] - Interval id that should be cleared after the animation
+     */
     playLimitedAnimation(images, id) {
         let i = this.currentImage % images.length;
         let path = images[i];
         this.img = this.imageCache[path];
-        // Da currentImage nicht gleichgroß sein kann wie die image.length, wird eine 1 dazuaddiert
         if (i + 1 !== images.length) {
             this.currentImage++;
         };
@@ -67,36 +153,37 @@ class MovableObject extends DrawableObject {
         };
     };
 
+    /**
+     * Moves the object to the right
+     */
     moveRight() {
         this.x += this.speed;
     };
 
+    /**
+     * Moves the object to the left
+     */
     moveLeft() {
         this.x -= this.speed;
     };
 
+    /**
+     * Makes the object jump with the given vertical speed
+     * @param {number} speed - Vertical jump speed
+     */
     jump(speed) {
         this.speedY = speed;
-        this.world.level.enemies.forEach(e => {
-            this.checkJumpingOnEnemies(e, 40, 20, 20, 10);
-        });
-        this.world.level.babyChicken.forEach(e => {
-            this.checkJumpingOnEnemies(e, 20, 20, 10, 10);
-        });
     };
 
-    checkJumpingOnEnemies(e, h, w, hy, wx) {
-        if (this.isColliding(e, h, w, hy, wx)) {
-            this.canHitEnemys = false;
-            this.canKillEnemys = false;
-            setTimeout(() => {
-                this.canHitEnemys = true;
-                this.canKillEnemys = true;
-            }, 100);
-        };
-    };
-
-    //Wird von checkCollisions() ausgeführt
+    /**
+     * Checks whether this object collides with another object
+     * @param {DrawableObject} object - Object to check collision with
+     * @param {number} h - Height offset
+     * @param {number} w - Width offset
+     * @param {number} hy - Y offset
+     * @param {number} wx - X offset
+     * @returns {boolean} - true = objects collide, false = objects do not collide
+     */
     isColliding(object, h, w, hy, wx) {
         return this.x + 15 + this.width - 40 > object.x + wx &&
             this.x + 15 < object.x + wx + object.width - w &&
@@ -104,6 +191,15 @@ class MovableObject extends DrawableObject {
             this.y + 80 < object.y + hy + object.height - h;
     };
 
+    /**
+     * Checks whether the character lands on top of another object
+     * @param {DrawableObject} object - Object to check
+     * @param {number} w - Width offset
+     * @param {number} h - Height offset
+     * @param {number} wx - X offset
+     * @param {number} hy - Y offset
+     * @returns {boolean} - true = character jumps on object, false = no jump hit
+     */
     characterIsJumpingOn(object, w, h, wx, hy) {
         return this.x + this.width - 40 > object.x + wx &&
             this.x + 15 < object.x + wx + object.width - w &&
@@ -112,6 +208,16 @@ class MovableObject extends DrawableObject {
             this.canTakeDamage;
     };
 
+    /**
+     * Checks whether an item collides with another object
+     * @param {DrawableObject} object - Object to check collision with
+     * @param {DrawableObject} item - Item that may collide
+     * @param {number} h - Height offset
+     * @param {number} w - Width offset
+     * @param {number} hy - Y offset
+     * @param {number} wx - X offset
+     * @returns {boolean} - true = item collides, false = item does not collide
+     */
     isCollidingByItem(object, item, h, w, hy, wx) {
         return item.x + 30 + item.width - 60 > object.x + wx &&
             item.x + 30 < object.x + wx + object.width - w &&
@@ -119,20 +225,30 @@ class MovableObject extends DrawableObject {
             item.y + 20 < object.y + hy + object.height - h;
     };
 
-    //Muss überarbeitet werden
+    /**
+     * Checks a vertical jump collision
+     * @returns {boolean} - true = jump collision detected, false = no jump collision
+     */
     isCollidingByJump() {
         return this.y + this.height > object.y &&
             this.y < object.y + object.height;
     };
 
-
-    // Spieler Schaden wird hier hinzugefügt 
-    //Wird von checkCollisions() ausgeführt
+    /**
+     * Applies damage and recoil to this object
+     * @param {MovableObject} enemy - Enemy that caused the hit
+     * @param {number} dmg - Damage amount
+     */
     hit(enemy, dmg) {
         this.recoilToCharacter(enemy, dmg);
         this.resetDamageCooldown();
     };
 
+    /**
+     * Reduces energy and starts recoil movement
+     * @param {MovableObject} enemy - Enemy that caused the recoil
+     * @param {number} dmg - Damage amount
+     */
     recoilToCharacter(enemy, dmg) {
         if (!this.isHurt()) {
             this.energy -= dmg;
@@ -140,6 +256,11 @@ class MovableObject extends DrawableObject {
         };
     };
 
+    /**
+     * Moves the object away from the enemy for a short time
+     * @param {MovableObject} enemy - Enemy that caused the recoil
+     * @param {number} intervalId - Interval id of the recoil movement
+     */
     activateRecoil(enemy, intervalId) {
         if (this.x > 0 && this.x < enemy.x) {
             this.x -= 3;
@@ -153,6 +274,9 @@ class MovableObject extends DrawableObject {
         };
     };
 
+    /**
+     * Updates the damage cooldown timestamp and prevents negative energy
+     */
     resetDamageCooldown() {
         if (this.energy < 0) {
             this.energy = 0;
@@ -161,14 +285,21 @@ class MovableObject extends DrawableObject {
         };
     };
 
+    /**
+     * Checks whether the object is currently hurt
+     * @returns {boolean} - true = object is hurt, false = object is not hurt
+     */
     isHurt() {
         let timepassed = new Date().getTime() - this.lastHit;
-        // zählt ab jetzt von 0 wieder auf
         timepassed = timepassed / 1000;
         this.checkDamageCooldown(timepassed);
         return timepassed < 0.5;
     };
 
+    /**
+     * Updates damage and walking permissions based on cooldown time
+     * @param {number} timepassed - Seconds passed since the last hit
+     */
     checkDamageCooldown(timepassed) {
         if (timepassed < 0.5) {
             this.canTakeDamage = false;
@@ -179,6 +310,10 @@ class MovableObject extends DrawableObject {
         };
     };
 
+    /**
+     * Checks whether the object has no energy left
+     * @returns {boolean} - true = object is dead, false = object is alive
+     */
     isDead() {
         return this.energy == 0;
     };

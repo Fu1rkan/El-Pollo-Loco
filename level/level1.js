@@ -1,5 +1,12 @@
+/**
+ * Holds the current first level instance
+ * @type {Level}
+ */
 let level1;
 
+/**
+ * Creates the first level with enemies, collectibles, background and endscreen objects
+ */
 function startLevel() {
 
     level1 = new Level(

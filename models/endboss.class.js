@@ -1,6 +1,23 @@
+/**
+ * Represents the endboss enemy and controls its states, animations and sounds
+ */
 class Endboss extends MovableObject {
+    /**
+     * Indicates whether the endboss alert animation is active
+     * @type {boolean}
+     */
     endbossAlert = false;
+
+    /**
+     * Indicates whether the endboss is walking toward the character
+     * @type {boolean}
+     */
     endbossIsAngry = false;
+
+    /**
+     * Walking animation images
+     * @type {string[]}
+     */
     IMAGES_WALK = [
         'img/4_enemie_boss_chicken/1_walk/G1.png',
         'img/4_enemie_boss_chicken/1_walk/G2.png',
@@ -8,12 +25,20 @@ class Endboss extends MovableObject {
         'img/4_enemie_boss_chicken/1_walk/G4.png'
     ];
 
+    /**
+     * Standing animation images
+     * @type {string[]}
+     */
     IMAGES_STANDING = [
         'img/4_enemie_boss_chicken/2_alert/G5.png',
         'img/4_enemie_boss_chicken/2_alert/G6.png',
         'img/4_enemie_boss_chicken/2_alert/G7.png',
     ];
 
+    /**
+     * Alert animation images
+     * @type {string[]}
+     */
     IMAGES_ALERT = [
         'img/4_enemie_boss_chicken/2_alert/G8.png',
         'img/4_enemie_boss_chicken/2_alert/G9.png',
@@ -22,31 +47,46 @@ class Endboss extends MovableObject {
         'img/4_enemie_boss_chicken/2_alert/G12.png',
     ];
 
+    /**
+     * Attack animation images
+     * @type {string[]}
+     */
     IMAGES_ATTACK = [
-        // 'img/4_enemie_boss_chicken/3_attack/G13.png',
-        // 'img/4_enemie_boss_chicken/3_attack/G14.png',
-        // 'img/4_enemie_boss_chicken/3_attack/G15.png',
-        // 'img/4_enemie_boss_chicken/3_attack/G16.png',
         'img/4_enemie_boss_chicken/3_attack/G17.png',
         'img/4_enemie_boss_chicken/3_attack/G18.png',
         'img/4_enemie_boss_chicken/3_attack/G19.png',
         'img/4_enemie_boss_chicken/3_attack/G20.png'
     ];
 
+    /**
+     * Hurt animation images
+     * @type {string[]}
+     */
     IMAGES_HURT = [
         'img/4_enemie_boss_chicken/4_hurt/G21.png',
         'img/4_enemie_boss_chicken/4_hurt/G22.png',
         'img/4_enemie_boss_chicken/4_hurt/G23.png'
     ];
 
+    /**
+     * Death animation images
+     * @type {string[]}
+     */
     IMAGES_DEAD = [
         'img/4_enemie_boss_chicken/5_dead/G24.png',
         'img/4_enemie_boss_chicken/5_dead/G25.png',
         'img/4_enemie_boss_chicken/5_dead/G26.png'
     ];
 
+    /**
+     * Endboss audio elements
+     * @type {HTMLAudioElement[]}
+     */
     AUDIOS = [];
 
+    /**
+     * Creates the endboss and starts its behavior loops
+     */
     constructor() {
         super();
         this.x = 4500;
@@ -62,76 +102,151 @@ class Endboss extends MovableObject {
         this.createInterval(this.checkCharacterApproachingEndboss, 50);
     };
 
+    /**
+     * Initializes all endboss audios
+     */
     getAudios() {
+        this.createAudios();
+        this.AUDIOS = this.getAudioArray();
+        this.muteAudios();
+        this.addAudiosToGlobalArray();
+    };
+
+    /**
+     * Creates all audio objects used by the endboss
+     */
+    createAudios() {
         this.endbossSound = new Audio('audio/boss.mp3');
         this.endbossAlertSound = new Audio('audio/boss_alert.mp3');
         this.endbossHurtSound = new Audio('audio/boss_hurt.mp3');
         this.endbossDeathSound = new Audio('audio/boss_death.mp3');
         this.endbossAttackSound = new Audio('audio/boss_attack.mp3');
+    };
 
-        this.AUDIOS = [
+    /**
+     * Gets all endboss audios in their playback order
+     * @returns {HTMLAudioElement[]} - Endboss audio elements
+     */
+    getAudioArray() {
+        return [
             this.endbossSound,
             this.endbossAlertSound,
             this.endbossHurtSound,
             this.endbossDeathSound,
             this.endbossAttackSound
         ];
+    };
 
+    /**
+     * Applies the current mute status to all endboss audios
+     */
+    muteAudios() {
         this.AUDIOS.forEach((audio) => {
             audio.muted = isMuted;
         });
+    };
 
+    /**
+     * Adds all endboss audios to the global audio collection
+     */
+    addAudiosToGlobalArray() {
         this.AUDIOS.forEach((audio) => {
             allAudios.push(audio);
         });
     };
 
+    /**
+     * Starts the endboss animation loop
+     */
     animate() {
         this.createInterval(this.playEndbossAnimation, 1000 / 60);
     }
 
+    /**
+     * Checks whether the character touches the endboss
+     * @returns {boolean} - true = character touches endboss, false = no touch
+     */
     characterTouchEndboss() {
         return world.character.x + world.character.width >= this.x + 5 && this.x + 5 + this.width - 45 >= world.character.x;
     };
 
+    /**
+     * Checks whether the character does not touch the endboss
+     * @returns {boolean} - true = character does not touch endboss, false = character touches endboss
+     */
     characterDontTouchEndboss() {
         return world.character.x + world.character.width <= this.x + 5 || this.x + 5 + this.width - 45 <= world.character.x;
     };
 
+    /**
+     * Checks whether the endboss is dead
+     * @returns {boolean} - true = endboss is dead, false = endboss is alive
+     */
     endbossIsDeath() {
         return this.energy == 0;
     };
 
+    /**
+     * Checks whether the endboss is hurt
+     * @returns {boolean} - true = endboss is hurt, false = endboss is not hurt
+     */
     endbossGetHurt() {
         return !world.bossCanTakeDmg;
     };
 
+    /**
+     * Checks whether the endboss is alerting
+     * @returns {boolean} - true = endboss is alerting, false = endboss is not alerting
+     */
     endbossIsAlerting() {
         return world.level.endboss[0].endbossAlert;
     }
 
+    /**
+     * Checks whether the endboss is not alerting
+     * @returns {boolean} - true = endboss is not alerting, false = endboss is alerting
+     */
     endbossIsNotAlerting() {
         return !world.level.endboss[0].endbossAlert;
     }
 
+    /**
+     * Checks whether the endboss hurt animation can stop
+     * @returns {boolean} - true = hurt animation can stop, false = hurt animation continues
+     */
     endbossIsHurt() {
         return world.bossCanTakeDmg;
     }
 
+    /**
+     * Checks whether the attack animation can stop
+     * @returns {boolean} - true = attack animation can stop, false = attack animation continues
+     */
     checkAttacking() {
         return world.level.endboss[0].characterDontTouchEndboss() && world.level.endboss[0].animationIsDone;
     }
 
+    /**
+     * Moves the endboss left when it is angry
+     */
     bossIsWalking() {
         if (world.level.endboss[0].endbossIsAngry && world.level.endboss[0].x > 0) {
             world.level.endboss[0].moveLeft();
         };
     };
 
+    /**
+     * Checks whether the walking animation should stop
+     * @returns {boolean} - true = interaction starts, false = walking continues
+     */
     checkInteractions() {
         return world.level.endboss[0].characterTouchEndboss() || world.level.endboss[0].endbossGetHurt() || world.level.endboss[0].endbossIsDeath()
     }
 
+    /**
+     * Checks whether the character is close enough to trigger the endboss
+     * @param {number} id - Approach check interval id
+     */
     checkCharacterApproachingEndboss(id) {
         if (world.character.x >= world.level.endboss[0].x - 400) {
             world.level.endboss[0].endbossAlert = true;
@@ -143,6 +258,9 @@ class Endboss extends MovableObject {
         };
     };
 
+    /**
+     * Loads all endboss images
+     */
     getImages() {
         this.loadImg(this.IMAGES_STANDING[0]);
         this.loadImages(this.IMAGES_STANDING);
@@ -153,6 +271,10 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_DEAD);
     };
 
+    /**
+     * Plays the correct endboss animation based on its current state
+     * @param {number} id - Current animation interval id
+     */
     playEndbossAnimation(id) {
         if (world.level.endboss[0].endbossIsAngry) {
             world.level.endboss[0].checkEndbossActivity(id);
@@ -164,6 +286,10 @@ class Endboss extends MovableObject {
         };
     };
 
+    /**
+     * Checks the current endboss activity
+     * @param {number} id - Current animation interval id
+     */
     checkEndbossActivity(id) {
         if (world.level.endboss[0].endbossIsDeath()) {
             world.level.endboss[0].animationEndboss(id, 3, world.level.endboss[0].playDeathAnimation, 150);
@@ -176,6 +302,14 @@ class Endboss extends MovableObject {
         };
     };
 
+    /**
+     * Starts a specific endboss animation
+     * @param {number} id - Current animation interval id
+     * @param {number} audio - Audio index to play
+     * @param {Function} interaction - Animation function to run
+     * @param {number} time - Animation interval time in milliseconds
+     * @param {Function} [func] - Stop condition function
+     */
     animationEndboss(id, audio, interaction, time, func) {
         clearInterval(id);
         this.currentImage = 0;
@@ -184,6 +318,10 @@ class Endboss extends MovableObject {
         let intervalId2 = this.createInterval(() => this.checkAnimationChance(intervalId, intervalId2, func), 1000 / 60);
     };
 
+    /**
+     * Plays an endboss audio by index
+     * @param {number} i - Audio index
+     */
     playEndbossAudio(i) {
         if (i == 4) {
             world.character.createInterval(this.playAlertSound, 1000 / 60);
@@ -193,6 +331,10 @@ class Endboss extends MovableObject {
         };
     };
 
+    /**
+     * Plays the alert sound during attack state
+     * @param {number} intervalId - Alert sound interval id
+     */
     playAlertSound(intervalId) {
         world.level.endboss[0].AUDIOS[4].play();
         if (world.level.endboss[0].checkAttacking()) {
@@ -200,6 +342,10 @@ class Endboss extends MovableObject {
         };
     };
 
+    /**
+     * Plays the boss sound based on distance to the character
+     * @param {number} intervalId - Boss sound interval id
+     */
     playBossSound(intervalId) {
         let distance = Math.abs(world.character.x - world.level.endboss[0].x);
         let maxDistance = 720;
@@ -216,6 +362,12 @@ class Endboss extends MovableObject {
     };
 
 
+    /**
+     * Checks whether the current endboss animation should stop
+     * @param {number} id - Animation interval id
+     * @param {number} intervalId2 - Watcher interval id
+     * @param {Function} [func] - Stop condition function
+     */
     checkAnimationChance(id, intervalId2, func) {
         if (func) {
             if (func()) {
@@ -226,26 +378,44 @@ class Endboss extends MovableObject {
         };
     };
 
+    /**
+     * Plays the hurt animation
+     */
     playHurtAnimation() {
         world.level.endboss[0].playAnimation(world.level.endboss[0].IMAGES_HURT);
     };
 
+    /**
+     * Plays the attack animation
+     */
     playAttackAnimation() {
         world.level.endboss[0].playAnimation(world.level.endboss[0].IMAGES_ATTACK);
     };
 
+    /**
+     * Plays the walking animation
+     */
     playWalkAnimation() {
         world.level.endboss[0].playAnimation(world.level.endboss[0].IMAGES_WALK);
     };
 
+    /**
+     * Plays the standing animation
+     */
     playStandAnimation() {
         world.level.endboss[0].playAnimation(world.level.endboss[0].IMAGES_STANDING);
     };
 
+    /**
+     * Plays the alert animation
+     */
     playAlertAnimation() {
         world.level.endboss[0].playLimitedAnimation(world.level.endboss[0].IMAGES_ALERT);
     };
 
+    /**
+     * Plays the death animation and ends the game afterwards
+     */
     playDeathAnimation() {
         world.level.endboss[0].playLimitedAnimation(world.level.endboss[0].IMAGES_DEAD);
         setTimeout(() => {

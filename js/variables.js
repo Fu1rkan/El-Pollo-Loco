@@ -1,7 +1,19 @@
-/** @type {Keyboard} */
+/**
+ * Holds the canvas element used to render the game
+ * @type {HTMLCanvasElement} (default: undefined)
+ */
+let canvas;
+
+/**
+ * Holds the keyboard input handler
+ * @type {Keyboard}
+ */
 let keyboard = new Keyboard();
 
-/** @type {World} */
+/**
+ * Holds the current game world
+ * @type {World} (default: undefined)
+ */
 let world;
 
 /**
@@ -24,7 +36,7 @@ let gameStarted = false;
 
 /**
  * Collects all audios
- * @type {Array} (default: [])
+ * @type {HTMLAudioElement[]} (default: [])
  */
 let allAudios = [];
 

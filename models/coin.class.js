@@ -1,5 +1,16 @@
+/**
+ * Represents a collectible coin
+ */
 class Coin extends MovableObject {
 
+    /**
+     * Creates a coin object
+     * @param {string} url - Image path
+     * @param {number} w - Object width
+     * @param {number} h - Object height
+     * @param {number} x - X position
+     * @param {number} y - Y position
+     */
     constructor(url, w, h, x, y) {
         super();
         this.loadImg(url);
