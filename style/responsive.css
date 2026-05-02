@@ -191,7 +191,7 @@
     .resp-start-button {
         display: block;
         width: auto;
-        height: clamp(32px, 8dvh, 44px);
+        height: clamp(40px, 9.5dvh, 56px);
     }
 
     h1 {
@@ -293,7 +293,7 @@
 
     .left-side button,
     .right-side button {
-        height: clamp(40px, 10dvh, 56px);
+        height: clamp(52px, 12dvh, 72px);
     }
 
 
