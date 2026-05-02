@@ -1,7 +1,7 @@
 /** Checks all relevant collisions in the world */
 World.prototype.checkCollisions = function () {
-    this.checkCollisionWithEnemies(this.level.enemies, 40, 20, 20, 10, 20, 40, 10, 20);
-    this.checkCollisionWithEnemies(this.level.babyChicken, 20, 20, 10, 10, 20, 20, 10, 10);
+    this.checkCollisionWithEnemies(this.level.enemies, 40, 20, 20, 10, 20, 40, 10, 20, 40);
+    this.checkCollisionWithEnemies(this.level.babyChicken, 20, 20, 10, 10, 20, 20, 10, 10, 20);
     this.collisionWithEndboss();
 };
 
@@ -16,12 +16,13 @@ World.prototype.checkCollisions = function () {
  * @param {number} jumpH - Height offset for jumping collision
  * @param {number} jumpWx - X offset for jumping collision
  * @param {number} jumpHy - Y offset for jumping collision
+ * @param {number} damage - Damage dealt to the character
  */
-World.prototype.checkCollisionWithEnemies = function (enemies, h, w, hy, wx, jumpW, jumpH, jumpWx, jumpHy) {
+World.prototype.checkCollisionWithEnemies = function (enemies, h, w, hy, wx, jumpW, jumpH, jumpWx, jumpHy, damage) {
     enemies.forEach((enemy) => {
         if (this.character.isColliding(enemy, h, w, hy, wx) && enemy.energy > 0) {
             this.checkCollisionByJumpingOnEnemy(enemy, jumpW, jumpH, jumpWx, jumpHy, 18);
-            this.checkCollisionWithEnemy(enemy);
+            this.checkCollisionWithEnemy(enemy, damage);
         };
         this.checkCollisionBottleWithEnemy(enemy, h, w, hy, wx);
     });
@@ -31,7 +32,7 @@ World.prototype.checkCollisionWithEnemies = function (enemies, h, w, hy, wx, jum
 World.prototype.collisionWithEndboss = function () {
     let endboss = this.level.endboss[0];
     if (this.character.isColliding(endboss, 130, 100, 120, 60) && endboss.canAttackCharacter()) {
-        this.character.hit(endboss, 40);
+        this.character.hit(endboss, 60);
         endboss.startAttackCooldown();
         resetSleepingTimer();
         this.updateStatusbarCharacter();
@@ -60,10 +61,11 @@ World.prototype.checkCollisionByJumpingOnEnemy = function (enemy, w, h, wx, hy, 
 /**
  * Damages the character after colliding with an enemy
  * @param {MovableObject} enemy - Enemy that collided with the character
+ * @param {number} damage - Damage dealt to the character
  */
-World.prototype.checkCollisionWithEnemy = function (enemy) {
+World.prototype.checkCollisionWithEnemy = function (enemy, damage) {
     if (this.character.canHitEnemys) {
-        this.character.hit(enemy, 20);
+        this.character.hit(enemy, damage);
         resetSleepingTimer();
         this.updateStatusbarCharacter();
     };
