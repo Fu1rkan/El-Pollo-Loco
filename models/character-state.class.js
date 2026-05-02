@@ -35,7 +35,7 @@ Character.prototype.isNotWalkingAnymore = function () {
  * @returns {boolean} - true = animation should stop, false = animation should continue
  */
 Character.prototype.isNotSleepingAnymore = function () {
-    return world.character.isDead() || world.character.isHurt() || world.character.isAboutGround() || world.character.isWalking();
+    return !world.character.isSleeping() || world.character.isDead() || world.character.isHurt() || world.character.isAboutGround() || world.character.isWalking();
 };
 
 /**
