@@ -203,7 +203,7 @@
 
     .section-canvas,
     body.mobile-controls .section-canvas {
-        width: min(1000px, 150dvh, 100vw);
+        width: min(1000px, 150dvh, var(--app-width, 100vw));
         max-width: 1000px;
         margin: 0;
     }

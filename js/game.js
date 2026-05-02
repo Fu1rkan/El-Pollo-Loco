@@ -5,6 +5,7 @@ function init() {
     bindUiResizeEvents();
     bindCanvasEvents();
     preventGameContextMenus();
+    preventMobilePageScroll();
     getDataFromLocalStorage();
 };
 
@@ -30,6 +31,11 @@ function preventGameContextMenus() {
         element.addEventListener('contextmenu', preventDefaultBrowserInteraction);
         element.addEventListener('dragstart', preventDefaultBrowserInteraction);
     });
+};
+
+/** Prevents mobile pull-to-refresh and page dragging while playing */
+function preventMobilePageScroll() {
+    document.addEventListener('touchmove', preventDefaultBrowserInteraction, { passive: false });
 };
 
 /**
@@ -119,6 +125,7 @@ function resetCanvas() {
 
 /** Starts the game */
 function startGame() {
+    requestMobileFullscreen();
     isRunning = true;
     gameStarted = true;
     setGameButtonsStarted();
@@ -153,9 +160,46 @@ function pauseGame() {
 
 /** Resumes the game */
 function resumeGame() {
+    requestMobileFullscreen();
     isRunning = true;
     closePauseMenu();
     resumeAudios();
+};
+
+/** Requests mobile fullscreen when the browser supports it */
+function requestMobileFullscreen() {
+    if (!shouldUseMobileFullscreen() || isFullscreenActive()) return;
+    try {
+        let root = document.documentElement;
+        if (root.requestFullscreen) {
+            let request = root.requestFullscreen({ navigationUI: 'hide' });
+            if (request && request.catch) request.catch(() => { });
+        } else if (root.webkitRequestFullscreen) {
+            root.webkitRequestFullscreen();
+        } else if (root.msRequestFullscreen) {
+            root.msRequestFullscreen();
+        };
+    } catch {
+        return;
+    };
+};
+
+/**
+ * Checks whether mobile fullscreen should be requested
+ * @returns {boolean} - true = fullscreen should be requested
+ */
+function shouldUseMobileFullscreen() {
+    return isTouchDevice() || isSmallScreen();
+};
+
+/**
+ * Checks whether the page already runs in fullscreen
+ * @returns {boolean} - true = fullscreen is active
+ */
+function isFullscreenActive() {
+    return document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.msFullscreenElement;
 };
 
 /** Clears all active intervals and timeouts */

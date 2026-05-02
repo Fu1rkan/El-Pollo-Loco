@@ -19,6 +19,7 @@ function getContainerIds() {
 
 /** Updates the UI depending on device, screen size and orientation */
 function updateUI() {
+    updateViewportSizeVariable();
     if (isLandscape() && (isTouchDevice() || isSmallScreen())) {
         activateMobileMode();
     } else if (isTouchDevice() || isSmallScreen()) {
@@ -27,6 +28,12 @@ function updateUI() {
         activateDesktopMode();
     };
     updateCanvasSize();
+};
+
+/** Stores the current visual viewport size for mobile browser chrome changes */
+function updateViewportSizeVariable() {
+    document.documentElement.style.setProperty('--app-width', `${getViewportWidth()}px`);
+    document.documentElement.style.setProperty('--app-height', `${getViewportHeight()}px`);
 };
 
 /** Activates mobile landscape mode */
@@ -122,7 +129,7 @@ function getResponsiveCanvasSize() {
  */
 function getCompactCanvasSize() {
     let aspectRatio = getCanvasAspectRatio();
-    let width = Math.min(1000, window.innerWidth, getViewportHeight() * aspectRatio);
+    let width = Math.min(1000, getViewportWidth(), getViewportHeight() * aspectRatio);
     return {
         width: width,
         height: width / aspectRatio
@@ -136,7 +143,7 @@ function getCompactCanvasSize() {
 function getResponsiveCanvasWidth() {
     let maxWidth = 1000;
     let horizontalPadding = document.body.classList.contains('mobile-controls') ? 16 : 48;
-    let widthByViewport = Math.max(0, window.innerWidth - horizontalPadding);
+    let widthByViewport = Math.max(0, getViewportWidth() - horizontalPadding);
     let widthByHeight = getAvailableCanvasHeight() * getCanvasAspectRatio();
     return Math.max(280, Math.min(maxWidth, widthByViewport, widthByHeight));
 };
@@ -161,6 +168,14 @@ function getAvailableCanvasHeight() {
  */
 function getViewportHeight() {
     return window.visualViewport ? window.visualViewport.height : window.innerHeight;
+};
+
+/**
+ * Gets the current visual viewport width
+ * @returns {number} - Viewport width in pixels
+ */
+function getViewportWidth() {
+    return window.visualViewport ? window.visualViewport.width : window.innerWidth;
 };
 
 /**
@@ -202,7 +217,7 @@ function isTouchDevice() {
  * @returns {boolean} - true = small screen, false = large screen
  */
 function isSmallScreen() {
-    return window.innerWidth < 820;
+    return getViewportWidth() < 820;
 };
 
 /**
