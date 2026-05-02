@@ -29,11 +29,14 @@ World.prototype.checkCollisionWithEnemies = function (enemies, h, w, hy, wx, jum
 
 /** Checks collisions between the character, bottles and the endboss */
 World.prototype.collisionWithEndboss = function () {
-    if (this.character.isColliding(this.level.endboss[0], 130, 100, 120, 60)) {
-        this.character.hit(this.level.endboss[0], 40);
+    let endboss = this.level.endboss[0];
+    if (this.character.isColliding(endboss, 130, 100, 120, 60) && endboss.canAttackCharacter()) {
+        this.character.hit(endboss, 40);
+        endboss.startAttackCooldown();
+        resetSleepingTimer();
         this.updateStatusbarCharacter();
     };
-    this.checkCollisionBottleWithEnemy(this.level.endboss[0], 70, 45, 60, 5);
+    this.checkCollisionBottleWithEnemy(endboss, 70, 45, 60, 5);
 };
 
 /**
@@ -89,13 +92,15 @@ World.prototype.checkCollisionBottleWithEnemy = function (enemy, h, w, hy, wx) {
 
 /** Reduces endboss health and starts its damage cooldown */
 World.prototype.hurtEndboss = function () {
-    if (this.level.endboss[0].energy > 0) {
-        this.level.endboss[0].energy -= 20;
+    let endboss = this.level.endboss[0];
+    if (endboss.energy > 0) {
+        endboss.energy -= 20;
+        endboss.startHurtAnimation();
         this.bossCanTakeDmg = false;
     }
-    setTimeout(() => {
+    endboss.createTimeout(() => {
         this.bossCanTakeDmg = true;
-    }, 2000);
+    }, endboss.bottleDamageCooldown);
 };
 
 /**

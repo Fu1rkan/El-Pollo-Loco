@@ -13,6 +13,42 @@ class Endboss extends MovableObject {
     endbossIsAngry = false;
 
     /**
+     * Indicates whether the endboss attack is currently on cooldown
+     * @type {boolean}
+     */
+    attackCooldown = false;
+
+    /**
+     * Indicates whether the hurt animation is currently active
+     * @type {boolean}
+     */
+    hurtAnimationActive = false;
+
+    /**
+     * Cooldown time after taking bottle damage
+     * @type {number}
+     */
+    bottleDamageCooldown = 2000;
+
+    /**
+     * Base walking speed before the endboss loses health
+     * @type {number}
+     */
+    baseSpeed = 2.4;
+
+    /**
+     * Walking speed after the endboss lost enough health
+     * @type {number}
+     */
+    phaseTwoSpeed = 2.8;
+
+    /**
+     * Walking speed for the final low-health phase
+     * @type {number}
+     */
+    phaseThreeSpeed = 3.2;
+
+    /**
      * Walking animation images
      * @type {string[]}
      */
@@ -90,7 +126,7 @@ class Endboss extends MovableObject {
         this.width = 300;
         this.height = 300;
         this.energy = 100;
-        this.speed = 2;
+        this.speed = this.baseSpeed;
         this.getImages();
         this.animate();
         this.getAudios();
@@ -132,7 +168,7 @@ class Endboss extends MovableObject {
      * @returns {boolean} - true = endboss is hurt, false = endboss is not hurt
      */
     endbossGetHurt() {
-        return !world.bossCanTakeDmg;
+        return world.level.endboss[0].hurtAnimationActive;
     };
 
     /**
@@ -156,21 +192,68 @@ class Endboss extends MovableObject {
      * @returns {boolean} - true = hurt animation can stop, false = hurt animation continues
      */
     endbossIsHurt() {
-        return world.bossCanTakeDmg;
+        return !world.level.endboss[0].hurtAnimationActive;
     }
+
+    /**
+     * Checks whether the endboss can currently chase the character
+     * @returns {boolean} - true = endboss can move, false = endboss pauses
+     */
+    canChaseCharacter() {
+        return this.endbossIsAngry && this.x > 0 && !this.attackCooldown && !this.endbossIsDeath();
+    };
+
+    /**
+     * Checks whether the endboss can damage the character
+     * @returns {boolean} - true = endboss can attack, false = attack is on cooldown
+     */
+    canAttackCharacter() {
+        return !this.attackCooldown && !this.endbossIsDeath();
+    };
+
+    /** Starts a short attack cooldown so the character can escape after a hit */
+    startAttackCooldown() {
+        this.attackCooldown = true;
+        this.createTimeout(() => {
+            this.attackCooldown = false;
+        }, 1200);
+    };
+
+    /** Starts the hurt animation for the full bottle damage cooldown */
+    startHurtAnimation() {
+        this.hurtAnimationActive = true;
+        this.createTimeout(() => {
+            this.hurtAnimationActive = false;
+        }, this.bottleDamageCooldown);
+    };
+
+    /** Updates the walking speed based on the current health phase */
+    updateSpeedByHealth() {
+        if (this.energy <= 20) {
+            this.speed = this.phaseThreeSpeed;
+        } else if (this.energy <= 60) {
+            this.speed = this.phaseTwoSpeed;
+        } else {
+            this.speed = this.baseSpeed;
+        };
+    };
 
     /**
      * Checks whether the attack animation can stop
      * @returns {boolean} - true = attack animation can stop, false = attack animation continues
      */
     checkAttacking() {
-        return world.level.endboss[0].characterDontTouchEndboss() && world.level.endboss[0].animationIsDone;
+        return world.level.endboss[0].endbossGetHurt() ||
+            world.level.endboss[0].endbossIsDeath() ||
+            (world.level.endboss[0].characterDontTouchEndboss() && world.level.endboss[0].animationIsDone);
     }
 
     /** Moves the endboss left when it is angry */
     bossIsWalking() {
-        if (world.level.endboss[0].endbossIsAngry && world.level.endboss[0].x > 0) {
-            world.level.endboss[0].moveLeft();
+        let endboss = world.level.endboss[0];
+        if (endboss.canChaseCharacter()) {
+            endboss.updateSpeedByHealth();
+            endboss.moveLeft();
         };
     };
 
