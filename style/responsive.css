@@ -161,33 +161,55 @@
 
 @media (max-height: 600px) {
 
+    /*                 Standart                         */
+
+
+    body {
+        background-image: none;
+        background-color: rgb(34, 34, 34);
+    }
+
+    body::before {
+        display: block;
+    }
+
+
     /*               Header Section                      */
 
 
-    header img {
-        width: 120px;
+    header {
+        top: clamp(6px, 2.5dvh, 14px);
+        padding: 0 clamp(8px, 2vw, 24px);
+        pointer-events: none;
+    }
+
+    header button {
+        pointer-events: auto;
+    }
+
+    header img,
+    .resp-start-button {
+        display: block;
+        width: auto;
+        height: clamp(32px, 8dvh, 44px);
     }
 
     h1 {
-        font-size: 36px;
-        margin: 0;
-        padding: 0;
+        display: none;
     }
 
 
     /*               Canvas Section                   */
 
-    .section-canvas {
-        width: 70%;
-        max-width: 500px;
-        height: 50%;
+    .section-canvas,
+    body.mobile-controls .section-canvas {
+        width: min(1000px, 150dvh, 100vw);
+        max-width: 1000px;
+        margin: 0;
     }
 
     .canvas-border {
-        top: -28px;
-        left: -26px;
-        height: calc(100% + 50px);
-        width: calc(100% + 52px);
+        display: none;
     }
 
     .pause-buttons a {
@@ -251,47 +273,46 @@
 
 
     .resp-buttons {
-        bottom: 12px;
-        height: 64px;
-        padding: 0 24px;
+        bottom: clamp(4px, 2dvh, 12px);
+        height: auto;
+        padding: 0 clamp(8px, 2vw, 24px);
+        gap: clamp(8px, 2vw, 16px);
+        pointer-events: none;
     }
 
-    .resp-start-button {
-        width: 120px;
+    .resp-buttons button {
+        pointer-events: auto;
+    }
+
+    .left-side,
+    .right-side {
+        height: auto;
+        gap: clamp(8px, 2vw, 16px);
+        flex-wrap: wrap;
+    }
+
+    .left-side button,
+    .right-side button {
+        height: clamp(40px, 10dvh, 56px);
+    }
+
+
+    /*                  Footer                    */
+
+
+    footer {
+        bottom: clamp(2px, 1dvh, 6px);
+    }
+
+    footer a {
+        font-size: 12px;
     }
 
 }
 
 @media (max-height: 440px) {
 
-    /*               Header Section                      */
-
-    header img {
-        width: 70px;
-    }
-
-    h1 {
-        font-size: 32px;
-        margin: 0;
-        padding: 0;
-    }
-
-
     /*               Canvas Section                   */
-
-
-    .section-canvas {
-        width: 70%;
-        max-width: 400px;
-        height: 50%;
-    }
-
-    .canvas-border {
-        top: -22px;
-        left: -20px;
-        height: calc(100% + 40px);
-        width: calc(100% + 40px);
-    }
 
     .pause-buttons {
         width: 300px;
@@ -353,112 +374,4 @@
     }
 
 
-    /*              Resp Buttons Section                */
-
-
-    .resp-start-button {
-        width: 90px;
-    }
-
-}
-
-/* Canvas size is calculated in ui.js; these rules keep CSS fallbacks proportional. */
-.section-canvas {
-    width: min(1000px, calc(100vw - 48px));
-    max-width: 1000px;
-    height: auto;
-    aspect-ratio: 3 / 2;
-    margin: clamp(56px, 8dvh, 80px) 0 clamp(78px, 8dvh, 96px);
-}
-
-body.mobile-controls .section-canvas {
-    width: min(1000px, calc(100vw - 16px));
-    margin: clamp(36px, 7dvh, 56px) 0 clamp(96px, 18dvh, 128px);
-}
-
-canvas {
-    width: 100%;
-    height: 100%;
-}
-
-.canvas-border {
-    top: -11.67%;
-    left: -6.25%;
-    height: 121.46%;
-    width: 112.78%;
-}
-
-@media (max-height: 600px) {
-    body {
-        background-image: none;
-        background-color: rgb(34, 34, 34);
-    }
-
-    body::before {
-        display: block;
-    }
-
-    h1 {
-        display: none;
-    }
-
-    header {
-        top: clamp(6px, 2.5dvh, 14px);
-        padding: 0 clamp(8px, 2vw, 24px);
-        pointer-events: none;
-    }
-
-    header button {
-        pointer-events: auto;
-    }
-
-    header img,
-    .resp-start-button {
-        display: block;
-        width: auto;
-        height: clamp(32px, 8dvh, 44px);
-    }
-
-    .section-canvas,
-    body.mobile-controls .section-canvas {
-        width: min(1000px, 150dvh, 100vw);
-        max-width: 1000px;
-        margin: 0;
-    }
-
-    .canvas-border {
-        display: none;
-    }
-
-    .resp-buttons {
-        bottom: clamp(4px, 2dvh, 12px);
-        height: auto;
-        padding: 0 clamp(8px, 2vw, 24px);
-        gap: clamp(8px, 2vw, 16px);
-        pointer-events: none;
-    }
-
-    footer {
-        bottom: clamp(2px, 1dvh, 6px);
-    }
-
-    footer a {
-        font-size: 12px;
-    }
-
-    .resp-buttons button {
-        pointer-events: auto;
-    }
-
-    .left-side,
-    .right-side {
-        height: auto;
-        gap: clamp(8px, 2vw, 16px);
-        flex-wrap: wrap;
-    }
-
-    .left-side button,
-    .right-side button {
-        height: clamp(40px, 10dvh, 56px);
-    }
 }

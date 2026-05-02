@@ -252,21 +252,28 @@ class MovableObject extends DrawableObject {
     recoilToCharacter(enemy, dmg) {
         if (!this.isHurt()) {
             this.energy -= dmg;
-            let intervalId = this.createInterval(() => this.activateRecoil(enemy, intervalId), 1000 / 60);
+            let direction = this.getRecoilDirection(enemy);
+            let intervalId = this.createInterval(() => this.activateRecoil(intervalId, direction), 1000 / 60);
         };
     };
 
     /**
-     * Moves the object away from the enemy for a short time
+     * Gets the recoil direction based on the enemy position
      * @param {MovableObject} enemy - Enemy that caused the recoil
-     * @param {number} intervalId - Interval id of the recoil movement
+     * @returns {number} - Recoil direction on the x axis
      */
-    activateRecoil(enemy, intervalId) {
-        if (this.x > 0 && this.x < enemy.x) {
-            this.x -= 3;
-        } else if (this.x > 0 && this.x > enemy.x) {
-            this.x += 3;
-        };
+    getRecoilDirection(enemy) {
+        if (enemy instanceof Endboss) return -1;
+        return this.x + this.width / 2 < enemy.x + enemy.width / 2 ? -1 : 1;
+    };
+
+    /**
+     * Moves the object away from the enemy for a short time
+     * @param {number} intervalId - Interval id of the recoil movement
+     * @param {number} direction - Recoil direction on the x axis
+     */
+    activateRecoil(intervalId, direction) {
+        this.x = Math.max(0, this.x + 3 * direction);
         this.recoilIndex++;
         if (this.recoilIndex > 30) {
             clearInterval(intervalId);
