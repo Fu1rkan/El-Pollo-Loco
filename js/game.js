@@ -4,6 +4,7 @@ function init() {
     updateUI();
     bindUiResizeEvents();
     bindCanvasEvents();
+    preventGameContextMenus();
     getDataFromLocalStorage();
 };
 
@@ -21,6 +22,22 @@ function bindCanvasEvents() {
     canvasId.addEventListener('pointermove', handleCanvasPointerMove);
     canvasId.addEventListener('pointerleave', handleCanvasPointerLeave);
     canvasId.addEventListener('pointerup', handleCanvasPointerUp);
+};
+
+/** Prevents browser context menus and image dragging on game controls */
+function preventGameContextMenus() {
+    document.querySelectorAll('button, button img, canvas').forEach((element) => {
+        element.addEventListener('contextmenu', preventDefaultBrowserInteraction);
+        element.addEventListener('dragstart', preventDefaultBrowserInteraction);
+    });
+};
+
+/**
+ * Prevents default browser interactions that interrupt gameplay controls
+ * @param {Event} event - Browser interaction event
+ */
+function preventDefaultBrowserInteraction(event) {
+    event.preventDefault();
 };
 
 /**
