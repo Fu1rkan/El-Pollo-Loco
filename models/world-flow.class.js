@@ -1,8 +1,8 @@
 /** Starts the recurring game checks and background sounds */
 World.prototype.run = function () {
     this.character.createInterval(() => world.checkCollisions(), 1000 / 60);
-    this.character.createInterval(() => world.checkCollectCoins(), 180);
-    this.character.createInterval(() => world.checkCollectBottles(), 180);
+    this.character.createInterval(() => world.checkCollectCoins(), 1000 / 60);
+    this.character.createInterval(() => world.checkCollectBottles(), 1000 / 60);
     this.character.createInterval(() => world.checkThrowObjects(), 180);
     playAudio(this.AUDIOS[5]);
     this.character.createTimeout(this.playBackgorundMusic, 15000)

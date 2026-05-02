@@ -33,7 +33,7 @@ World.prototype.updateStatusbarCoin = function () {
 /** Checks whether the character collects a coin */
 World.prototype.checkCollectCoins = function () {
     this.level.coins.forEach((coin) => {
-        if (this.character.isColliding(coin, 110, 110, 55, 55)) {
+        if (this.character.isColliding(coin, 70, 70, 35, 35)) {
             this.collectCoin(coin);
         };
     });
@@ -70,7 +70,7 @@ World.prototype.collectBottle = function (bottle) {
 /** Checks whether the character collects a bottle */
 World.prototype.checkCollectBottles = function () {
     this.level.salsas.forEach((bottle) => {
-        if (this.character.isColliding(bottle, 30, 60, 20, 30) && this.collectedBottles < 5) {
+        if (this.character.isColliding(bottle, 15, 20, 10, 10) && this.collectedBottles < 5) {
             this.collectBottle(bottle);
         };
     });
