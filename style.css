@@ -6,9 +6,14 @@
     box-sizing: border-box;
     text-decoration: none;
     scroll-behavior: smooth;
-    touch-action: manipulation;
+    touch-action: none;
     -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
+    -webkit-user-drag: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -17,6 +22,10 @@ html {
     overflow: hidden;
     overscroll-behavior: none;
     background-color: rgb(34, 34, 34);
+    background-image: url(./img/background_img/background.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 body {
@@ -69,7 +78,7 @@ button {
     transition: 250ms;
     background-color: transparent;
     border: none;
-    touch-action: manipulation;
+    touch-action: none;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
     position: relative;
@@ -99,6 +108,14 @@ header {
     box-sizing: border-box;
     padding: 0 24px;
     z-index: 10;
+}
+
+header button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+    z-index: 20;
 }
 
 header img {

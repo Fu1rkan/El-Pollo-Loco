@@ -129,7 +129,7 @@ function getResponsiveCanvasSize() {
  */
 function getCompactCanvasSize() {
     let aspectRatio = getCanvasAspectRatio();
-    let width = Math.min(1000, getViewportWidth(), getViewportHeight() * aspectRatio);
+    let width = Math.min(getViewportWidth(), getViewportHeight() * aspectRatio);
     return {
         width: width,
         height: width / aspectRatio

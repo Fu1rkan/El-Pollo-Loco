@@ -38,7 +38,7 @@ World.prototype.drawFixedObjects = function () {
 
 /** Updates statusbar positions for normal and compact canvas layouts */
 World.prototype.updateStatusbarPositions = function () {
-    let compactOffsetY = isCompactCanvasMode() ? 40 : 0;
+    let compactOffsetY = isCompactCanvasMode() ? 55 : 0;
     this.statusbarHealth.y = 5 + compactOffsetY;
     this.statusbarBottle.y = 35 + compactOffsetY;
     this.statusbarCoin.y = 65 + compactOffsetY;

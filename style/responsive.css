@@ -187,6 +187,13 @@
         pointer-events: auto;
     }
 
+    header button::before {
+        content: "";
+        position: absolute;
+        inset: -12px;
+        background-color: rgba(0, 0, 0, 0);
+    }
+
     header img,
     .resp-start-button {
         display: block;
@@ -203,8 +210,8 @@
 
     .section-canvas,
     body.mobile-controls .section-canvas {
-        width: min(1000px, 150dvh, var(--app-width, 100vw));
-        max-width: 1000px;
+        width: min(150dvh, var(--app-width, 100vw));
+        max-width: none;
         margin: 0;
     }
 

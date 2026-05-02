@@ -12,6 +12,56 @@ function getButtonIds() {
     unmuteButton = document.getElementById('unmute-button');
 };
 
+/** Binds responsive header action buttons to immediate pointer input */
+function bindResponsiveActionButtons() {
+    bindResponsiveActionButton(respStartButton, startGame);
+    bindResponsiveActionButton(respRestartButton, restartGame);
+    bindResponsiveActionButton(respPauseButton, pauseGame);
+};
+
+/**
+ * Binds a responsive header button action
+ * @param {HTMLButtonElement} button - Button to bind
+ * @param {Function} action - Action to run on pointer input
+ */
+function bindResponsiveActionButton(button, action) {
+    button.addEventListener('pointerdown', (event) => handleResponsiveActionButton(event, button, action));
+    button.addEventListener('click', preventButtonClickFallback);
+};
+
+/**
+ * Handles immediate responsive header button input
+ * @param {PointerEvent} event - Pointer event
+ * @param {HTMLButtonElement} button - Pressed button
+ * @param {Function} action - Action to run
+ */
+function handleResponsiveActionButton(event, button, action) {
+    if (!responsiveActionButtonIsActive(button)) return;
+    event.preventDefault();
+    event.stopPropagation();
+    action();
+};
+
+/**
+ * Checks whether a responsive action button can currently be used
+ * @param {HTMLButtonElement} button - Button to check
+ * @returns {boolean} - true = button can run its action
+ */
+function responsiveActionButtonIsActive(button) {
+    return !button.disabled &&
+        !button.classList.contains('d_none') &&
+        !button.classList.contains('deactive_button');
+};
+
+/**
+ * Prevents delayed synthetic clicks after pointer input
+ * @param {MouseEvent} event - Click event
+ */
+function preventButtonClickFallback(event) {
+    event.preventDefault();
+    event.stopPropagation();
+};
+
 /** Resets all action buttons for the homescreen */
 function resetHomeButtons() {
     canvasId.classList.add('background-img');
@@ -170,10 +220,8 @@ function activateRespButtons(action) {
 /** Activates responsive buttons for running game state */
 function activateRespStartedButtons() {
     respStartButton.classList.add('d_none');
-    respPauseButton.setAttribute("onclick", "pauseGame()");
     respPauseButton.classList.remove('deactive_button');
     respRestartButton.classList.remove('d_none');
-    respRestartButton.setAttribute("onclick", "restartGame()");
     respRestartButton.classList.remove('deactive_button');
 };
 
@@ -181,9 +229,7 @@ function activateRespStartedButtons() {
 function activateRespFinishedButtons() {
     respStartButton.disabled = false;
     respStartButton.classList.remove('d_none');
-    respStartButton.setAttribute("onclick", "startGame()");
     respStartButton.classList.remove('deactive_button');
-    respPauseButton.setAttribute("onclick", "pauseGame()");
     respPauseButton.classList.remove('deactive_button');
     respRestartButton.classList.add('d_none');
 };
@@ -194,10 +240,8 @@ function activateRespFinishedButtons() {
  */
 function deactivateRespButtons(action) {
     if (action == 'start') {
-        respStartButton.setAttribute("onclick", "");
         respStartButton.classList.add('deactive_button');
     } else if (action == 'finish') {
-        respRestartButton.setAttribute("onclick", "");
         respRestartButton.classList.add('deactive_button');
         respRestartButton.classList.add('d_none');
     };

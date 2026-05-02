@@ -1,11 +1,13 @@
 /** Initializes the game setup */
 function init() {
     getElementsbyId();
+    bindResponsiveActionButtons();
     updateUI();
     bindUiResizeEvents();
     bindCanvasEvents();
     preventGameContextMenus();
     preventMobilePageScroll();
+    preventTextSelectionInteractions();
     getDataFromLocalStorage();
 };
 
@@ -30,12 +32,26 @@ function preventGameContextMenus() {
     document.querySelectorAll('button, button img, canvas').forEach((element) => {
         element.addEventListener('contextmenu', preventDefaultBrowserInteraction);
         element.addEventListener('dragstart', preventDefaultBrowserInteraction);
+        element.addEventListener('dblclick', preventDefaultBrowserInteraction);
     });
 };
 
 /** Prevents mobile pull-to-refresh and page dragging while playing */
 function preventMobilePageScroll() {
     document.addEventListener('touchmove', preventDefaultBrowserInteraction, { passive: false });
+};
+
+/** Prevents mobile text search, loupe and selection menus on repeated taps */
+function preventTextSelectionInteractions() {
+    document.addEventListener('selectstart', preventDefaultBrowserInteraction);
+    document.addEventListener('selectionchange', clearTextSelection);
+    document.addEventListener('gesturestart', preventDefaultBrowserInteraction);
+};
+
+/** Clears accidental text selections created by mobile browsers */
+function clearTextSelection() {
+    let selection = window.getSelection();
+    if (selection) selection.removeAllRanges();
 };
 
 /**
