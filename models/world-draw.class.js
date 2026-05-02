@@ -49,30 +49,63 @@ World.prototype.updateStatusbarPositions = function () {
 World.prototype.drawEndscreen = function () {
     if (this.gameLost) {
         this.addObjectsToMap(this.level.loseScreen);
-        this.drawEndscreenHomeButton();
+        this.drawEndscreenActionButton();
     } else if (this.gameWon) {
         this.addObjectsToMap(this.level.winScreen);
-        this.drawEndscreenHomeButton();
+        this.drawEndscreenActionButton();
     };
 };
 
-/** Draws the home button below the active endscreen image */
-World.prototype.drawEndscreenHomeButton = function () {
-    this.updateEndscreenHomeButtonPosition();
-    this.addToMap(this.endscreenHomeButton);
+/** Draws the action button below the active endscreen image */
+World.prototype.drawEndscreenActionButton = function () {
+    this.updateEndscreenActionButtonImage();
+    this.updateEndscreenActionButtonScale();
+    this.updateEndscreenActionButtonPosition();
+    this.addToMap(this.endscreenActionButton);
 };
 
-/** Updates the home button position and size inside the canvas */
-World.prototype.updateEndscreenHomeButtonPosition = function () {
+/** Updates the action button image for win and lose screens */
+World.prototype.updateEndscreenActionButtonImage = function () {
+    let imagePath = this.getEndscreenActionButtonImagePath();
+    this.endscreenActionButton.img = this.endscreenActionButton.imageCache[imagePath];
+};
+
+/**
+ * Gets the matching action button image path
+ * @returns {string} Restart image on lose, home image on win
+ */
+World.prototype.getEndscreenActionButtonImagePath = function () {
+    return this.gameLost ? 'img/buttons/restart_button.png' : 'img/buttons/home_button.png';
+};
+
+/** Updates the action button scale during its 250ms transition */
+World.prototype.updateEndscreenActionButtonScale = function () {
+    let elapsed = Date.now() - this.endscreenActionButtonTransitionStart;
+    let progress = Math.min(1, elapsed / this.endscreenActionButtonTransitionDuration);
+    let scaleDistance = this.endscreenActionButtonTargetScale - this.endscreenActionButtonStartScale;
+    this.endscreenActionButtonScale = this.endscreenActionButtonStartScale + scaleDistance * progress;
+};
+
+/** Updates the action button position and size inside the canvas */
+World.prototype.updateEndscreenActionButtonPosition = function () {
     let endscreen = this.getActiveEndscreen();
-    let width = Math.max(96, Math.min(128, this.canvas.width * 0.17));
-    this.endscreenHomeButton.width = width;
-    this.endscreenHomeButton.height = width * 0.8;
-    this.endscreenHomeButton.x = (this.canvas.width - width) / 2;
-    this.endscreenHomeButton.y = Math.min(
-        this.canvas.height - this.endscreenHomeButton.height - 18,
+    let baseWidth = Math.max(96, Math.min(128, this.canvas.width * 0.17));
+    let baseHeight = baseWidth * this.getEndscreenActionButtonRatio();
+    this.endscreenActionButton.width = baseWidth * this.endscreenActionButtonScale;
+    this.endscreenActionButton.height = baseHeight * this.endscreenActionButtonScale;
+    this.endscreenActionButton.x = (this.canvas.width - this.endscreenActionButton.width) / 2;
+    this.endscreenActionButton.y = Math.min(
+        this.canvas.height - baseHeight - 18,
         endscreen.y + endscreen.height + 6
-    );
+    ) - ((this.endscreenActionButton.height - baseHeight) / 2);
+};
+
+/**
+ * Gets the matching image aspect ratio for the current action button
+ * @returns {number} Height divided by width
+ */
+World.prototype.getEndscreenActionButtonRatio = function () {
+    return this.gameLost ? 382 / 898 : 540 / 870;
 };
 
 /**
@@ -84,15 +117,44 @@ World.prototype.getActiveEndscreen = function () {
 };
 
 /**
- * Checks if a pointer event hits the endscreen home button
+ * Checks if a pointer event hits the endscreen action button
  * @param {PointerEvent} event - Pointer event on the canvas
  * @returns {boolean} - true = button was hit, false = outside
  */
-World.prototype.isEndscreenHomeButtonHit = function (event) {
+World.prototype.isEndscreenActionButtonHit = function (event) {
     if (!this.gameEnded) return false;
-    this.updateEndscreenHomeButtonPosition();
+    this.updateEndscreenActionButtonScale();
+    this.updateEndscreenActionButtonPosition();
     let position = this.getCanvasPointerPosition(event);
-    return this.isInsideEndscreenHomeButton(position.x, position.y);
+    return this.isInsideEndscreenActionButton(position.x, position.y);
+};
+
+/**
+ * Updates the endscreen action button hover state
+ * @param {PointerEvent} event - Pointer event on the canvas
+ */
+World.prototype.updateEndscreenActionButtonHover = function (event) {
+    if (!this.gameEnded) {
+        this.setEndscreenActionButtonHover(false);
+        return;
+    };
+    this.updateEndscreenActionButtonScale();
+    this.updateEndscreenActionButtonPosition();
+    let position = this.getCanvasPointerPosition(event);
+    this.setEndscreenActionButtonHover(this.isInsideEndscreenActionButton(position.x, position.y));
+};
+
+/**
+ * Starts a 250ms transition when the endscreen action button hover state changes
+ * @param {boolean} isHovered - true = hovered, false = normal
+ */
+World.prototype.setEndscreenActionButtonHover = function (isHovered) {
+    let targetScale = isHovered ? 1.06 : 1;
+    if (targetScale == this.endscreenActionButtonTargetScale) return;
+    this.updateEndscreenActionButtonScale();
+    this.endscreenActionButtonStartScale = this.endscreenActionButtonScale;
+    this.endscreenActionButtonTargetScale = targetScale;
+    this.endscreenActionButtonTransitionStart = Date.now();
 };
 
 /**
@@ -109,13 +171,13 @@ World.prototype.getCanvasPointerPosition = function (event) {
 };
 
 /**
- * Checks if a canvas coordinate is inside the endscreen home button
+ * Checks if a canvas coordinate is inside the endscreen action button
  * @param {number} x - Canvas x position
  * @param {number} y - Canvas y position
  * @returns {boolean} - true = inside button, false = outside button
  */
-World.prototype.isInsideEndscreenHomeButton = function (x, y) {
-    let button = this.endscreenHomeButton;
+World.prototype.isInsideEndscreenActionButton = function (x, y) {
+    let button = this.endscreenActionButton;
     return x >= button.x && x <= button.x + button.width &&
         y >= button.y && y <= button.y + button.height;
 };

@@ -30,8 +30,23 @@ class World {
     /** @type {StatusbarHealthEndboss} Health statusbar of the endboss */
     statusbarHealthEndboss = new StatusbarHealthEndboss();
 
-    /** @type {DrawableObject} Home button shown on win and lose screens */
-    endscreenHomeButton = new DrawableObject();
+    /** @type {DrawableObject} Action button shown on win and lose screens */
+    endscreenActionButton = new DrawableObject();
+
+    /** @type {number} Current scale of the endscreen action button */
+    endscreenActionButtonScale = 1;
+
+    /** @type {number} Scale at the start of the current endscreen button transition */
+    endscreenActionButtonStartScale = 1;
+
+    /** @type {number} Target scale of the current endscreen button transition */
+    endscreenActionButtonTargetScale = 1;
+
+    /** @type {number} Timestamp when the current endscreen button transition started */
+    endscreenActionButtonTransitionStart = Date.now();
+
+    /** @type {number} Endscreen button transition duration in milliseconds */
+    endscreenActionButtonTransitionDuration = 250;
 
     /** @type {Level} Current game level */
     level;
@@ -77,7 +92,10 @@ class World {
         this.level = level1;
         this.canvas = canvas;
         this.keyboard = keyboard;
-        this.endscreenHomeButton.loadImg('img/buttons/home_button.png');
+        this.endscreenActionButton.loadImages([
+            'img/buttons/home_button.png',
+            'img/buttons/restart_button.png'
+        ]);
         this.draw();
         this.setWorld();
         this.getAudios()

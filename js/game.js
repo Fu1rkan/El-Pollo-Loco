@@ -18,7 +18,24 @@ function bindUiResizeEvents() {
 
 /** Binds canvas interaction events */
 function bindCanvasEvents() {
+    canvasId.addEventListener('pointermove', handleCanvasPointerMove);
+    canvasId.addEventListener('pointerleave', handleCanvasPointerLeave);
     canvasId.addEventListener('pointerup', handleCanvasPointerUp);
+};
+
+/**
+ * Handles hover state on canvas overlay buttons
+ * @param {PointerEvent} event - Pointer event on the canvas
+ */
+function handleCanvasPointerMove(event) {
+    if (!world) return;
+    world.updateEndscreenActionButtonHover(event);
+};
+
+/** Resets canvas overlay hover states */
+function handleCanvasPointerLeave() {
+    if (!world) return;
+    world.setEndscreenActionButtonHover(false);
 };
 
 /**
@@ -26,8 +43,12 @@ function bindCanvasEvents() {
  * @param {PointerEvent} event - Pointer event on the canvas
  */
 function handleCanvasPointerUp(event) {
-    if (!world || !world.isEndscreenHomeButtonHit(event)) return;
+    if (!world || !world.isEndscreenActionButtonHit(event)) return;
     event.preventDefault();
+    if (world.gameLost) {
+        restartGame();
+        return;
+    };
     homeMenu();
 };
 
