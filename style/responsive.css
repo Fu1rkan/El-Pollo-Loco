@@ -308,7 +308,8 @@
 
 
     footer {
-        bottom: clamp(2px, 1dvh, 6px);
+        top: clamp(4px, 1.5dvh, 8px);
+        bottom: auto;
     }
 
     footer a {
