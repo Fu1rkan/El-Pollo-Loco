@@ -49,7 +49,7 @@ Endboss.prototype.addAudiosToGlobalArray = function () {
  */
 Endboss.prototype.playEndbossAudio = function (i) {
     if (i == 4) {
-        world.character.createInterval(this.playAlertSound, 1000 / 60);
+        world.character.createInterval(this.playAlertSound, 500);
     };
     if (i >= 0) {
         playAudio(this.AUDIOS[i]);
@@ -61,10 +61,11 @@ Endboss.prototype.playEndbossAudio = function (i) {
  * @param {number} intervalId - Alert sound interval id
  */
 Endboss.prototype.playAlertSound = function (intervalId) {
-    playAudio(world.level.endboss[0].AUDIOS[4]);
     if (world.level.endboss[0].checkAttacking()) {
         clearInterval(intervalId);
+        return;
     };
+    playAudio(world.level.endboss[0].AUDIOS[4]);
 };
 
 /**

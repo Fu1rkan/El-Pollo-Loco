@@ -29,6 +29,7 @@ function createManagedAudio(path) {
     audio.preload = 'auto';
     audio.muted = isMuted;
     setAudioVolume(audio, DEFAULT_AUDIO_VOLUME);
+    audio.load();
     return audio;
 };
 
@@ -37,7 +38,7 @@ function createManagedAudio(path) {
  * @param {HTMLAudioElement} audio - Audio element to play
  */
 function playAudio(audio) {
-    if (!canPlayAudio(audio)) return;
+    if (!canPlayAudio(audio) || audioIsPlaying(audio)) return;
     audio.muted = isMuted;
     let promise = audio.play();
     catchAudioPromise(promise);
@@ -50,6 +51,15 @@ function playAudio(audio) {
  */
 function canPlayAudio(audio) {
     return audio && !isMuted && isRunning;
+};
+
+/**
+ * Checks whether an audio element is already playing
+ * @param {HTMLAudioElement} audio - Audio element to check
+ * @returns {boolean} - true = audio is currently playing
+ */
+function audioIsPlaying(audio) {
+    return !audio.paused && !audio.ended;
 };
 
 /**
@@ -76,6 +86,7 @@ function pauseAudio(audio) {
  */
 function stopAudio(audio) {
     if (!audio) return;
+    if (audio.paused && audio.currentTime == 0) return;
     audio.pause();
     audio.currentTime = 0;
 };
@@ -87,7 +98,10 @@ function stopAudio(audio) {
  */
 function setAudioVolume(audio, volume) {
     if (!audio) return;
-    audio.volume = getLimitedAudioVolume(volume);
+    let limitedVolume = getLimitedAudioVolume(volume);
+    if (audio.volume != limitedVolume) {
+        audio.volume = limitedVolume;
+    };
 };
 
 /**
@@ -217,7 +231,7 @@ function addAudioToPool(path, pool) {
  */
 function getMobilePoolSize(poolSize) {
     if (isMobileAudioMode()) {
-        return Math.min(poolSize, 2);
+        return Math.min(poolSize, 1);
     };
     return poolSize;
 };

@@ -171,7 +171,7 @@ class Chicken extends MovableObject {
      */
     playChickenSoundByDistance(chicken, distance) {
         let path = chicken.AUDIOS.ENEMY[this.getRandomNumber()];
-        playEnemyAmbientSound(path, 1 - (distance / 720));
+        playEnemyAmbientSound(path, 1 - (distance / getEnemySoundDistance()));
     }
 
     /**
