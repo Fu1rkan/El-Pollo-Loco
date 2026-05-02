@@ -2,6 +2,7 @@
 function init() {
     getElementsbyId();
     bindResponsiveActionButtons();
+    bindImmediateFooterLinks();
     updateUI();
     bindUiResizeEvents();
     bindCanvasEvents();
@@ -25,6 +26,24 @@ function bindCanvasEvents() {
     canvasId.addEventListener('pointermove', handleCanvasPointerMove);
     canvasId.addEventListener('pointerleave', handleCanvasPointerLeave);
     canvasId.addEventListener('pointerup', handleCanvasPointerUp);
+};
+
+/** Binds footer links to immediate pointer input on mobile */
+function bindImmediateFooterLinks() {
+    document.querySelectorAll('footer a').forEach((link) => {
+        link.addEventListener('pointerdown', handleImmediateFooterLink);
+        link.addEventListener('click', preventDefaultBrowserInteraction);
+    });
+};
+
+/**
+ * Opens a footer link immediately on pointer input
+ * @param {PointerEvent} event - Pointer event
+ */
+function handleImmediateFooterLink(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    window.location.href = event.currentTarget.href;
 };
 
 /** Prevents browser context menus and image dragging on game controls */
