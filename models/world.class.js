@@ -92,13 +92,23 @@ class World {
         this.level = level1;
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.loadEndscreenActionButtonImages();
+        this.startWorld();
+    };
+
+    /** Loads endscreen action button images */
+    loadEndscreenActionButtonImages() {
         this.endscreenActionButton.loadImages([
             'img/buttons/home_button.png',
             'img/buttons/restart_button.png'
         ]);
+    };
+
+    /** Starts drawing and recurring world logic */
+    startWorld() {
         this.draw();
         this.setWorld();
-        this.getAudios()
+        this.getAudios();
         this.run();
     };
 };

@@ -161,21 +161,31 @@ function deactivateButtons(action) {
  */
 function activateRespButtons(action) {
     if (action == 'start') {
-        respStartButton.classList.add('d_none');
-        respPauseButton.setAttribute("onclick", "pauseGame()");
-        respPauseButton.classList.remove('deactive_button');
-        respRestartButton.classList.remove('d_none');
-        respRestartButton.setAttribute("onclick", "restartGame()");
-        respRestartButton.classList.remove('deactive_button');
+        activateRespStartedButtons();
     } else if (action == 'finish') {
-        respStartButton.disabled = false;
-        respStartButton.classList.remove('d_none');
-        respStartButton.setAttribute("onclick", "startGame()");
-        respStartButton.classList.remove('deactive_button');
-        respPauseButton.setAttribute("onclick", "pauseGame()");
-        respPauseButton.classList.remove('deactive_button');
-        respRestartButton.classList.add('d_none');
+        activateRespFinishedButtons();
     };
+};
+
+/** Activates responsive buttons for running game state */
+function activateRespStartedButtons() {
+    respStartButton.classList.add('d_none');
+    respPauseButton.setAttribute("onclick", "pauseGame()");
+    respPauseButton.classList.remove('deactive_button');
+    respRestartButton.classList.remove('d_none');
+    respRestartButton.setAttribute("onclick", "restartGame()");
+    respRestartButton.classList.remove('deactive_button');
+};
+
+/** Activates responsive buttons for homescreen or finished state */
+function activateRespFinishedButtons() {
+    respStartButton.disabled = false;
+    respStartButton.classList.remove('d_none');
+    respStartButton.setAttribute("onclick", "startGame()");
+    respStartButton.classList.remove('deactive_button');
+    respPauseButton.setAttribute("onclick", "pauseGame()");
+    respPauseButton.classList.remove('deactive_button');
+    respRestartButton.classList.add('d_none');
 };
 
 /**
