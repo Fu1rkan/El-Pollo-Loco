@@ -29,10 +29,20 @@ World.prototype.drawStaticObjects = function () {
 
 /** Draws fixed screen elements like statusbars */
 World.prototype.drawFixedObjects = function () {
+    this.updateStatusbarPositions();
     this.addToMap(this.statusbarHealth);
     this.addToMap(this.statusbarCoin);
     this.addToMap(this.statusbarBottle);
     this.addToMap(this.statusbarHealthEndboss);
+};
+
+/** Updates statusbar positions for normal and compact canvas layouts */
+World.prototype.updateStatusbarPositions = function () {
+    let compactOffsetY = isCompactCanvasMode() ? 40 : 0;
+    this.statusbarHealth.y = 5 + compactOffsetY;
+    this.statusbarBottle.y = 35 + compactOffsetY;
+    this.statusbarCoin.y = 65 + compactOffsetY;
+    this.statusbarHealthEndboss.y = 5 + compactOffsetY;
 };
 
 /** Draws the win or lose screen when the game has ended */

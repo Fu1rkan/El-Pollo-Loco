@@ -45,11 +45,14 @@
 
 <body onload="init()">
     <header id="header">
-        <button id="resp-restart-button" class="deactive_button">
+        <button onclick="startGame()" id="resp-start-button">
+            <img src="./img/buttons/start_button.png" class="resp-start-button">
+        </button>
+        <button id="resp-restart-button" class="deactive_button d_none">
             <img src="./img/buttons/restart_button.png">
         </button>
         <h1>El Pollo Loco</h1>
-        <button id="resp-pause-button" class="deactive_button">
+        <button id="resp-pause-button" onclick="pauseGame()">
             <img src="./img/buttons/pause_button.png">
         </button>
     </header>
@@ -73,7 +76,6 @@
             <button onclick="openSettings()" class="settings-button" id="settings-button">
                 <img src="./img/buttons/settings_button.png" alt="">
             </button>
-            <a href="./impressum.html" target="_blank">Impressum</a>
         </div>
         <table class="button-settings d_none" id="button-settings">
             <tr>
@@ -108,7 +110,7 @@
         <button onclick="startGame()" id="start-button">
             <img src="./img/buttons/start_button.png">
         </button>
-        <button id="pause-button" class="deactive_button">
+        <button id="pause-button" onclick="pauseGame()">
             <img src="./img/buttons/pause_button.png">
         </button>
     </section>
@@ -125,9 +127,6 @@
                 <img src="./img/buttons/right_button.png" alt="" draggable="false">
             </button>
         </div>
-        <button onclick="startGame()" id="resp-start-button">
-            <img src="./img/buttons/start_button.png" class="resp-start-button">
-        </button>
         <div class="right-side">
             <button id="salsa-button">
                 <img src="./img/buttons/salsa_button.png" alt="" draggable="false">
@@ -137,6 +136,9 @@
             </button>
         </div>
     </section>
+    <footer>
+        <a href="./impressum.html" target="_blank">Impressum</a>
+    </footer>
 </body>
 
 </html>

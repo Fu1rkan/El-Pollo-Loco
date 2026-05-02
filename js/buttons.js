@@ -5,6 +5,7 @@ function getButtonIds() {
     respRestartButton = document.getElementById('resp-restart-button');
     respPauseButton = document.getElementById('resp-pause-button');
     pauseButton = document.getElementById('pause-button');
+    resumeButton = document.getElementById('resume-button');
     startButton = document.getElementById('start-button');
     restartbutton = document.getElementById('restart-button');
     muteButton = document.getElementById('mute-button');
@@ -45,6 +46,7 @@ function closeSettings() {
 
 /** Opens the pause menu */
 function openPauseMenu() {
+    updatePauseMenuActionButton();
     pauseMenu.classList.remove('d_none');
     pauseButtons.classList.remove('d_none');
     pauseButton.classList.add('deactive_button');
@@ -59,6 +61,29 @@ function closePauseMenu() {
     if (gameStarted) {
         pauseButton.classList.remove('deactive_button');
     };
+};
+
+/** Updates the main pause menu button for home or running game state */
+function updatePauseMenuActionButton() {
+    let img = resumeButton.querySelector('img');
+    if (gameStarted) {
+        setPauseMenuAction('resumeGame()', './img/buttons/play_button.png', 'resume', img);
+        return;
+    };
+    setPauseMenuAction('startGame()', './img/buttons/start_button.png', 'start', img);
+};
+
+/**
+ * Sets the pause menu action button target and image
+ * @param {string} action - onclick action to assign
+ * @param {string} imgSrc - Image source for the button
+ * @param {string} altText - Image alt text
+ * @param {HTMLImageElement} img - Button image element
+ */
+function setPauseMenuAction(action, imgSrc, altText, img) {
+    resumeButton.setAttribute("onclick", action);
+    img.src = imgSrc;
+    img.alt = altText;
 };
 
 /** Mutes all audios */
@@ -111,6 +136,8 @@ function activateButtons(action) {
         startButton.disabled = false;
         startButton.setAttribute("onclick", "startGame()");
         startButton.classList.remove('deactive_button');
+        pauseButton.setAttribute("onclick", "pauseGame()");
+        pauseButton.classList.remove('deactive_button');
     };
 };
 
@@ -123,8 +150,6 @@ function deactivateButtons(action) {
         startButton.setAttribute("onclick", "");
         startButton.classList.add('deactive_button');
     } else if (action == 'finish') {
-        pauseButton.setAttribute("onclick", "");
-        pauseButton.classList.add('deactive_button');
         restartbutton.setAttribute("onclick", "");
         restartbutton.classList.add('deactive_button');
     };
@@ -136,14 +161,20 @@ function deactivateButtons(action) {
  */
 function activateRespButtons(action) {
     if (action == 'start') {
+        respStartButton.classList.add('d_none');
         respPauseButton.setAttribute("onclick", "pauseGame()");
         respPauseButton.classList.remove('deactive_button');
+        respRestartButton.classList.remove('d_none');
         respRestartButton.setAttribute("onclick", "restartGame()");
         respRestartButton.classList.remove('deactive_button');
     } else if (action == 'finish') {
         respStartButton.disabled = false;
+        respStartButton.classList.remove('d_none');
         respStartButton.setAttribute("onclick", "startGame()");
         respStartButton.classList.remove('deactive_button');
+        respPauseButton.setAttribute("onclick", "pauseGame()");
+        respPauseButton.classList.remove('deactive_button');
+        respRestartButton.classList.add('d_none');
     };
 };
 
@@ -156,9 +187,8 @@ function deactivateRespButtons(action) {
         respStartButton.setAttribute("onclick", "");
         respStartButton.classList.add('deactive_button');
     } else if (action == 'finish') {
-        respPauseButton.setAttribute("onclick", "");
-        respPauseButton.classList.add('deactive_button');
         respRestartButton.setAttribute("onclick", "");
         respRestartButton.classList.add('deactive_button');
+        respRestartButton.classList.add('d_none');
     };
 };

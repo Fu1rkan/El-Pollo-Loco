@@ -10,6 +10,9 @@ function init() {
 function bindUiResizeEvents() {
     window.addEventListener('resize', updateUI);
     window.addEventListener('orientationchange', updateUI);
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', updateUI);
+    };
 };
 
 /**
@@ -65,6 +68,7 @@ function startGame() {
     isRunning = true;
     gameStarted = true;
     setGameButtonsStarted();
+    closePauseMenu();
     renderGame();
 };
 
@@ -80,7 +84,10 @@ function restartGame() {
 
 /** Toggles the pause state of the game */
 function pauseGame() {
-    if (!gameStarted) return;
+    if (!gameStarted) {
+        openPauseMenu();
+        return;
+    };
     if (!isRunning) {
         resumeGame();
         return;

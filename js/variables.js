@@ -131,6 +131,12 @@ let buttonSettings;
 let pauseButton;
 
 /**
+ * Holds the pause menu resume or start button
+ * @type {HTMLElement} (default: undefined)
+ */
+let resumeButton;
+
+/**
  * Holds the start button
  * @type {HTMLElement} (default: undefined)
  */
