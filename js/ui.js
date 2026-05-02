@@ -205,6 +205,55 @@ function isCompactCanvasMode() {
 };
 
 /**
+ * Checks whether statusbars need extra top offset because header buttons overlap the canvas
+ * @returns {boolean} - true = statusbars should be moved down
+ */
+function shouldLowerStatusbars() {
+    return isCompactCanvasMode() && headerButtonsOverlapCanvas();
+};
+
+/**
+ * Checks whether any visible header button overlaps the canvas area
+ * @returns {boolean} - true = header button overlaps canvas
+ */
+function headerButtonsOverlapCanvas() {
+    if (!CanvasSection || !header) return false;
+    let canvasRect = CanvasSection.getBoundingClientRect();
+    return Array.from(header.querySelectorAll('button')).some((button) => {
+        return elementOverlapsCanvas(button, canvasRect);
+    });
+};
+
+/**
+ * Checks whether an element overlaps the canvas rectangle
+ * @param {HTMLElement} element - Element to check
+ * @param {DOMRect} canvasRect - Canvas section rectangle
+ * @returns {boolean} - true = element overlaps canvas
+ */
+function elementOverlapsCanvas(element, canvasRect) {
+    if (!elementIsVisible(element)) return false;
+    let rect = element.getBoundingClientRect();
+    return rect.width > 0 &&
+        rect.height > 0 &&
+        rect.bottom > canvasRect.top &&
+        rect.top < canvasRect.bottom &&
+        rect.right > canvasRect.left &&
+        rect.left < canvasRect.right;
+};
+
+/**
+ * Checks whether an element is currently visible in the layout
+ * @param {HTMLElement} element - Element to check
+ * @returns {boolean} - true = element is visible
+ */
+function elementIsVisible(element) {
+    let style = window.getComputedStyle(element);
+    return !element.classList.contains('d_none') &&
+        style.display !== 'none' &&
+        style.visibility !== 'hidden';
+};
+
+/**
  * Checks if the device supports touch input
  * @returns {boolean} - true = touch device, false = no touch device
  */
