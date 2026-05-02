@@ -161,6 +161,11 @@ function resetCanvas() {
 /** Starts the game */
 function startGame() {
     requestMobileFullscreen();
+    startGameWithoutFullscreen();
+};
+
+/** Starts the game without requesting fullscreen */
+function startGameWithoutFullscreen() {
     isRunning = true;
     gameStarted = true;
     setGameButtonsStarted();
@@ -181,7 +186,7 @@ function restartGame() {
 /** Toggles the pause state of the game */
 function pauseGame() {
     if (!gameStarted) {
-        openPauseMenu();
+        toggleHomePauseMenu();
         return;
     };
     if (!isRunning) {
@@ -193,9 +198,17 @@ function pauseGame() {
     pauseAudios();
 };
 
+/** Toggles the pause menu before the game has started */
+function toggleHomePauseMenu() {
+    if (pauseMenu.classList.contains('d_none')) {
+        openPauseMenu();
+        return;
+    };
+    closePauseMenu();
+};
+
 /** Resumes the game */
 function resumeGame() {
-    requestMobileFullscreen();
     isRunning = true;
     closePauseMenu();
     resumeAudios();

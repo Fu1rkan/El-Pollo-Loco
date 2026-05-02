@@ -110,6 +110,9 @@ function closePauseMenu() {
     buttonSettings.classList.add('d_none');
     if (gameStarted) {
         pauseButton.classList.remove('deactive_button');
+    } else {
+        pauseButton.classList.remove('deactive_button');
+        respPauseButton.classList.remove('deactive_button');
     };
 };
 
@@ -120,7 +123,7 @@ function updatePauseMenuActionButton() {
         setPauseMenuAction('resumeGame()', './img/buttons/play_button.png', 'resume', img);
         return;
     };
-    setPauseMenuAction('startGame()', './img/buttons/start_button.png', 'start', img);
+    setPauseMenuAction('startGameWithoutFullscreen()', './img/buttons/start_button.png', 'start', img);
 };
 
 /**
