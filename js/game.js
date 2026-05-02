@@ -3,6 +3,7 @@ function init() {
     getElementsbyId();
     updateUI();
     bindUiResizeEvents();
+    bindCanvasEvents();
     getDataFromLocalStorage();
 };
 
@@ -13,6 +14,21 @@ function bindUiResizeEvents() {
     if (window.visualViewport) {
         window.visualViewport.addEventListener('resize', updateUI);
     };
+};
+
+/** Binds canvas interaction events */
+function bindCanvasEvents() {
+    canvasId.addEventListener('pointerup', handleCanvasPointerUp);
+};
+
+/**
+ * Handles clicks on canvas overlay buttons
+ * @param {PointerEvent} event - Pointer event on the canvas
+ */
+function handleCanvasPointerUp(event) {
+    if (!world || !world.isEndscreenHomeButtonHit(event)) return;
+    event.preventDefault();
+    homeMenu();
 };
 
 /**

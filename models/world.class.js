@@ -30,6 +30,9 @@ class World {
     /** @type {StatusbarHealthEndboss} Health statusbar of the endboss */
     statusbarHealthEndboss = new StatusbarHealthEndboss();
 
+    /** @type {DrawableObject} Home button shown on win and lose screens */
+    endscreenHomeButton = new DrawableObject();
+
     /** @type {Level} Current game level */
     level;
 
@@ -74,6 +77,7 @@ class World {
         this.level = level1;
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.endscreenHomeButton.loadImg('img/buttons/home_button.png');
         this.draw();
         this.setWorld();
         this.getAudios()

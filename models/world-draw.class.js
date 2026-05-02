@@ -49,9 +49,75 @@ World.prototype.updateStatusbarPositions = function () {
 World.prototype.drawEndscreen = function () {
     if (this.gameLost) {
         this.addObjectsToMap(this.level.loseScreen);
+        this.drawEndscreenHomeButton();
     } else if (this.gameWon) {
         this.addObjectsToMap(this.level.winScreen);
+        this.drawEndscreenHomeButton();
     };
+};
+
+/** Draws the home button below the active endscreen image */
+World.prototype.drawEndscreenHomeButton = function () {
+    this.updateEndscreenHomeButtonPosition();
+    this.addToMap(this.endscreenHomeButton);
+};
+
+/** Updates the home button position and size inside the canvas */
+World.prototype.updateEndscreenHomeButtonPosition = function () {
+    let endscreen = this.getActiveEndscreen();
+    let width = Math.max(96, Math.min(128, this.canvas.width * 0.17));
+    this.endscreenHomeButton.width = width;
+    this.endscreenHomeButton.height = width * 0.8;
+    this.endscreenHomeButton.x = (this.canvas.width - width) / 2;
+    this.endscreenHomeButton.y = Math.min(
+        this.canvas.height - this.endscreenHomeButton.height - 18,
+        endscreen.y + endscreen.height + 6
+    );
+};
+
+/**
+ * Gets the currently visible endscreen object
+ * @returns {DrawableObject} Active win or lose screen
+ */
+World.prototype.getActiveEndscreen = function () {
+    return this.gameLost ? this.level.loseScreen[0] : this.level.winScreen[0];
+};
+
+/**
+ * Checks if a pointer event hits the endscreen home button
+ * @param {PointerEvent} event - Pointer event on the canvas
+ * @returns {boolean} - true = button was hit, false = outside
+ */
+World.prototype.isEndscreenHomeButtonHit = function (event) {
+    if (!this.gameEnded) return false;
+    this.updateEndscreenHomeButtonPosition();
+    let position = this.getCanvasPointerPosition(event);
+    return this.isInsideEndscreenHomeButton(position.x, position.y);
+};
+
+/**
+ * Converts a browser pointer position into canvas coordinates
+ * @param {PointerEvent} event - Pointer event on the canvas
+ * @returns {{x: number, y: number}} Canvas position
+ */
+World.prototype.getCanvasPointerPosition = function (event) {
+    let rect = this.canvas.getBoundingClientRect();
+    return {
+        x: (event.clientX - rect.left) * (this.canvas.width / rect.width),
+        y: (event.clientY - rect.top) * (this.canvas.height / rect.height)
+    };
+};
+
+/**
+ * Checks if a canvas coordinate is inside the endscreen home button
+ * @param {number} x - Canvas x position
+ * @param {number} y - Canvas y position
+ * @returns {boolean} - true = inside button, false = outside button
+ */
+World.prototype.isInsideEndscreenHomeButton = function (x, y) {
+    let button = this.endscreenHomeButton;
+    return x >= button.x && x <= button.x + button.width &&
+        y >= button.y && y <= button.y + button.height;
 };
 
 /**
