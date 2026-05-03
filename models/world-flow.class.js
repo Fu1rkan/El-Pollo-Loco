@@ -10,7 +10,7 @@ World.prototype.run = function () {
 
 /** Creates a throwable bottle and adds it to the world */
 World.prototype.generateBottle = function () {
-    let bottle = new ThrowableObject(this.character.x, this.character.y, this);
+    let bottle = new ThrowableObject(this.character.x, this.character.y, this, this.character.otherDirection);
     bottle.world = this;
     this.throwableObject.push(bottle);
     let intervalId = this.character.createInterval(() => this.checkBottleSplashed(bottle, intervalId))

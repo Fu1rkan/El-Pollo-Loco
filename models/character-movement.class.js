@@ -56,7 +56,28 @@ Character.prototype.checkMovement = function () {
         world.character.moveLeft();
     };
     world.character.jumpIfNeeded();
-    world.cameraX = -world.character.x + 100;
+    world.character.updateCameraPosition();
+};
+
+/** Updates the camera with a smooth left look-ahead */
+Character.prototype.updateCameraPosition = function () {
+    let targetOffset = this.getCameraLookTargetOffset();
+    world.cameraLookOffset += (targetOffset - world.cameraLookOffset) * world.cameraLookEase;
+    world.cameraX = Math.round(-world.character.x + 100 + world.cameraLookOffset);
+};
+
+/**
+ * Gets the current camera look-ahead target offset
+ * @returns {number} - Positive offset reveals more space on the left
+ */
+Character.prototype.getCameraLookTargetOffset = function () {
+    if (world.character.isMovingLeft()) {
+        return world.cameraLookLeftOffset;
+    };
+    if (world.character.isMovingRight()) {
+        return 0;
+    };
+    return world.cameraLookOffset;
 };
 
 /** Makes the character jump if the current input allows it */

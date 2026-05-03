@@ -15,6 +15,15 @@ class World {
     /** @type {number} Horizontal camera offset */
     cameraX = 0;
 
+    /** @type {number} Smooth camera look-ahead offset */
+    cameraLookOffset = 0;
+
+    /** @type {number} Camera look-ahead offset when moving left */
+    cameraLookLeftOffset = 45;
+
+    /** @type {number} Camera look-ahead smoothing factor */
+    cameraLookEase = 0.08;
+
     /** @type {number} Current animation frame request id */
     requestAnimation;
 

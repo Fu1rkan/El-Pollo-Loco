@@ -46,18 +46,26 @@ class ThrowableObject extends MovableObject {
     throwAnimationInterval;
 
     /**
+     * Horizontal throw direction
+     * @type {number}
+     */
+    throwDirection;
+
+    /**
      * Creates a throwable bottle
      * @param {number} x - Start x position
      * @param {number} y - Start y position
      * @param {World} world - Current game world
+     * @param {boolean} throwLeft - True when the bottle should fly left
      */
-    constructor(x, y, world) {
+    constructor(x, y, world, throwLeft) {
         super();
         this.x = x;
         this.y = y;
         this.width = 80;
         this.height = 100;
         this.world = world;
+        this.throwDirection = throwLeft ? -1 : 1;
         this.loadImg('img/6_salsa_bottle/salsa_bottle.png');
         this.loadImages(this.IMAGES_THROW_BOTTLE);
         this.loadImages(this.IMAGES_BOTTLE_SPLASH);
@@ -139,7 +147,7 @@ class ThrowableObject extends MovableObject {
      */
     animateThrowingBottle(id) {
         if (this.y < 340) {
-            this.x += 6;
+            this.x += 6 * this.throwDirection;
         } else {
             clearInterval(id);
         };
