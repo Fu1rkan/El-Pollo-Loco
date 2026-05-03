@@ -79,13 +79,6 @@
         height: 100%;
     }
 
-    .canvas-border {
-        top: -43px;
-        left: -39px;
-        height: calc(100% + 75px);
-        width: calc(100% + 79px);
-    }
-
     .button-settings {
         font-size: 12px;
     }

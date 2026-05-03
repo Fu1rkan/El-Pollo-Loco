@@ -135,15 +135,27 @@ function setActionButtonState(state) {
     hidePrimaryActionButtons();
     getButtonsForActionState(state).forEach(showButton);
     updatePauseButtonImage(state == 'paused' || state == 'settings');
-    updateEndedPauseButton();
+    updateEndedPauseButton(state);
     updateMuteButtons();
 };
 
-/** Disables the pause button after the game ended */
-function updateEndedPauseButton() {
-    if (!pauseButton || !gameIsFinished()) return;
+/**
+ * Disables the pause button for game-end states
+ * @param {string} state - Current action state
+ */
+function updateEndedPauseButton(state) {
+    if (!pauseButton || !pauseShouldBeDisabled(state)) return;
     pauseButton.disabled = true;
     pauseButton.classList.add('deactive_button');
+};
+
+/**
+ * Checks whether pause must be disabled for the current state
+ * @param {string} state - Current action state
+ * @returns {boolean} - true = pause should be disabled
+ */
+function pauseShouldBeDisabled(state) {
+    return state == 'ended' || (state == 'settings' && gameIsFinished());
 };
 
 /**
