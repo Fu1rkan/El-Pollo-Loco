@@ -58,15 +58,6 @@
     /*               Header Section                      */
 
 
-    header {
-        justify-content: space-between;
-    }
-
-    header img {
-        display: block;
-        width: 150px;
-    }
-
     h1 {
         font-size: 36px;
         margin: 0;
@@ -93,34 +84,6 @@
         left: -39px;
         height: calc(100% + 75px);
         width: calc(100% + 79px);
-    }
-
-    .pause-buttons {
-        width: 400px;
-    }
-
-    .pause-buttons a {
-        font-size: 14px;
-    }
-
-    .resume-button {
-        width: 150px;
-        height: 78px;
-    }
-
-    .home-button {
-        width: 150px;
-        height: 120px;
-    }
-
-    .mute-button {
-        width: 150px;
-        height: 80px;
-    }
-
-    .settings-button {
-        width: 150px;
-        height: 78px;
     }
 
     .button-settings {
@@ -155,10 +118,6 @@
         display: flex;
     }
 
-    .resp-start-button {
-        width: 150px;
-    }
-
 }
 
 @media (max-height: 600px) {
@@ -179,30 +138,6 @@
     /*               Header Section                      */
 
 
-    header {
-        top: clamp(6px, 2.5dvh, 14px);
-        padding: 0 clamp(8px, 2vw, 24px);
-        pointer-events: none;
-    }
-
-    header button {
-        pointer-events: auto;
-    }
-
-    header button::before {
-        content: "";
-        position: absolute;
-        inset: -12px;
-        background-color: rgba(0, 0, 0, 0);
-    }
-
-    header img,
-    .resp-start-button {
-        display: block;
-        width: auto;
-        height: clamp(40px, 9.5dvh, 56px);
-    }
-
     h1 {
         display: none;
     }
@@ -219,31 +154,6 @@
 
     .canvas-border {
         display: none;
-    }
-
-    .pause-buttons a {
-        top: -10px;
-        font-size: 12px;
-    }
-
-    .resume-button {
-        width: 120px;
-        height: 66px;
-    }
-
-    .home-button {
-        width: 120px;
-        height: 100px;
-    }
-
-    .mute-button {
-        width: 120px;
-        height: 63px;
-    }
-
-    .settings-button {
-        width: 120px;
-        height: 62px;
     }
 
     .button-settings {
@@ -333,36 +243,6 @@
 @media (max-height: 440px) {
 
     /*               Canvas Section                   */
-
-    .pause-buttons {
-        width: 300px;
-        gap: 16px;
-    }
-
-    .pause-buttons a {
-        top: auto;
-        bottom: -20px;
-    }
-
-    .resume-button {
-        width: 100px;
-        height: 50px;
-    }
-
-    .home-button {
-        width: 100px;
-        height: 75px;
-    }
-
-    .mute-button {
-        width: 100px;
-        height: 49px;
-    }
-
-    .settings-button {
-        width: 100px;
-        height: 48px;
-    }
 
     .button-settings td:first-child {
         padding-right: 16px;

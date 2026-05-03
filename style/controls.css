@@ -94,11 +94,6 @@ body.mobile-controls .resp-buttons {
     height: 100%;
 }
 
-.resp-start-button {
-    height: auto;
-    width: 200px;
-}
-
 .right-side {
     display: flex;
     align-items: center;

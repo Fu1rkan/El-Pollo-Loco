@@ -277,6 +277,7 @@ function startTimer() {
 
 /** Resets the sleeping timer after player input */
 function resetSleepingTimer() {
+    if (!gameStarted || !world || !world.character) return;
     clearTimeout(timer);
     setAwayFromKeyboard(true);
     startTimer();
