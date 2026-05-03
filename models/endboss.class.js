@@ -34,19 +34,19 @@ class Endboss extends MovableObject {
      * Base walking speed before the endboss loses health
      * @type {number}
      */
-    baseSpeed = 2.9;
+    baseSpeed = 2.6;
 
     /**
      * Walking speed after the endboss lost enough health
      * @type {number}
      */
-    phaseTwoSpeed = 3.3;
+    phaseTwoSpeed = 3.0;
 
     /**
      * Walking speed for the final low-health phase
      * @type {number}
      */
-    phaseThreeSpeed = 3.7;
+    phaseThreeSpeed = 3.4;
 
     /**
      * Walking animation images
