@@ -138,11 +138,13 @@
 
 
     .section-buttons {
-        display: none;
+        display: flex;
+        min-height: clamp(44px, 10dvh, 66px);
+        gap: clamp(6px, 2vw, 14px);
     }
 
-    .section-buttons img {
-        width: 150px;
+    .section-buttons button {
+        width: clamp(74px, 16dvh, 120px);
     }
 
 
@@ -258,8 +260,13 @@
     /*              Button Section               */
 
 
-    .section-buttons img {
-        width: 120px;
+    .section-buttons {
+        min-height: clamp(40px, 12dvh, 58px);
+        gap: clamp(4px, 1.5vw, 10px);
+    }
+
+    .section-buttons button {
+        width: clamp(56px, 16dvh, 96px);
     }
 
 
@@ -364,8 +371,8 @@
     /*              Button Section               */
 
 
-    .section-buttons img {
-        width: 70px;
+    .section-buttons button {
+        width: clamp(44px, 15dvh, 70px);
     }
 
 

@@ -14,7 +14,6 @@ function getContainerIds() {
     closeSettingsbutton = document.getElementById('close-settings-button');
     buttonSection = document.getElementById('section-buttons');
     respButtons = document.getElementById('resp-buttons');
-    pauseButtons = document.getElementById('pause-buttons');
 };
 
 /** Updates the UI depending on device, screen size and orientation */
@@ -42,10 +41,8 @@ function activateMobileMode() {
     CanvasSection.classList.remove('d_none');
     buttonSection.classList.remove('d_none');
     respButtons.classList.remove('d_none');
-    respPauseButton.classList.remove('d_none');
     rotatePhoneScreen.classList.add('d_none');
-    setHeaderAlignment('space-between');
-    updateResponsiveActionButtons();
+    setHeaderAlignment('center');
 };
 
 /** Shows rotate screen for mobile portrait mode */
@@ -54,9 +51,6 @@ function activateRotateScreen() {
     CanvasSection.classList.add('d_none');
     buttonSection.classList.add('d_none');
     respButtons.classList.add('d_none');
-    respStartButton.classList.add('d_none');
-    respRestartButton.classList.add('d_none');
-    respPauseButton.classList.add('d_none');
     rotatePhoneScreen.classList.remove('d_none');
     setHeaderAlignment('center');
 };
@@ -66,10 +60,8 @@ function activateDesktopMode() {
     setMobileControlsMode(false);
     CanvasSection.classList.remove('d_none');
     buttonSection.classList.remove('d_none');
-    respPauseButton.classList.remove('d_none');
     rotatePhoneScreen.classList.add('d_none');
     setHeaderAlignment('center');
-    updateResponsiveActionButtons();
 };
 
 /**
@@ -78,17 +70,6 @@ function activateDesktopMode() {
  */
 function setMobileControlsMode(isActive) {
     document.body.classList.toggle('mobile-controls', isActive);
-};
-
-/** Shows the correct responsive start/restart button for the current game state */
-function updateResponsiveActionButtons() {
-    if (gameStarted) {
-        respStartButton.classList.add('d_none');
-        respRestartButton.classList.remove('d_none');
-        return;
-    };
-    respStartButton.classList.remove('d_none');
-    respRestartButton.classList.add('d_none');
 };
 
 /**
@@ -205,23 +186,35 @@ function isCompactCanvasMode() {
 };
 
 /**
- * Checks whether statusbars need extra top offset because header buttons overlap the canvas
+ * Checks whether statusbars need extra top offset because action buttons overlap the canvas
  * @returns {boolean} - true = statusbars should be moved down
  */
 function shouldLowerStatusbars() {
-    return isCompactCanvasMode() && headerButtonsOverlapCanvas();
+    return isCompactCanvasMode() && actionButtonsOverlapCanvas();
 };
 
 /**
- * Checks whether any visible header button overlaps the canvas area
- * @returns {boolean} - true = header button overlaps canvas
+ * Checks whether any visible top action button overlaps the canvas area
+ * @returns {boolean} - true = top action button overlaps canvas
  */
-function headerButtonsOverlapCanvas() {
-    if (!CanvasSection || !header) return false;
+function actionButtonsOverlapCanvas() {
+    if (!CanvasSection || !buttonSection) return false;
     let canvasRect = CanvasSection.getBoundingClientRect();
-    return Array.from(header.querySelectorAll('button')).some((button) => {
-        return elementOverlapsCanvas(button, canvasRect);
+    return Array.from(buttonSection.querySelectorAll('button')).some((button) => {
+        return topActionButtonOverlapsCanvas(button, canvasRect);
     });
+};
+
+/**
+ * Checks whether a top action button overlaps the canvas
+ * @param {HTMLElement} button - Action button to check
+ * @param {DOMRect} canvasRect - Canvas section rectangle
+ * @returns {boolean} - true = top action button overlaps canvas
+ */
+function topActionButtonOverlapsCanvas(button, canvasRect) {
+    if (!elementOverlapsCanvas(button, canvasRect)) return false;
+    let rect = button.getBoundingClientRect();
+    return rect.top < canvasRect.top + Math.min(120, canvasRect.height * 0.28);
 };
 
 /**

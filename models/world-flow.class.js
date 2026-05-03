@@ -70,10 +70,11 @@ World.prototype.canThrowBottles = function () {
 World.prototype.endGame = function (int) {
     if (this.gameEnded) return;
     this.gameEnded = true;
+    isRunning = false;
     this.setEndscreenState(int);
     this.playEndscreenAudio(int);
     this.clearEndGameTimers();
-    document.getElementById('start-button').disabled = true;
+    setGameButtonsFinished();
 };
 
 /**

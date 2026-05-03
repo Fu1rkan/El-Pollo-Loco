@@ -49,10 +49,8 @@ World.prototype.updateStatusbarPositions = function () {
 World.prototype.drawEndscreen = function () {
     if (this.gameLost) {
         this.addObjectsToMap(this.level.loseScreen);
-        this.drawEndscreenActionButton();
     } else if (this.gameWon) {
         this.addObjectsToMap(this.level.winScreen);
-        this.drawEndscreenActionButton();
     };
 };
 

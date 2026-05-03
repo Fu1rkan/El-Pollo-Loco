@@ -14,7 +14,60 @@
 }
 
 body.mobile-controls .section-buttons {
-    display: none;
+    --action-button-size: clamp(42px, 7.4dvw, 58px);
+    --action-button-gap: clamp(6px, 1.4dvw, 12px);
+    --action-button-top: max(clamp(8px, 2dvh, 14px), env(safe-area-inset-top));
+    --action-button-left: max(clamp(8px, 2vw, 18px), env(safe-area-inset-left));
+    --action-button-right: max(clamp(8px, 2vw, 18px), env(safe-area-inset-right));
+    display: block;
+    position: fixed;
+    inset: 0;
+    transform: none;
+    width: var(--app-width, 100vw);
+    height: var(--app-height, 100vh);
+    min-height: 0;
+    z-index: 20;
+    pointer-events: none;
+}
+
+body.mobile-controls .section-buttons button {
+    position: absolute;
+    width: var(--action-button-size);
+    pointer-events: auto;
+}
+
+body.mobile-controls .section-buttons #settings-button {
+    top: var(--action-button-top);
+    left: var(--action-button-left);
+}
+
+body.mobile-controls .section-buttons #home-button {
+    top: var(--action-button-top);
+    left: calc(var(--action-button-left) + var(--action-button-size) + var(--action-button-gap));
+}
+
+body.mobile-controls .section-buttons #mute-button,
+body.mobile-controls .section-buttons #unmute-button {
+    top: var(--action-button-top);
+    right: var(--action-button-right);
+}
+
+body.mobile-controls .section-buttons #pause-button {
+    top: var(--action-button-top);
+    right: calc(var(--action-button-right) + var(--action-button-size) + var(--action-button-gap));
+}
+
+body.mobile-controls .section-buttons #start-button,
+body.mobile-controls .section-buttons #restart-button {
+    left: 50%;
+    bottom: max(clamp(8px, 2dvh, 14px), env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+}
+
+body.mobile-controls .section-buttons[data-action-state="running"] #restart-button,
+body.mobile-controls .section-buttons[data-action-state="paused"] #restart-button,
+body.mobile-controls .section-buttons[data-action-state="settings"] #restart-button {
+    display: none !important;
 }
 
 body.mobile-controls .section-canvas {
@@ -23,10 +76,6 @@ body.mobile-controls .section-canvas {
 
 body.mobile-controls .resp-buttons {
     display: flex;
-}
-
-body.mobile-controls header img {
-    display: block;
 }
 
 .left-side {

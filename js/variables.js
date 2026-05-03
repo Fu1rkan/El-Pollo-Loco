@@ -77,18 +77,6 @@ let rotatePhoneScreen;
 let respButtons;
 
 /** 
- * Holds the responsive restart button
- * @type {HTMLElement} (default: undefined)
- */
-let respRestartButton;
-
-/** 
- * Holds the responsive pause button
- * @type {HTMLElement} (default: undefined)
- */
-let respPauseButton;
-
-/** 
  * Holds the header element
  * @type {HTMLElement} (default: undefined)
  */
@@ -113,12 +101,6 @@ let pauseMenu;
 let closeSettingsbutton;
 
 /**
- * Holds the pause buttons container
- * @type {HTMLElement} (default: undefined)
- */
-let pauseButtons;
-
-/**
  * Holds the settings button container
  * @type {HTMLElement} (default: undefined)
  */
@@ -131,12 +113,6 @@ let buttonSettings;
 let pauseButton;
 
 /**
- * Holds the pause menu resume or start button
- * @type {HTMLElement} (default: undefined)
- */
-let resumeButton;
-
-/**
  * Holds the start button
  * @type {HTMLElement} (default: undefined)
  */
@@ -147,6 +123,18 @@ let startButton;
  * @type {HTMLElement} (default: undefined)
  */
 let restartbutton;
+
+/**
+ * Holds the home button
+ * @type {HTMLElement} (default: undefined)
+ */
+let homeButton;
+
+/**
+ * Holds the settings button
+ * @type {HTMLElement} (default: undefined)
+ */
+let settingsButton;
 
 /**
  * Holds the mute button

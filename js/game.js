@@ -1,15 +1,16 @@
 /** Initializes the game setup */
 function init() {
     getElementsbyId();
-    bindResponsiveActionButtons();
+    bindActionButtons();
     bindImmediateFooterLinks();
-    updateUI();
     bindUiResizeEvents();
     bindCanvasEvents();
     preventGameContextMenus();
     preventMobilePageScroll();
     preventTextSelectionInteractions();
     getDataFromLocalStorage();
+    resetHomeButtons();
+    updateUI();
 };
 
 /** Binds responsive UI update events */
@@ -81,33 +82,19 @@ function preventDefaultBrowserInteraction(event) {
     event.preventDefault();
 };
 
-/**
- * Handles hover state on canvas overlay buttons
- * @param {PointerEvent} event - Pointer event on the canvas
- */
+/** Keeps canvas pointer movement free of menu actions */
 function handleCanvasPointerMove(event) {
-    if (!world) return;
-    world.updateEndscreenActionButtonHover(event);
+    return;
 };
 
-/** Resets canvas overlay hover states */
+/** Keeps canvas pointer leave free of menu actions */
 function handleCanvasPointerLeave() {
-    if (!world) return;
-    world.setEndscreenActionButtonHover(false);
+    return;
 };
 
-/**
- * Handles clicks on canvas overlay buttons
- * @param {PointerEvent} event - Pointer event on the canvas
- */
+/** Keeps canvas taps free of endscreen action buttons */
 function handleCanvasPointerUp(event) {
-    if (!world || !world.isEndscreenActionButtonHit(event)) return;
-    event.preventDefault();
-    if (world.gameLost) {
-        restartGame();
-        return;
-    };
-    homeMenu();
+    return;
 };
 
 /**
@@ -168,27 +155,31 @@ function startGame() {
 function startGameWithoutFullscreen() {
     isRunning = true;
     gameStarted = true;
-    setGameButtonsStarted();
     closePauseMenu();
+    setGameButtonsStarted();
     renderGame();
 };
 
 /** Restarts the game */
 function restartGame() {
-    resumeGame();
+    isRunning = true;
+    gameStarted = true;
+    closePauseMenu();
+    setGameButtonsStarted();
     clearTimeoutsAndIntervals();
     clearAudios();
     setAwayFromKeyboard(true);
-    cancelAnimationFrame(world.requestAnimation);
+    if (world) cancelAnimationFrame(world.requestAnimation);
     renderGame();
 };
 
 /** Toggles the pause state of the game */
 function pauseGame() {
-    if (!gameStarted) {
-        toggleHomePauseMenu();
+    if (isSettingsMenuOpen()) {
+        closeSettings();
         return;
     };
+    if (!gameStarted || gameIsFinished()) return;
     if (!isRunning) {
         resumeGame();
         return;
@@ -198,20 +189,21 @@ function pauseGame() {
     pauseAudios();
 };
 
-/** Toggles the pause menu before the game has started */
-function toggleHomePauseMenu() {
-    if (pauseMenu.classList.contains('d_none')) {
-        openPauseMenu();
-        return;
-    };
-    closePauseMenu();
-};
-
 /** Resumes the game */
 function resumeGame() {
+    if (!gameStarted || gameIsFinished()) return;
     isRunning = true;
     closePauseMenu();
+    setGameButtonsStarted();
     resumeAudios();
+};
+
+/**
+ * Checks whether the settings menu is currently visible
+ * @returns {boolean} - true = settings are open
+ */
+function isSettingsMenuOpen() {
+    return buttonSettings && !buttonSettings.classList.contains('d_none');
 };
 
 /** Requests mobile fullscreen when the browser supports it */

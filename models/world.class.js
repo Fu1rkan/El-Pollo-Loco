@@ -101,7 +101,6 @@ class World {
         this.level = level1;
         this.canvas = canvas;
         this.keyboard = keyboard;
-        this.loadEndscreenActionButtonImages();
         this.startWorld();
     };
 
