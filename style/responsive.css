@@ -271,7 +271,7 @@
 
     body.mobile-controls .section-buttons #start-button,
     body.mobile-controls .section-buttons #restart-button {
-        bottom: max(clamp(38px, 7dvh, 56px), env(safe-area-inset-bottom));
+        bottom: max(clamp(8px, 2dvh, 14px), env(safe-area-inset-bottom));
     }
 
 
