@@ -240,21 +240,36 @@ class MovableObject extends DrawableObject {
      * @param {number} dmg - Damage amount
      */
     hit(enemy, dmg) {
-        this.recoilToCharacter(enemy, dmg);
+        if (this.cannotTakeHit()) return;
+        this.applyHitDamage(dmg);
         this.resetDamageCooldown();
+        this.recoilToCharacter(enemy);
     };
 
     /**
-     * Reduces energy and starts recoil movement
-     * @param {MovableObject} enemy - Enemy that caused the recoil
+     * Checks whether this object may take another hit
+     * @returns {boolean} - true = hit should be ignored
+     */
+    cannotTakeHit() {
+        return this.isDead() || this.isHurt();
+    };
+
+    /**
+     * Reduces health without allowing negative energy
      * @param {number} dmg - Damage amount
      */
-    recoilToCharacter(enemy, dmg) {
-        if (!this.isHurt()) {
-            this.energy -= dmg;
-            let direction = this.getRecoilDirection(enemy);
-            let intervalId = this.createInterval(() => this.activateRecoil(intervalId, direction), 1000 / 60);
-        };
+    applyHitDamage(dmg) {
+        this.energy = Math.max(0, this.energy - dmg);
+    };
+
+    /**
+     * Starts recoil movement away from the enemy
+     * @param {MovableObject} enemy - Enemy that caused the recoil
+     */
+    recoilToCharacter(enemy) {
+        let direction = this.getRecoilDirection(enemy);
+        let force = this.getRecoilForce(enemy);
+        let intervalId = this.createInterval(() => this.activateRecoil(intervalId, direction, force), 1000 / 60);
     };
 
     /**
@@ -268,12 +283,22 @@ class MovableObject extends DrawableObject {
     };
 
     /**
+     * Gets recoil strength by enemy type
+     * @param {MovableObject} enemy - Enemy that caused the recoil
+     * @returns {number} - Recoil movement per frame
+     */
+    getRecoilForce(enemy) {
+        return enemy instanceof Endboss ? 3 : 1.5;
+    };
+
+    /**
      * Moves the object away from the enemy for a short time
      * @param {number} intervalId - Interval id of the recoil movement
      * @param {number} direction - Recoil direction on the x axis
+     * @param {number} force - Recoil movement per frame
      */
-    activateRecoil(intervalId, direction) {
-        this.x = Math.max(0, this.x + 3 * direction);
+    activateRecoil(intervalId, direction, force) {
+        this.x = Math.max(0, this.x + force * direction);
         this.recoilIndex++;
         if (this.recoilIndex > 30) {
             clearInterval(intervalId);
@@ -285,11 +310,9 @@ class MovableObject extends DrawableObject {
      * Updates the damage cooldown timestamp and prevents negative energy
      */
     resetDamageCooldown() {
-        if (this.energy < 0) {
-            this.energy = 0;
-        } else if (this.canTakeDamage) {
-            this.lastHit = new Date().getTime();
-        };
+        this.lastHit = new Date().getTime();
+        this.canTakeDamage = false;
+        this.canWalk = false;
     };
 
     /**
