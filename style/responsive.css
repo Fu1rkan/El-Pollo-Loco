@@ -139,12 +139,12 @@
 
     .section-buttons {
         display: flex;
-        min-height: clamp(44px, 10dvh, 66px);
-        gap: clamp(6px, 2vw, 14px);
+        min-height: clamp(40px, 8dvh, 56px);
+        gap: clamp(5px, 1.5vw, 10px);
     }
 
     .section-buttons button {
-        width: clamp(74px, 16dvh, 120px);
+        width: clamp(54px, 12dvh, 92px);
     }
 
 
@@ -261,12 +261,17 @@
 
 
     .section-buttons {
-        min-height: clamp(40px, 12dvh, 58px);
+        min-height: clamp(38px, 10dvh, 52px);
         gap: clamp(4px, 1.5vw, 10px);
     }
 
     .section-buttons button {
-        width: clamp(56px, 16dvh, 96px);
+        width: clamp(48px, 13dvh, 76px);
+    }
+
+    body.mobile-controls .section-buttons #start-button,
+    body.mobile-controls .section-buttons #restart-button {
+        bottom: max(clamp(38px, 7dvh, 56px), env(safe-area-inset-bottom));
     }
 
 
@@ -372,7 +377,7 @@
 
 
     .section-buttons button {
-        width: clamp(44px, 15dvh, 70px);
+        width: clamp(40px, 13dvh, 60px);
     }
 
 

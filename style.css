@@ -343,14 +343,14 @@ canvas {
     justify-content: center;
     align-items: center;
     width: 100%;
-    min-height: clamp(52px, 9dvh, 88px);
-    gap: clamp(8px, 2vw, 24px);
+    min-height: clamp(46px, 8dvh, 72px);
+    gap: clamp(6px, 1.5vw, 18px);
     position: relative;
     z-index: 10;
 }
 
 .section-buttons button {
-    width: clamp(72px, 11vw, 150px);
+    width: clamp(56px, 8vw, 112px);
     height: auto;
     cursor: pointer;
     transition: 250ms;
@@ -368,6 +368,18 @@ canvas {
 }
 
 .section-buttons button:active {
+    transform: scale(1);
+}
+
+.section-buttons button:disabled,
+.section-buttons button.deactive_button {
+    cursor: default;
+}
+
+.section-buttons button:disabled:hover,
+.section-buttons button:disabled:active,
+.section-buttons button.deactive_button:hover,
+.section-buttons button.deactive_button:active {
     transform: scale(1);
 }
 

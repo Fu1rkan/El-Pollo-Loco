@@ -135,7 +135,15 @@ function setActionButtonState(state) {
     hidePrimaryActionButtons();
     getButtonsForActionState(state).forEach(showButton);
     updatePauseButtonImage(state == 'paused' || state == 'settings');
+    updateEndedPauseButton();
     updateMuteButtons();
+};
+
+/** Disables the pause button after the game ended */
+function updateEndedPauseButton() {
+    if (!pauseButton || !gameIsFinished()) return;
+    pauseButton.disabled = true;
+    pauseButton.classList.add('deactive_button');
 };
 
 /**
@@ -165,7 +173,7 @@ function hidePrimaryActionButtons() {
  */
 function getButtonsForActionState(state) {
     if (state == 'home') return [startButton, settingsButton];
-    if (state == 'ended') return [restartbutton];
+    if (state == 'ended') return [homeButton, restartbutton, pauseButton, settingsButton];
     if (state == 'settings') return getSettingsActionButtons();
     return [restartbutton, homeButton, settingsButton, pauseButton];
 };
@@ -176,7 +184,7 @@ function getButtonsForActionState(state) {
  */
 function getSettingsActionButtons() {
     if (!gameStarted) return [startButton, settingsButton];
-    if (gameIsFinished()) return [restartbutton];
+    if (gameIsFinished()) return [homeButton, restartbutton, pauseButton, settingsButton];
     return [restartbutton, homeButton, settingsButton, pauseButton];
 };
 
@@ -249,11 +257,6 @@ function setAudioMuteState(muted) {
 /** Updates the visible mute button state */
 function updateMuteButtons() {
     if (!muteButton || !unmuteButton) return;
-    if (actionButtonStateIsEnded()) {
-        hideButton(muteButton);
-        hideButton(unmuteButton);
-        return;
-    };
     if (muteSwitch) {
         muteButton.classList.add('d_none');
         unmuteButton.classList.remove('d_none');
@@ -261,12 +264,4 @@ function updateMuteButtons() {
     };
     muteButton.classList.remove('d_none');
     unmuteButton.classList.add('d_none');
-};
-
-/**
- * Checks whether the action bar currently shows the end state
- * @returns {boolean} - true = game ended state
- */
-function actionButtonStateIsEnded() {
-    return buttonSection && buttonSection.dataset.actionState == 'ended';
 };
