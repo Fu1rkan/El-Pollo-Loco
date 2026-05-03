@@ -70,12 +70,16 @@ Character.prototype.playSleepSound = function () {
 
 /** Starts the walking sound loop */
 Character.prototype.walkSound = function () {
-    playPooledAudio('audio/character_footsteps.mp3', 1, 2);
+    playAudio(world.character.AUDIOS[5]);
     let audioId = this.createInterval(world.character.playWalkSound, 600)
     world.character.audioIntervals.push(audioId);
 };
 
 /** Plays one walking step sound */
 Character.prototype.playWalkSound = function () {
-    playPooledAudio('audio/character_footsteps.mp3', 1, 2);
+    if (!canPlayAudio(world.character.AUDIOS[5])) return;
+    let sound = world.character.AUDIOS[5].cloneNode(true);
+    sound.muted = isMuted;
+    setAudioVolume(sound, DEFAULT_AUDIO_VOLUME);
+    catchAudioPromise(sound.play());
 };
